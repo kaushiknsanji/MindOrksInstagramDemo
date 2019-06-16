@@ -1,0 +1,117 @@
+plugins {
+    id 'com.android.application'
+    //Targeting Android Platform of Kotlin
+    id 'kotlin-android'
+    //Kotlin extensions on Android for View Binding, Caching etc.
+    id 'kotlin-android-extensions'
+    //Annotation processing tool for Kotlin
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion rootProject.ext.compile_sdk_version
+
+    defaultConfig {
+        applicationId "com.mindorks.kaushiknsanji.instagram.demo"
+        minSdkVersion rootProject.ext.min_sdk_version
+        targetSdkVersion rootProject.ext.target_sdk_version
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://api.projects.bootcamp.mindorks.com/batch/blue/\"")
+            buildConfigField("String", "API_KEY", "\"BLUE19QVVAPP\"")
+        }
+        release {
+            minifyEnabled true // to apply the proguard
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "BASE_URL", "\"https://api.projects.bootcamp.mindorks.com/batch/blue/\"")
+            buildConfigField("String", "API_KEY", "\"BLUE19QVVAPP\"")
+        }
+    }
+
+}
+
+dependencies {
+    // JARs
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin Standard library
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Android Support library
+    implementation "androidx.appcompat:appcompat:$app_compat_version"
+
+    // Multidex
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+    // Constraint Layout library
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    // Material Design
+    implementation "com.google.android.material:material:$support_library_version"
+
+    // RecyclerView
+    implementation "androidx.recyclerview:recyclerview:$support_library_version"
+
+    // CardView
+    implementation "androidx.cardview:cardview:$support_library_version"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    // Lifecycle Annotations
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    // Database
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+
+    // Database Debugging
+    debugImplementation "com.amitshekhar.android:debug-db:$debug_db_version"
+
+    // Image
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$retrofit_rxjava_adapter_version"
+
+    // Reactive
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroid_version"
+
+    // Logger
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    // JSON de/serializer using Gson
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    // Local Unit Tests
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "android.arch.core:core-testing:$core_testing_version"
+    testImplementation "org.hamcrest:hamcrest-library:$hamcrest_version"
+    kaptTest "com.google.dagger:dagger-compiler:$dagger_version"
+
+    // UI Tests
+    androidTestImplementation "androidx.test:runner:$test_runner_version"
+    androidTestImplementation "androidx.test.ext:junit:$test_ext_runner_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espresso_version"
+    androidTestImplementation "org.mockito:mockito-core:$mockito_version"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
+}

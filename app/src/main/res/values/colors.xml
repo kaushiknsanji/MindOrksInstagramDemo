@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App Theme Colors -->
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorSecondary">#4A90E2</color>
+    <color name="colorAccent">#FF0266</color>
+
+    <!-- Other Colors used in the App -->
+    <color name="blue">#4A90E2</color>
+    <color name="black">#000000</color>
+    <color name="grey">#B4B4B4</color>
+    <color name="grey_light">#AAAAAA</color>
+    <color name="status_bar">#F7F7F7</color>
+    <color name="red">#D0021B</color>
+
+</resources>
