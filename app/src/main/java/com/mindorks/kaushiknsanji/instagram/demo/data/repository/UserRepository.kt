@@ -5,6 +5,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.local.prefs.UserPreference
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Repository for User data management.
@@ -16,6 +17,7 @@ import javax.inject.Inject
  *
  * @author Kaushik N Sanji
  */
+@Singleton
 class UserRepository @Inject constructor(
     private val networkService: NetworkService,
     private val databaseService: DatabaseService,
