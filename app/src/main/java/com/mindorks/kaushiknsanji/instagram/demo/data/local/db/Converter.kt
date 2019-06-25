@@ -4,11 +4,11 @@ import androidx.room.TypeConverter
 import java.util.*
 
 /**
- * [TypeConverter] object to aid Room with complex data type conversions.
+ * [TypeConverter] class to aid Room with complex data type conversions.
  *
  * @author Kaushik N Sanji
  */
-object Converter {
+class Converter {
 
     /**
      * For reading [Date] from the database.
