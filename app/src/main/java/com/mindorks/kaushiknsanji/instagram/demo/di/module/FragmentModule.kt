@@ -1,8 +1,8 @@
 package com.mindorks.kaushiknsanji.instagram.demo.di.module
 
 import android.content.Context
-import androidx.fragment.app.Fragment
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import dagger.Module
 import dagger.Provides
 
@@ -12,7 +12,7 @@ import dagger.Provides
  * @author Kaushik N Sanji
  */
 @Module
-class FragmentModule(private val fragment: Fragment) {
+class FragmentModule(private val fragment: BaseFragment<*>) {
 
     @ActivityContext
     @Provides

@@ -1,8 +1,8 @@
 package com.mindorks.kaushiknsanji.instagram.demo.di.module
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import dagger.Module
 import dagger.Provides
 
@@ -12,7 +12,7 @@ import dagger.Provides
  * @author Kaushik N Sanji
  */
 @Module
-class ActivityModule(private val activity: AppCompatActivity) {
+class ActivityModule(private val activity: BaseActivity<*>) {
 
     @ActivityContext
     @Provides
