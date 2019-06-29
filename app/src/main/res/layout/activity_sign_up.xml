@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.signup.SignUpActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_sign_up_vertical_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/guideline_login_sign_up_vertical_keyline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_sign_up_vertical_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/guideline_login_sign_up_vertical_keyline" />
+
+    <ImageView
+        android:id="@+id/image_sign_up_profile"
+        android:layout_width="@dimen/image_sign_up_profile_size"
+        android:layout_height="@dimen/image_sign_up_profile_size"
+        android:contentDescription="@string/cd_image_sign_up_profile"
+        app:layout_constraintBottom_toTopOf="@+id/text_input_sign_up_name"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/ic_profile_signup" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_sign_up_name"
+        style="@style/LoginSignUpTextInputFields.UserName"
+        android:layout_marginTop="@dimen/text_input_sign_up_name_margin_top"
+        app:layout_constraintBottom_toTopOf="@+id/text_input_sign_up_email"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/image_sign_up_profile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_sign_up_name"
+            style="@style/LoginSignUpEditTextFields.UserName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_sign_up_email"
+        style="@style/LoginSignUpTextInputFields.Email"
+        app:layout_constraintBottom_toTopOf="@+id/text_input_sign_up_password"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_sign_up_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_sign_up_email"
+            style="@style/LoginSignUpEditTextFields.Email" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_sign_up_password"
+        style="@style/LoginSignUpTextInputFields.Password.SignUp"
+        app:layout_constraintBottom_toTopOf="@+id/button_sign_up"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_sign_up_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_sign_up_password"
+            style="@style/LoginSignUpEditTextFields.Password" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_sign_up"
+        style="@style/LoginSignUpButton.SignUp"
+        app:layout_constraintBottom_toTopOf="@+id/divider_sign_up_login"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_sign_up_password" />
+
+    <View
+        android:id="@+id/divider_sign_up_login"
+        style="@style/DividerLoginSignUpOptions"
+        app:layout_constraintBottom_toTopOf="@+id/text_button_sign_up_option_login"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/button_sign_up" />
+
+    <TextView
+        android:id="@+id/text_sign_up_login_divider"
+        style="@style/LabelDividerLoginSignUpOptions"
+        app:layout_constraintBottom_toBottomOf="@+id/divider_sign_up_login"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
+        app:layout_constraintTop_toTopOf="@+id/divider_sign_up_login" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/text_button_sign_up_option_login"
+        style="@style/LoginSignUpTextButton.OptionLogin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/divider_sign_up_login" />
+
+    <ProgressBar
+        android:id="@+id/progress_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MATCH CONSTRAINT Dimension used for ConstraintLayouts -->
+    <dimen name="match_constraint_0dp">0dp</dimen>
+
+    <!-- =================== -->
+    <!-- FOR SPLASH ACTIVITY -->
+    <!-- =================== -->
+    <dimen name="image_splash_logo_height">58dp</dimen>
+
+    <!-- ================== -->
+    <!-- FOR LOGIN ACTIVITY -->
+    <!-- ================== -->
+    <dimen name="text_input_login_email_margin_top">42dp</dimen>
+
+    <!-- ============================== -->
+    <!-- FOR LOGIN AND SIGN-UP ACTIVITY -->
+    <!-- ============================== -->
+    <dimen name="guideline_login_sign_up_vertical_keyline">30dp</dimen>
+    <dimen name="login_sign_up_fields_vertical_margin">16dp</dimen>
+    <dimen name="login_sign_up_fields_text_size">16sp</dimen>
+    <dimen name="button_login_sign_up_text_size">18sp</dimen>
+    <dimen name="button_login_sign_up_vertical_padding">8dp</dimen>
+    <dimen name="text_button_login_sign_up_option_margin_top">24dp</dimen>
+    <dimen name="text_login_sign_up_divider_vertical_padding">8dp</dimen>
+    <dimen name="text_login_sign_up_divider_horizontal_padding">16dp</dimen>
+    <dimen name="text_login_sign_up_divider_size">18sp</dimen>
+    <dimen name="divider_login_sign_up_margin_top">45dp</dimen>
+    <dimen name="divider_login_sign_up_height">1dp</dimen>
+
+    <!-- ==================== -->
+    <!-- FOR SIGN-UP ACTIVITY -->
+    <!-- ==================== -->
+    <dimen name="image_sign_up_profile_size">80dp</dimen>
+    <dimen name="text_input_sign_up_name_margin_top">41dp</dimen>
+
+</resources>

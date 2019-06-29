@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.login.LoginActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_login_vertical_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/guideline_login_sign_up_vertical_keyline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_login_vertical_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/guideline_login_sign_up_vertical_keyline" />
+
+    <ImageView
+        android:id="@+id/image_login_logo"
+        style="@style/SplashLogo"
+        android:contentDescription="@string/cd_image_logo"
+        app:layout_constraintBottom_toTopOf="@+id/text_input_login_email"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_login_vertical_begin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_login_email"
+        style="@style/LoginSignUpTextInputFields.Email"
+        android:layout_marginTop="@dimen/text_input_login_email_margin_top"
+        app:layout_constraintBottom_toTopOf="@+id/text_input_login_password"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_login_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/image_login_logo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_login_email"
+            style="@style/LoginSignUpEditTextFields.Email" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_login_password"
+        style="@style/LoginSignUpTextInputFields.Password.Login"
+        app:layout_constraintBottom_toTopOf="@+id/button_login"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_login_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_login_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_login_password"
+            style="@style/LoginSignUpEditTextFields.Password" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_login"
+        style="@style/LoginSignUpButton.Login"
+        app:layout_constraintBottom_toTopOf="@+id/divider_login_sign_up"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_login_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_login_password" />
+
+    <View
+        android:id="@+id/divider_login_sign_up"
+        style="@style/DividerLoginSignUpOptions"
+        app:layout_constraintBottom_toTopOf="@+id/text_button_login_option_sign_up"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_login_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+
+    <TextView
+        android:id="@+id/text_login_sign_up_divider"
+        style="@style/LabelDividerLoginSignUpOptions"
+        app:layout_constraintBottom_toBottomOf="@+id/divider_login_sign_up"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_login_vertical_begin"
+        app:layout_constraintTop_toTopOf="@+id/divider_login_sign_up" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/text_button_login_option_sign_up"
+        style="@style/LoginSignUpTextButton.OptionSignUp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_login_vertical_begin"
+        app:layout_constraintTop_toBottomOf="@+id/divider_login_sign_up" />
+
+    <ProgressBar
+        android:id="@+id/progress_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

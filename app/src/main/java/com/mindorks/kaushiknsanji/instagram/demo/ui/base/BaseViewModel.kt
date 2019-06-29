@@ -59,7 +59,7 @@ abstract class BaseViewModel(
                     // For Connect exceptions
                     0 -> messageStringId.postValue(Resource.error(R.string.server_connection_error))
                     // For HTTP 401 error
-                    HttpsURLConnection.HTTP_UNAUTHORIZED -> messageStringId.postValue(Resource.error(R.string.server_connection_error))
+                    HttpsURLConnection.HTTP_UNAUTHORIZED -> messageStringId.postValue(Resource.error(R.string.network_login_unauthorized_error))
                     // For HTTP 500 error
                     HttpsURLConnection.HTTP_INTERNAL_ERROR ->
                         messageStringId.postValue(Resource.error(R.string.network_internal_error))

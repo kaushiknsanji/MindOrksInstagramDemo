@@ -4,6 +4,11 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.prefs.UserPreferences
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.LoginRequest
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.SignUpRequest
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.LoginResponse
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.SignUpResponse
+import io.reactivex.Single
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -60,5 +65,44 @@ class UserRepository @Inject constructor(
         else
             null
     }
+
+    /**
+     * Performs User Login request with the Remote API and returns a [Single] of [User] from the response.
+     *
+     * @param email [String] representing the Email entered by the User
+     * @param password [String] representing the Password entered by the User
+     * @return A [Single] of [User] from the response
+     */
+    fun doUserLogin(email: String, password: String): Single<User> =
+        networkService.doLoginCall(LoginRequest(email, password))
+            .map { response: LoginResponse ->
+                // Transforming the [LoginResponse] to [User]
+                User(
+                    id = response.userId,
+                    name = response.userName,
+                    email = response.userEmail,
+                    accessToken = response.accessToken
+                )
+            }
+
+    /**
+     * Performs User SignUp request with the Remote API and returns a [Single] of [User] from the response.
+     *
+     * @param email [String] representing the Email entered by the User
+     * @param password [String] representing the Password entered by the User
+     * @param name [String] representing the name entered by the User
+     * @return A [Single] of [User] from the response
+     */
+    fun doUserSignUp(email: String, password: String, name: String): Single<User> =
+        networkService.doSignUpCall(SignUpRequest(email, password, name))
+            .map { response: SignUpResponse ->
+                // Transforming the [SignUpResponse] to [User]
+                User(
+                    id = response.userId,
+                    name = response.userName,
+                    email = response.userEmail,
+                    accessToken = response.accessToken
+                )
+            }
 
 }

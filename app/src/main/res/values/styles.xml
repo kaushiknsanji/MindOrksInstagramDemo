@@ -1,5 +1,8 @@
 <resources>
 
+    <!-- ==================================== -->
+    <!-- APP THEMES AND THEMES FOR COMPONENTS -->
+    <!-- ==================================== -->
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -97,6 +100,141 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <!-- ========================== -->
+    <!-- STYLES FOR SPLASH ACTIVITY -->
+    <!-- ========================== -->
+    <!-- Common Style for the logo in SplashActivity, LoginActivity -->
+    <style name="SplashLogo">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/image_splash_logo_height</item>
+        <item name="srcCompat">@drawable/instagram_logo</item>
+    </style>
+
+    <!-- ===================================== -->
+    <!-- STYLES FOR LOGIN AND SIGN-UP ACTIVITY -->
+    <!-- ===================================== -->
+    <!-- Base Style for TextInputLayouts -->
+    <style name="LoginSignUpTextInputFields" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">@dimen/match_constraint_0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/login_sign_up_fields_vertical_margin</item>
+        <item name="boxStrokeColor">@color/gray</item>
+    </style>
+
+    <!-- Base Style for TextInputEditTexts -->
+    <style name="LoginSignUpEditTextFields">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/login_sign_up_fields_text_size</item>
+    </style>
+
+    <!-- Base Button Style for Login or Sign-Up action -->
+    <style name="LoginSignUpButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">@dimen/match_constraint_0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/login_sign_up_fields_vertical_margin</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/button_login_sign_up_text_size</item>
+        <item name="android:paddingTop">@dimen/button_login_sign_up_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/button_login_sign_up_vertical_padding</item>
+        <item name="android:backgroundTint">@color/blue</item>
+    </style>
+
+    <!-- Derived Button Style for Login action -->
+    <style name="LoginSignUpButton.Login">
+        <item name="android:text">@string/label_button_login</item>
+    </style>
+
+    <!-- Derived Button Style for Sign-Up action -->
+    <style name="LoginSignUpButton.SignUp">
+        <item name="android:text">@string/label_button_sign_up</item>
+    </style>
+
+    <!-- Base Text Button Style for optional Login/Sign-Up with Email action -->
+    <style name="LoginSignUpTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/text_button_login_sign_up_option_margin_top</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+    </style>
+
+    <!-- Derived Text Button Style for optional Sign-Up -->
+    <style name="LoginSignUpTextButton.OptionSignUp">
+        <item name="android:text">@string/label_text_button_login_option_sign_up</item>
+    </style>
+
+    <!-- Derived Text Button Style for optional Login -->
+    <style name="LoginSignUpTextButton.OptionLogin">
+        <item name="android:text">@string/label_text_button_sign_up_option_login</item>
+    </style>
+
+    <!-- Derived TextInputLayout Style for Email field -->
+    <style name="LoginSignUpTextInputFields.Email">
+        <item name="android:hint">@string/hint_login_sign_up_email</item>
+    </style>
+
+    <!-- Derived TextInputEditText Style for Email field -->
+    <style name="LoginSignUpEditTextFields.Email">
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <!-- Derived TextInputLayout Style for Password field -->
+    <style name="LoginSignUpTextInputFields.Password">
+        <item name="passwordToggleEnabled">true</item>
+    </style>
+
+    <!-- Derived TextInputLayout Style for Password field in Login Activity -->
+    <style name="LoginSignUpTextInputFields.Password.Login">
+        <item name="android:hint">@string/hint_login_password</item>
+    </style>
+
+    <!-- Derived TextInputLayout Style for Password field in Sign-Up Activity -->
+    <style name="LoginSignUpTextInputFields.Password.SignUp">
+        <item name="android:hint">@string/hint_sign_up_password</item>
+    </style>
+
+    <!-- Derived TextInputEditText Style for Password field -->
+    <style name="LoginSignUpEditTextFields.Password">
+        <item name="android:inputType">textPassword</item>
+        <item name="android:maxLength">50</item>
+    </style>
+
+    <!-- Derived TextInputLayout Style for Name field in Sign-Up Activity -->
+    <style name="LoginSignUpTextInputFields.UserName">
+        <item name="android:hint">@string/hint_sign_up_name</item>
+    </style>
+
+    <!-- Derived TextInputEditText Style for Name field in Sign-Up Activity -->
+    <style name="LoginSignUpEditTextFields.UserName">
+        <item name="android:inputType">textPersonName|textCapWords</item>
+        <item name="android:maxLength">100</item>
+    </style>
+
+    <!-- Style for the Login or Sign-Up options Divider -->
+    <style name="DividerLoginSignUpOptions">
+        <item name="android:layout_width">@dimen/match_constraint_0dp</item>
+        <item name="android:layout_height">@dimen/divider_login_sign_up_height</item>
+        <item name="android:background">@color/gray_light</item>
+        <item name="android:layout_marginTop">@dimen/divider_login_sign_up_margin_top</item>
+    </style>
+
+    <!-- Style for the text overlay on Login/Sign-Up options divider -->
+    <style name="LabelDividerLoginSignUpOptions">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/label_login_sign_up_divider</item>
+        <item name="android:textSize">@dimen/text_login_sign_up_divider_size</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingTop">@dimen/text_login_sign_up_divider_vertical_padding</item>
+        <item name="android:paddingBottom">@dimen/text_login_sign_up_divider_vertical_padding</item>
+        <item name="android:paddingStart">@dimen/text_login_sign_up_divider_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/text_login_sign_up_divider_horizontal_padding</item>
     </style>
 
 </resources>

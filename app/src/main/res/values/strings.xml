@@ -3,7 +3,9 @@
     <!-- Name of the App -->
     <string name="app_name">Instagram Demo</string>
 
-    <!-- Network Connectivity -->
+    <!-- ============================ -->
+    <!-- NETWORK CONNECTIVITY STRINGS -->
+    <!-- ============================ -->
     <string name="network_connection_error">Internet connection lost, please retry again</string>
     <string name="network_default_error">Something wrong happened, please retry again</string>
     <string name="network_internal_error">Our systems got an error, please retry again</string>
@@ -11,6 +13,36 @@
         Our services are under maintenance, please retry after some time
     </string>
     <string name="server_connection_error">Not able to connect, please retry again</string>
-    <string name="network_login_again">Please log in again</string>
+    <string name="network_login_unauthorized_error">Please verify your credentials and try again</string>
+
+    <!-- Common Content description for App Logo -->
+    <string name="cd_image_logo">App logo</string>
+
+    <!-- ============================== -->
+    <!-- STRINGS USED IN LOGIN ACTIVITY -->
+    <!-- ============================== -->
+    <string name="hint_login_password">Enter your password</string>
+    <string name="label_button_login">Login</string>
+    <string name="label_text_button_login_option_sign_up">Sign Up with Email</string>
+
+    <!-- ========================================== -->
+    <!-- STRINGS USED IN LOGIN AND SIGN-UP ACTIVITY -->
+    <!-- ========================================== -->
+    <string name="label_login_sign_up_divider">OR</string>
+    <string name="hint_login_sign_up_email">Enter your email</string>
+    <string name="error_login_sign_up_email_field_empty">Email can\'t be empty</string>
+    <string name="error_login_sign_up_password_field_empty">Password can\'t be empty</string>
+    <string name="error_login_sign_up_email_field_invalid">Not a valid email</string>
+    <string name="error_login_sign_up_password_field_small_length">Password less than 6 digits</string>
+
+    <!-- ================================ -->
+    <!-- STRINGS USED IN SIGN-UP ACTIVITY -->
+    <!-- ================================ -->
+    <string name="hint_sign_up_name">Enter your full name</string>
+    <string name="hint_sign_up_password">Choose your password</string>
+    <string name="label_button_sign_up">Sign Up</string>
+    <string name="label_text_button_sign_up_option_login">Login with Email</string>
+    <string name="error_sign_up_name_field_empty">Name can\'t be empty</string>
+    <string name="cd_image_sign_up_profile">Sign-Up Profile Image</string>
 
 </resources>
