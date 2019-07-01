@@ -45,4 +45,11 @@
     <string name="error_sign_up_name_field_empty">Name can\'t be empty</string>
     <string name="cd_image_sign_up_profile">Sign-Up Profile Image</string>
 
+    <!-- ============================= -->
+    <!-- STRINGS USED IN MAIN ACTIVITY -->
+    <!-- ============================= -->
+    <string name="title_main_bottom_nav_home">Home</string>
+    <string name="title_main_bottom_nav_photo">Add Photos</string>
+    <string name="title_main_bottom_nav_profile">Profile</string>
+
 </resources>

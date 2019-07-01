@@ -8,9 +8,9 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
-import com.mindorks.kaushiknsanji.instagram.demo.ui.MainActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus

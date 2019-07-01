@@ -6,6 +6,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.signup.SignUpViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.splash.SplashViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
@@ -69,5 +70,19 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         // [creator] lambda that creates and returns the ViewModel instance
         SignUpViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository)
     }).get(SignUpViewModel::class.java)
+
+    /**
+     * Provides instance of [MainViewModel]
+     */
+    @Provides
+    fun provideMainViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper
+    ): MainViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(MainViewModel::class) {
+        // [creator] lambda that creates and returns the ViewModel instance
+        MainViewModel(schedulerProvider, compositeDisposable, networkHelper)
+    }).get(MainViewModel::class.java)
+
 
 }

@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
-import com.mindorks.kaushiknsanji.instagram.demo.ui.MainActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 
 /**

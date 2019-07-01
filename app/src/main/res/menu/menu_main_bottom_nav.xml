@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_main_bottom_nav_home"
+        android:icon="@drawable/state_main_bottom_nav_home"
+        android:orderInCategory="1"
+        android:title="@string/title_main_bottom_nav_home"
+        android:titleCondensed="@string/title_main_bottom_nav_home"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_main_bottom_nav_photo"
+        android:icon="@drawable/state_main_bottom_nav_photo"
+        android:orderInCategory="2"
+        android:title="@string/title_main_bottom_nav_photo"
+        android:titleCondensed="@string/title_main_bottom_nav_photo"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_main_bottom_nav_profile"
+        android:icon="@drawable/state_main_bottom_nav_profile"
+        android:orderInCategory="3"
+        android:title="@string/title_main_bottom_nav_profile"
+        android:titleCondensed="@string/title_main_bottom_nav_profile"
+        app:showAsAction="ifRoom" />
+
+</menu>
