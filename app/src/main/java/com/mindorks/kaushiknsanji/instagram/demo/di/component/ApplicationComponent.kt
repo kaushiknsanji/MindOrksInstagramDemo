@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
+import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ApplicationContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ApplicationModule
@@ -68,5 +69,10 @@ interface ApplicationComponent {
      * Exposes [UserRepository] instance created using constructor injection
      */
     fun getUserRepository(): UserRepository
+
+    /**
+     * Exposes [PostRepository] instance created using constructor injection
+     */
+    fun getPostRepository(): PostRepository
 
 }

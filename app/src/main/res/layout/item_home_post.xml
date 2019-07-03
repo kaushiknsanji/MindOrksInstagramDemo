@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.MaterialComponents.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/card_home_item_elevation"
+    app:cardUseCompatPadding="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/card_home_item_cl_padding_top"
+        android:paddingBottom="@dimen/card_home_item_cl_padding_bottom">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_home_item_vertical_begin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/guideline_home_item_vertical_keyline" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_home_item_vertical_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/guideline_home_item_vertical_keyline" />
+
+        <ImageView
+            android:id="@+id/image_home_item_post_creator_profile"
+            android:layout_width="@dimen/image_home_item_post_creator_profile_size"
+            android:layout_height="@dimen/image_home_item_post_creator_profile_size"
+            android:contentDescription="@string/cd_image_home_item_post_creator_profile"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toEndOf="@+id/guideline_home_item_vertical_begin"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/text_home_item_post_creator_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_home_item_post_creator_name_margin_start"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/AppTheme.Body1"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/image_home_item_post_creator_profile"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_home_item_vertical_end"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/image_home_item_post_creator_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/full_names" />
+
+        <ImageView
+            android:id="@+id/image_home_item_post_photo"
+            android:layout_width="@dimen/match_constraint_0dp"
+            android:layout_height="@dimen/match_constraint_0dp"
+            android:layout_marginTop="@dimen/image_home_item_post_photo_margin_top"
+            android:contentDescription="@string/cd_image_home_item_post_photo"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_home_item_post_creator_profile"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <ImageButton
+            android:id="@+id/imgbtn_home_item_toggle_post_like"
+            android:layout_width="@dimen/imgbtn_home_item_toggle_post_like_size"
+            android:layout_height="@dimen/imgbtn_home_item_toggle_post_like_size"
+            android:layout_marginTop="@dimen/imgbtn_home_item_toggle_post_like_margin_top"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cd_imgbtn_home_item_toggle_post_like"
+            android:src="@drawable/state_item_home_post_heart"
+            app:layout_constraintStart_toEndOf="@+id/guideline_home_item_vertical_begin"
+            app:layout_constraintTop_toBottomOf="@+id/image_home_item_post_photo" />
+
+        <TextView
+            android:id="@+id/text_home_item_post_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_home_item_post_like_count_margin_start"
+            android:layout_marginEnd="@dimen/text_home_item_post_like_count_margin_end"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/AppTheme.Body2"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/imgbtn_home_item_toggle_post_like"
+            app:layout_constraintEnd_toStartOf="@+id/text_home_item_post_time"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/imgbtn_home_item_toggle_post_like"
+            app:layout_constraintTop_toTopOf="@+id/imgbtn_home_item_toggle_post_like"
+            tools:text="@string/label_home_item_post_like_count" />
+
+        <TextView
+            android:id="@+id/text_home_item_post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/AppTheme.Body2"
+            android:textColor="@color/gray"
+            app:layout_constraintBaseline_toBaselineOf="@+id/text_home_item_post_like_count"
+            app:layout_constraintEnd_toEndOf="@id/guideline_home_item_vertical_end"
+            tools:text="4 hrs ago" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

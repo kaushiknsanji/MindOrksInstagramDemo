@@ -2,9 +2,13 @@ package com.mindorks.kaushiknsanji.instagram.demo.di.module
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
+import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.photo.PhotoViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
@@ -27,16 +31,31 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
     fun provideContext(): Context = fragment.requireContext()
 
     /**
+     * Provides instance of [LinearLayoutManager]
+     */
+    @Provides
+    fun provideLinearLayoutManager(@ActivityContext context: Context): LinearLayoutManager =
+        LinearLayoutManager(context)
+
+    /**
      * Provides instance of [HomeViewModel]
      */
     @Provides
     fun provideHomeViewModel(
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
-        networkHelper: NetworkHelper
+        networkHelper: NetworkHelper,
+        userRepository: UserRepository,
+        postRepository: PostRepository
     ): HomeViewModel = ViewModelProviders.of(fragment, ViewModelProviderFactory(HomeViewModel::class) {
         // [creator] lambda that creates and returns the ViewModel instance
-        HomeViewModel(schedulerProvider, compositeDisposable, networkHelper)
+        HomeViewModel(
+            schedulerProvider,
+            compositeDisposable,
+            networkHelper,
+            userRepository,
+            postRepository
+        )
     }).get(HomeViewModel::class.java)
 
     /**
@@ -64,5 +83,11 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
         // [creator] lambda that creates and returns the ViewModel instance
         ProfileViewModel(schedulerProvider, compositeDisposable, networkHelper)
     }).get(ProfileViewModel::class.java)
+
+    /**
+     * Provides instance of [PostsAdapter]
+     */
+    @Provides
+    fun providePostsAdapter() = PostsAdapter(fragment.lifecycle)
 
 }

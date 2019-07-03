@@ -40,5 +40,24 @@
     <dimen name="view_main_bottom_nav_shadow_height">8dp</dimen>
     <dimen name="bottom_nav_main_elevation">8dp</dimen>
 
+    <!-- ================= -->
+    <!-- FOR HOME FRAGMENT -->
+    <!-- ================= -->
+    <dimen name="image_home_app_bar_logo_height">32dp</dimen>
+    <dimen name="app_bar_home_elevation">4dp</dimen>
+    <dimen name="app_bar_home_horizontal_padding">16dp</dimen>
+    <dimen name="progress_horizontal_home_height">4dp</dimen>
+    <dimen name="card_home_item_elevation">2dp</dimen>
+    <dimen name="card_home_item_cl_padding_top">8dp</dimen>
+    <dimen name="card_home_item_cl_padding_bottom">16dp</dimen>
+    <dimen name="guideline_home_item_vertical_keyline">16dp</dimen>
+    <dimen name="image_home_item_post_creator_profile_size">38dp</dimen>
+    <dimen name="text_home_item_post_creator_name_margin_start">12dp</dimen>
+    <dimen name="image_home_item_post_photo_margin_top">8dp</dimen>
+    <dimen name="imgbtn_home_item_toggle_post_like_size">32dp</dimen>
+    <dimen name="imgbtn_home_item_toggle_post_like_margin_top">8dp</dimen>
+    <dimen name="text_home_item_post_like_count_margin_start">2dp</dimen>
+    <dimen name="text_home_item_post_like_count_margin_end">8dp</dimen>
+
 
 </resources>

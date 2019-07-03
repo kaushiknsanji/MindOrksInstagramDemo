@@ -2,6 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.di.component
 
 import com.mindorks.kaushiknsanji.instagram.demo.di.ViewHolderScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ViewHolderModule
+import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostItemViewHolder
 import dagger.Component
 
 /**
@@ -13,4 +14,7 @@ import dagger.Component
 @ViewHolderScope
 @Component(dependencies = [ApplicationComponent::class], modules = [ViewHolderModule::class])
 interface ViewHolderComponent {
+
+    fun inject(postItemViewHolder: PostItemViewHolder)
+
 }

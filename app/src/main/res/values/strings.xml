@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Name of the App -->
     <string name="app_name">Instagram Demo</string>
@@ -51,5 +51,17 @@
     <string name="title_main_bottom_nav_home">Home</string>
     <string name="title_main_bottom_nav_photo">Add Photos</string>
     <string name="title_main_bottom_nav_profile">Profile</string>
+
+    <!-- ============================= -->
+    <!-- STRINGS USED IN HOME FRAGMENT -->
+    <!-- ============================= -->
+    <string name="cd_image_home_item_post_creator_profile">Post creator\'s profile picture</string>
+    <string name="cd_image_home_item_post_photo">Post creator\'s photo</string>
+    <string name="cd_imgbtn_home_item_toggle_post_like">Post like/unlike toggle button</string>
+    <!-- Label shown in the item view where the number of likes needs to be displayed -->
+    <string name="label_home_item_post_like_count">
+        <!-- Output will be like '123 likes' -->
+        <xliff:g example="123" id="like_count">%1$d</xliff:g> likes
+    </string>
 
 </resources>

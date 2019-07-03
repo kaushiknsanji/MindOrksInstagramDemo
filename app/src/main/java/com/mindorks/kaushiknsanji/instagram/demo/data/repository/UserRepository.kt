@@ -18,7 +18,7 @@ import javax.inject.Singleton
  * @property networkService Instance of Retrofit API Service [NetworkService] provided by Dagger.
  * @property databaseService Instance of RoomDatabase [DatabaseService] provided by Dagger.
  * @property userPreferences Instance of [UserPreferences] which is a SharedPreferences wrapper for User data, provided by Dagger.
- * @constructor Creates an Instance of [UserRepository]
+ * @constructor Instance of [UserRepository] created and provided by Dagger.
  *
  * @author Kaushik N Sanji
  */

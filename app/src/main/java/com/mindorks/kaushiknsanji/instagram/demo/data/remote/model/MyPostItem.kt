@@ -20,11 +20,11 @@ data class MyPostItem(
 
     @Expose
     @SerializedName("imgWidth")
-    val imageWidth: Int,
+    val imageWidth: Int?,
 
     @Expose
     @SerializedName("imgHeight")
-    val imageHeight: Int,
+    val imageHeight: Int?,
 
     @Expose
     @SerializedName("createdAt")
