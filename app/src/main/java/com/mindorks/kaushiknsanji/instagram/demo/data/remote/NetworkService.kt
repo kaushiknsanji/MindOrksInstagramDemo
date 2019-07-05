@@ -3,6 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.data.remote
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.*
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.*
 import io.reactivex.Single
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 /**
@@ -73,15 +74,15 @@ interface NetworkService {
     ): Single<GeneralResponse>
 
     /**
-     * API method to upload an Image.
+     * API method to upload an Image using a [Multipart].
      */
+    @Multipart
     @POST(Endpoints.IMAGE_UPLOAD)
     fun doImageUploadCall(
-        @Body requestBody: ImageUploadRequest, //TODO: Check how to pass Form Data
+        @Part imagePart: MultipartBody.Part,
         @Header(Networking.HEADER_USER_ID) userId: String,
         @Header(Networking.HEADER_ACCESS_TOKEN) accessToken: String,
-        @Header(Networking.HEADER_API_KEY) apiKey: String = Networking.API_KEY,
-        @Header(Networking.HEADER_CONTENT_TYPE) contentType: String = Networking.CONTENT_TYPE_IMAGE
+        @Header(Networking.HEADER_API_KEY) apiKey: String = Networking.API_KEY
     ): Single<ImageUploadResponse>
 
     /**

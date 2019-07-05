@@ -6,11 +6,81 @@
     android:layout_height="match_parent"
     tools:context=".ui.photo.PhotoFragment">
 
+    <View
+        android:id="@+id/view_photo_camera_option_background"
+        android:layout_width="@dimen/view_photo_pick_option_background_size"
+        android:layout_height="@dimen/view_photo_pick_option_background_size"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/text_photo_camera_option_label"
+        app:layout_constraintEnd_toEndOf="@+id/image_photo_camera_option"
+        app:layout_constraintStart_toStartOf="@+id/image_photo_camera_option"
+        app:layout_constraintTop_toTopOf="@+id/image_photo_camera_option" />
+
+    <ImageView
+        android:id="@+id/image_photo_camera_option"
+        android:layout_width="@dimen/image_photo_pick_option_size"
+        android:layout_height="@dimen/image_photo_pick_option_size"
+        android:contentDescription="@string/cd_photo_camera_option"
+        android:src="@drawable/ic_camera"
+        app:layout_constraintBottom_toTopOf="@+id/text_photo_camera_option_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
     <TextView
+        android:id="@+id/text_photo_camera_option_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PHOTO"
-        android:textAppearance="@style/AppTheme.Headline6"
+        style="@style/AppTheme.Subtitle1"
+        android:layout_marginTop="@dimen/text_photo_pick_option_label_margin_top"
+        android:text="@string/label_photo_camera_option"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/image_photo_gallery_option"
+        app:layout_constraintEnd_toEndOf="@+id/image_photo_camera_option"
+        app:layout_constraintStart_toStartOf="@+id/image_photo_camera_option"
+        app:layout_constraintTop_toBottomOf="@+id/image_photo_camera_option" />
+
+    <View
+        android:id="@+id/view_photo_gallery_option_background"
+        android:layout_width="@dimen/view_photo_pick_option_background_size"
+        android:layout_height="@dimen/view_photo_pick_option_background_size"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/text_photo_gallery_option_label"
+        app:layout_constraintEnd_toEndOf="@+id/image_photo_gallery_option"
+        app:layout_constraintStart_toStartOf="@+id/image_photo_gallery_option"
+        app:layout_constraintTop_toTopOf="@+id/image_photo_gallery_option" />
+
+    <ImageView
+        android:id="@+id/image_photo_gallery_option"
+        android:layout_width="@dimen/image_photo_pick_option_size"
+        android:layout_height="@dimen/image_photo_pick_option_size"
+        android:layout_marginTop="@dimen/photo_pick_option_margin"
+        android:contentDescription="@string/cd_photo_gallery_option"
+        android:src="@drawable/ic_gallery"
+        app:layout_constraintBottom_toTopOf="@+id/text_photo_gallery_option_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_photo_camera_option_label" />
+
+    <TextView
+        android:id="@+id/text_photo_gallery_option_label"
+        style="@style/AppTheme.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_photo_pick_option_label_margin_top"
+        android:text="@string/label_photo_gallery_option"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_photo_gallery_option"
+        app:layout_constraintStart_toStartOf="@+id/image_photo_gallery_option"
+        app:layout_constraintTop_toBottomOf="@+id/image_photo_gallery_option" />
+
+    <ProgressBar
+        android:id="@+id/progress_photo_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

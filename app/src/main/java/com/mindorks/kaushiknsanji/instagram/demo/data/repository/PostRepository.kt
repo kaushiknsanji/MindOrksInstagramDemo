@@ -5,8 +5,10 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.LikePostRequest
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.PostCreationRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.UnlikePostRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.AllPostsListResponse
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.PostCreationResponse
 import io.reactivex.Single
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -96,5 +98,36 @@ class PostRepository @Inject constructor(
                     likedByList.removeAll { userEmbedded: Post.User -> userEmbedded.id == user.id }
                 }
             }
+        }
+
+    /**
+     * Performs Post creation via the Remote API and returns a [Single] of the [Post] created, from the response.
+     *
+     * @param imageUrl [String] representing the URL of the uploaded Image.
+     * @param imageWidth [Int] representing the width of the uploaded Image.
+     * @param imageHeight [Int] representing the height the uploaded Image.
+     * @param user Instance of logged-in [User] information.
+     * @return A [Single] of the [Post] created, from the response.
+     */
+    fun createPost(imageUrl: String, imageWidth: Int, imageHeight: Int, user: User): Single<Post> =
+        networkService.doPostCreationCall(
+            PostCreationRequest(imageUrl, imageWidth, imageHeight),
+            user.id,
+            user.accessToken
+        ).map { response: PostCreationResponse ->
+            // Transforming the [PostCreationResponse] to [Post]
+            Post(
+                id = response.post.id,
+                imageUrl = response.post.imageUrl,
+                imageWidth = response.post.imageWidth,
+                imageHeight = response.post.imageHeight,
+                createdAt = response.post.createdAt,
+                creator = Post.User(
+                    id = user.id,
+                    name = user.name,
+                    profilePicUrl = user.profilePicUrl
+                ),
+                likedBy = mutableListOf()
+            )
         }
 }

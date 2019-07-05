@@ -52,6 +52,9 @@ ext {
     // Image
     glide_version = '4.8.0'
 
+    // ParaCamera for capturing Images
+    paracamera_version = '0.2.2'
+
     // JSON de/serializer using Gson
     gson_version = '2.8.5'
 

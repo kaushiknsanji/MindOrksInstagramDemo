@@ -34,6 +34,9 @@ class HomeViewModel(
     // LiveData for the paginated List of Posts
     val paginatedPosts: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
 
+    // LiveData for when the List of All Posts needs to be reloaded
+    val refreshAllPosts: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
+
     // Stores the logged-in [User] information
     private val user: User = userRepository.getCurrentUser()!!
 
@@ -42,6 +45,11 @@ class HomeViewModel(
 
     // Instance of PublishProcessor that supplies new List of Posts for multiple requests
     private val paginator: PublishProcessor<Pair<String?, String?>> = PublishProcessor.create()
+
+    // Stores the Post Id of the latest Post for pagination
+    private var firstPostId: String? = null
+    // Stores the Post Id of the oldest Post for pagination
+    private var lastPostId: String? = null
 
     init {
         // Construct the PublishProcessor and save its disposable
@@ -68,13 +76,16 @@ class HomeViewModel(
                 .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
                 .subscribe(
                     // OnSuccess
-                    { postList: List<Post> ->
+                    { paginatedPostList: List<Post> ->
                         // Save new page List of Posts retrieved in the List of All Posts
-                        allPostList.addAll(postList)
+                        allPostList.addAll(paginatedPostList)
+                        // Refresh the Pagination Ids
+                        firstPostId = allPostList.maxBy { post: Post -> post.createdAt.time }?.id
+                        lastPostId = allPostList.minBy { post: Post -> post.createdAt.time }?.id
                         // Stop the [loadingProgress] indication
                         loadingProgress.postValue(false)
                         // Update the LiveData with the new page List of Posts retrieved
-                        paginatedPosts.postValue(Resource.success(postList))
+                        paginatedPosts.postValue(Resource.success(paginatedPostList))
                     },
                     // OnError
                     { throwable: Throwable? ->
@@ -107,15 +118,22 @@ class HomeViewModel(
      * Loads the current page details into the [paginator] to fetch the subsequent page List of [Post]s
      */
     private fun loadMorePosts() {
-        // Get the Id of the first post in the current list of all posts; 'null' if the list is empty
-        val firstPostId: String? = allPostList.takeIf { it.isNotEmpty() }?.let { it[0].id }
-        // Get the Id of the last post in the current list of all posts; 'null' if the list is empty
-        val lastPostId: String? = allPostList.takeIf { it.size > 1 }?.let { it[it.size - 1].id }
-
         if (checkInternetConnectionWithMessage()) {
             // When we have the network connectivity, trigger the [paginator] to load more [Post]s
             paginator.onNext(firstPostId to lastPostId)
         }
+    }
+
+    /**
+     * Called when a new Instagram Post is created, to load the [newPost] to the Top of All Posts shown.
+     *
+     * @param newPost [Post] instance containing the information of the new Post created.
+     */
+    fun onNewPost(newPost: Post) {
+        // Update the new Post to the Top of All Posts
+        allPostList.add(0, newPost)
+        // Trigger New List of All Posts to be reloaded
+        refreshAllPosts.postValue(Resource.success(allPostList.map { it }))
     }
 
 }

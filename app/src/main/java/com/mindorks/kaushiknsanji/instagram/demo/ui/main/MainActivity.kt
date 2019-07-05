@@ -12,6 +12,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.photo.PhotoFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileFragment
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 import kotlin.reflect.KFunction0
 
 /**
@@ -26,6 +27,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
     companion object {
         const val TAG = "MainActivity"
     }
+
+    // Instance of the ViewModel shared with the Bottom Navigation Fragments provided by Dagger
+    @Inject
+    lateinit var mainSharedViewModel: MainSharedViewModel
 
     // Saves the fragment instance being shown
     private var activeFragment: Fragment? = null
@@ -107,6 +112,12 @@ class MainActivity : BaseActivity<MainViewModel>() {
         // Register an observer for ProfileFragment navigation events
         viewModel.navigateProfile.observeEvent(this) {
             showProfile()
+        }
+
+        // Register an observer for HomeFragment redirection events
+        mainSharedViewModel.redirectHome.observeEvent(this) {
+            // Select programmatically the Home button of the Bottom Navigation
+            bottom_nav_main.selectedItemId = R.id.action_main_bottom_nav_home
         }
 
     }

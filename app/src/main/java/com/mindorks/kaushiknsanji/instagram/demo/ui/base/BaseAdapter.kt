@@ -188,4 +188,17 @@ abstract class BaseAdapter<T : Any, VH : BaseItemViewHolder<T, out BaseItemViewM
         }
     }
 
+    /**
+     * Method to reset the Adapter [dataList] with the [newList] of data. Takes care of signaling complete
+     * change when reloaded.
+     */
+    fun resetData(newList: List<T>) {
+        // Clear all data on the Adapter
+        dataList.clear()
+        // Append the new data list
+        dataList.addAll(newList)
+        // Signal complete change after reload
+        notifyDataSetChanged()
+    }
+
 }

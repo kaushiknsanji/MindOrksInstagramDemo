@@ -5,14 +5,17 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
+import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PhotoRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ApplicationContext
+import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ApplicationModule
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import dagger.Component
 import io.reactivex.disposables.CompositeDisposable
+import java.io.File
 import javax.inject.Singleton
 
 /**
@@ -74,5 +77,16 @@ interface ApplicationComponent {
      * Exposes [PostRepository] instance created using constructor injection
      */
     fun getPostRepository(): PostRepository
+
+    /**
+     * Exposes [PhotoRepository] instance created using constructor injection
+     */
+    fun getPhotoRepository(): PhotoRepository
+
+    /**
+     * Exposes the temporary directory [File]
+     */
+    @TempDirectory
+    fun getTempDirectory(): File
 
 }

@@ -22,10 +22,6 @@ object Networking {
     const val HEADER_API_KEY = "x-api-key"
     const val HEADER_ACCESS_TOKEN = "x-access-token"
     const val HEADER_USER_ID = "x-user-id"
-    const val HEADER_CONTENT_TYPE = "Content-Type"
-
-    //Constant for Image Content Type
-    const val CONTENT_TYPE_IMAGE = "multipart/form-data"
 
     //Timeout constant (in seconds)
     private const val NETWORK_CALL_TIMEOUT = 60

@@ -3,20 +3,28 @@ package com.mindorks.kaushiknsanji.instagram.demo.di.module
 import android.content.Context
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PhotoRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
+import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter
+import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.photo.PhotoViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.DIRECTORY_TEMP
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.IMAGE_MAX_HEIGHT_SCALE
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.JPEG_COMPRESSION_QUALITY
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
+import com.mindorks.paracamera.Camera
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
+import java.io.File
 
 /**
  * Dagger Module for creating and exposing dependencies, tied to the Fragment Lifecycle.
@@ -65,10 +73,22 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
     fun providePhotoViewModel(
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
-        networkHelper: NetworkHelper
+        networkHelper: NetworkHelper,
+        @TempDirectory tempDirectory: File,
+        userRepository: UserRepository,
+        postRepository: PostRepository,
+        photoRepository: PhotoRepository
     ): PhotoViewModel = ViewModelProviders.of(fragment, ViewModelProviderFactory(PhotoViewModel::class) {
         // [creator] lambda that creates and returns the ViewModel instance
-        PhotoViewModel(schedulerProvider, compositeDisposable, networkHelper)
+        PhotoViewModel(
+            schedulerProvider,
+            compositeDisposable,
+            networkHelper,
+            tempDirectory,
+            userRepository,
+            postRepository,
+            photoRepository
+        )
     }).get(PhotoViewModel::class.java)
 
     /**
@@ -89,5 +109,33 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
      */
     @Provides
     fun providePostsAdapter() = PostsAdapter(fragment.lifecycle)
+
+    /**
+     * Provides instance of [Camera] for taking a photo
+     */
+    @Provides
+    fun provideParaCamera(): Camera = Camera.Builder()
+        .resetToCorrectOrientation(true) // Corrects the orientation of the Bitmap based on EXIF metadata
+        .setTakePhotoRequestCode(Camera.REQUEST_TAKE_PHOTO)
+        .setDirectory(DIRECTORY_TEMP) // Directory for saving the Temporary Image, placed in the app storage
+        .setName("TMP_IMG_CAPTURE") // Fixed name of the Temporary Image file
+        .setImageFormat(Camera.IMAGE_JPG) // JPG format
+        .setCompression(JPEG_COMPRESSION_QUALITY) // JPEG Image compression/quality
+        .setImageHeight(IMAGE_MAX_HEIGHT_SCALE) // Max height to which the Image will be scaled/downsized while respecting its aspect ratio
+        .build(fragment)
+
+    /**
+     * Provides instance of [MainSharedViewModel]
+     */
+    @Provides
+    fun provideMainSharedViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper
+    ): MainSharedViewModel =
+        ViewModelProviders.of(fragment.requireActivity(), ViewModelProviderFactory(MainSharedViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            MainSharedViewModel(schedulerProvider, compositeDisposable, networkHelper)
+        }).get(MainSharedViewModel::class.java)
 
 }

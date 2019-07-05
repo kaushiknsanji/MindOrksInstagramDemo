@@ -23,3 +23,11 @@ annotation class ApplicationContext
 @Qualifier
 @Retention(AnnotationRetention.SOURCE)
 annotation class ActivityContext
+
+/**
+ * [Qualifier] annotation used for distinguishing the directory [java.io.File]
+ * provided by [com.mindorks.kaushiknsanji.instagram.demo.di.module.ApplicationModule]
+ */
+@Qualifier
+@Retention(AnnotationRetention.SOURCE)
+annotation class TempDirectory

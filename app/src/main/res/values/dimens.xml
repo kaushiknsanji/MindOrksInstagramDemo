@@ -59,5 +59,13 @@
     <dimen name="text_home_item_post_like_count_margin_start">2dp</dimen>
     <dimen name="text_home_item_post_like_count_margin_end">8dp</dimen>
 
+    <!-- ================== -->
+    <!-- FOR PHOTO FRAGMENT -->
+    <!-- ================== -->
+    <dimen name="view_photo_pick_option_background_size">96dp</dimen>
+    <dimen name="image_photo_pick_option_size">48dp</dimen>
+    <dimen name="text_photo_pick_option_label_margin_top">5dp</dimen>
+    <dimen name="photo_pick_option_margin">80dp</dimen>
+
 
 </resources>

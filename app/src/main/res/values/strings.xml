@@ -15,8 +15,13 @@
     <string name="server_connection_error">Not able to connect, please retry again</string>
     <string name="network_login_unauthorized_error">Please verify your credentials and try again</string>
 
+    <!-- ============== -->
+    <!-- COMMON STRINGS -->
+    <!-- ============== -->
     <!-- Common Content description for App Logo -->
     <string name="cd_image_logo">App logo</string>
+    <!-- Common error message shown for Retry -->
+    <string name="error_retry">Please try again</string>
 
     <!-- ============================== -->
     <!-- STRINGS USED IN LOGIN ACTIVITY -->
@@ -63,5 +68,13 @@
         <!-- Output will be like '123 likes' -->
         <xliff:g example="123" id="like_count">%1$d</xliff:g> likes
     </string>
+
+    <!-- ============================== -->
+    <!-- STRINGS USED IN PHOTO FRAGMENT -->
+    <!-- ============================== -->
+    <string name="label_photo_camera_option">Camera</string>
+    <string name="cd_photo_camera_option">Camera option button icon</string>
+    <string name="label_photo_gallery_option">Gallery</string>
+    <string name="cd_photo_gallery_option">Gallery option button icon</string>
 
 </resources>

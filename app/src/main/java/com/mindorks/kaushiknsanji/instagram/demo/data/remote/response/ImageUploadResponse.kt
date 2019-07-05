@@ -23,15 +23,15 @@ data class ImageUploadResponse(
 
     @Expose
     @SerializedName("data")
-    val data: ImageUrlItem
+    val data: ImageData
 ) {
 
     /**
-     * Image URL Class embedded in the Response.
+     * Image Data Class embedded in the Response.
      *
      * @author Kaushik N Sanji
      */
-    data class ImageUrlItem(
+    data class ImageData(
         @Expose
         @SerializedName("imageUrl")
         val imageUrl: String
