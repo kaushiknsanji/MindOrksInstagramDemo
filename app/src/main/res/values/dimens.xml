@@ -3,6 +3,12 @@
     <!-- MATCH CONSTRAINT Dimension used for ConstraintLayouts -->
     <dimen name="match_constraint_0dp">0dp</dimen>
 
+    <!-- =========== -->
+    <!-- FOR APP BAR -->
+    <!-- =========== -->
+    <dimen name="app_bar_elevation">4dp</dimen>
+    <dimen name="app_bar_horizontal_padding">16dp</dimen>
+
     <!-- =================== -->
     <!-- FOR SPLASH ACTIVITY -->
     <!-- =================== -->
@@ -44,8 +50,6 @@
     <!-- FOR HOME FRAGMENT -->
     <!-- ================= -->
     <dimen name="image_home_app_bar_logo_height">32dp</dimen>
-    <dimen name="app_bar_home_elevation">4dp</dimen>
-    <dimen name="app_bar_home_horizontal_padding">16dp</dimen>
     <dimen name="progress_horizontal_home_height">4dp</dimen>
     <dimen name="card_home_item_elevation">2dp</dimen>
     <dimen name="card_home_item_cl_padding_top">8dp</dimen>

@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".ui.photo.PhotoFragment">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_photo"
+        style="@style/AppTheme.Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_photo_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_photo_toolbar"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <View
         android:id="@+id/view_photo_camera_option_background"
         android:layout_width="@dimen/view_photo_pick_option_background_size"

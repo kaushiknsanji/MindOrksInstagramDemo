@@ -76,5 +76,6 @@
     <string name="cd_photo_camera_option">Camera option button icon</string>
     <string name="label_photo_gallery_option">Gallery</string>
     <string name="cd_photo_gallery_option">Gallery option button icon</string>
+    <string name="title_photo_toolbar">Add Image</string>
 
 </resources>

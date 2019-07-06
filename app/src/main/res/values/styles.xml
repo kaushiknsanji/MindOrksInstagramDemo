@@ -1,7 +1,7 @@
 <resources>
 
     <!-- ==================================== -->
-    <!-- APP THEMES AND THEMES FOR COMPONENTS -->
+    <!-- APP THEMES AND STYLES FOR COMPONENTS -->
     <!-- ==================================== -->
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -97,9 +97,14 @@
     <style name="AppTheme.Chip" parent="TextAppearance.MaterialComponents.Chip" />
 
     <style name="AppTheme.Toolbar" parent="Base.Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">@dimen/match_constraint_0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/app_bar_horizontal_padding</item>
+        <item name="android:paddingEnd">@dimen/app_bar_horizontal_padding</item>
+        <item name="elevation">@dimen/app_bar_elevation</item>
     </style>
 
     <!-- ========================== -->
