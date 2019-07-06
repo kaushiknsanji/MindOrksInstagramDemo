@@ -2,6 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
@@ -81,7 +82,7 @@ class PostItemViewHolder(container: ViewGroup) :
                     .with(itemView.context) // Loading with ItemView's context
                     .load(GlideHelper.getProtectedUrl(image.url, image.headers)) // Loading the GlideUrl with Headers
                     .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
-                    .apply(RequestOptions.placeholderOf(R.drawable.ic_profile_selected)) // Loading with PlaceHolder Image
+                    .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_profile)) // Loading with PlaceHolder Image
 
                 if (placeHolderWidth > 0 && placeHolderHeight > 0) {
                     // If we have the placeholder dimensions from the [image], then scale the ImageView
@@ -102,6 +103,20 @@ class PostItemViewHolder(container: ViewGroup) :
 
                 // Start the download and load into the corresponding ImageView
                 glideRequest.into(itemView.image_home_item_post_creator_profile)
+            } ?: run {
+                // Set default photo when there is no profile picture
+
+                // Configuring Glide with relevant customizations and then setting the default photo
+                GlideApp
+                    .with(itemView.context) // Loading with ItemView's context
+                    .load(
+                        ContextCompat.getDrawable(
+                            itemView.context,
+                            R.drawable.ic_placeholder_profile
+                        )
+                    ) // Loading the default Image
+                    .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
+                    .into(itemView.image_home_item_post_creator_profile) // Load into the corresponding ImageView
             }
         })
 
