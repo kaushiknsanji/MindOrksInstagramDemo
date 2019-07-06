@@ -1,12 +1,15 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.splash
 
 import androidx.lifecycle.MutableLiveData
+import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
+import java.util.concurrent.TimeUnit
 
 /**
  * [BaseViewModel] subclass for the [SplashActivity]
@@ -32,12 +35,30 @@ class SplashViewModel(
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
      */
     override fun onCreate() {
-        if (userRepository.getCurrentUser() != null) {
-            // When the logged-in user information is already saved, launch MainActivity
-            launchMain.postValue(Event(emptyMap()))
-        } else {
-            // When there is NO logged-in user information, launch LoginActivity
-            launchLogin.postValue(Event(emptyMap()))
-        }
+        // Create a Single and save the resulting disposable
+        compositeDisposable.add(
+            // Create a Single from the logged-in User information retrieved from the repository
+            Single.fromCallable { userRepository.getCurrentUser() }
+                .delay(1, TimeUnit.SECONDS) // Delay emitting the user information for a second (for the splash)
+                .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
+                .subscribe(
+                    // OnSuccess
+                    { user: User? ->
+                        user?.let {
+                            // When the logged-in user information is already saved, launch MainActivity
+                            launchMain.postValue(Event(emptyMap()))
+                        } ?: run {
+                            // When there is NO logged-in user information, launch LoginActivity
+                            launchLogin.postValue(Event(emptyMap()))
+                        }
+                    },
+                    // OnError
+                    {
+                        // When there is an error, do not show any error. Just launch LoginActivity to re-login the user
+                        launchLogin.postValue(Event(emptyMap()))
+                    }
+                )
+        )
     }
+
 }
