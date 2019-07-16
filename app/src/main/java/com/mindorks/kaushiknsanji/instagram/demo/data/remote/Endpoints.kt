@@ -25,9 +25,6 @@ object Endpoints {
     // To Upload an Image
     const val IMAGE_UPLOAD = "image"
 
-    // To load an image from Instagram Post (TODO: Check how to pass Image Url)
-    const val IMAGE_GET = "{imageUrl}"
-
     // Create Instagram Post
     const val POST_CREATION = "instagram/post"
 

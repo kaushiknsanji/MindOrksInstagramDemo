@@ -86,17 +86,6 @@ interface NetworkService {
     ): Single<ImageUploadResponse>
 
     /**
-     * API method to get an Image of Instagram Post.
-     */
-    @GET(Endpoints.IMAGE_GET) //TODO: Check how to pass Image Url
-    fun doFetchImageCall(
-        @Path("imageUrl") imageUrl: String,
-        @Header(Networking.HEADER_USER_ID) userId: String,
-        @Header(Networking.HEADER_ACCESS_TOKEN) accessToken: String,
-        @Header(Networking.HEADER_API_KEY) apiKey: String = Networking.API_KEY
-    ) //TODO: Check what should be the return type
-
-    /**
      * API method to create an Instagram Post.
      */
     @POST(Endpoints.POST_CREATION)
