@@ -25,12 +25,18 @@ class MainViewModel(
     // LiveData for navigating to ProfileFragment
     val navigateProfile: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
+    init {
+        // When this ViewModel is first initialized..
+
+        // Load HomeFragment by default
+        onHomeSelected()
+    }
+
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
      */
     override fun onCreate() {
-        // Load HomeFragment by default when MainActivity is created
-        onHomeSelected()
+        //No-op
     }
 
     /**
