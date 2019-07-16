@@ -92,6 +92,16 @@
         <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
+    <style name="AppTheme.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="AppTheme.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
     <style name="AppTheme.Tab" parent="TextAppearance.MaterialComponents.Tab" />
 
     <style name="AppTheme.Chip" parent="TextAppearance.MaterialComponents.Chip" />
@@ -102,6 +112,47 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="elevation">@dimen/app_bar_elevation</item>
+        <item name="liftOnScroll">true</item>
+    </style>
+
+    <!-- Style for Popups in Custom App Bar -->
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <!-- Style for Custom Toolbar -->
+    <style name="AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.ActionBar</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <!-- Style for the App Dialogs -->
+    <style name="AppTheme.AlertDialog.Light" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <!-- Buttons color-->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Text color -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!-- Dialog background -->
+        <item name="android:windowBackground">@drawable/shape_dialog_background</item>
+    </style>
+
+    <!-- ================== -->
+    <!-- COMMON/BASE STYLES -->
+    <!-- ================== -->
+    <!-- Common Style for Horizontal Divider -->
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">@dimen/match_constraint_0dp</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@color/gray_light</item>
+    </style>
+
+    <!-- Common Style for Indeterminate ProgressBar Horizontal -->
+    <style name="ProgressIndeterminateHorizontal" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/progress_horizontal_height</item>
+        <item name="android:indeterminate">true</item>
     </style>
 
     <!-- ========================== -->
@@ -130,15 +181,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textSize">@dimen/login_sign_up_fields_text_size</item>
+        <item name="android:textSize">@dimen/login_sign_up_input_fields_text_size</item>
     </style>
 
     <!-- Base Button Style for Login or Sign-Up action -->
-    <style name="LoginSignUpButton" parent="Widget.MaterialComponents.Button">
+    <style name="LoginSignUpButton" parent="AppTheme.Button">
         <item name="android:layout_width">@dimen/match_constraint_0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/login_sign_up_fields_vertical_margin</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/button_login_sign_up_text_size</item>
         <item name="android:paddingTop">@dimen/button_login_sign_up_vertical_padding</item>
         <item name="android:paddingBottom">@dimen/button_login_sign_up_vertical_padding</item>
@@ -156,13 +206,12 @@
     </style>
 
     <!-- Base Text Button Style for optional Login/Sign-Up with Email action -->
-    <style name="LoginSignUpTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="LoginSignUpTextButton" parent="AppTheme.TextButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/text_button_login_sign_up_option_margin_top</item>
         <item name="android:textColor">@color/blue</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:textAppearance">@style/AppTheme.Subtitle1</item>
     </style>
 
     <!-- Derived Text Button Style for optional Sign-Up -->
@@ -217,11 +266,8 @@
         <item name="android:maxLength">100</item>
     </style>
 
-    <!-- Style for the Login or Sign-Up options Divider -->
-    <style name="DividerLoginSignUpOptions">
-        <item name="android:layout_width">@dimen/match_constraint_0dp</item>
-        <item name="android:layout_height">@dimen/divider_login_sign_up_height</item>
-        <item name="android:background">@color/gray_light</item>
+    <!-- Derived HorizontalDivider Style for the Login or Sign-Up options -->
+    <style name="DividerLoginSignUpOptions" parent="HorizontalDivider">
         <item name="android:layout_marginTop">@dimen/divider_login_sign_up_margin_top</item>
     </style>
 
