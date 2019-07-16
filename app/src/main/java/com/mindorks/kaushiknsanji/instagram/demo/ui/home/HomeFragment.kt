@@ -14,6 +14,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -106,11 +107,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         // Register an observer on Posts download progress to show/hide the Progress horizontal
         viewModel.loadingProgress.observe(this, Observer { started: Boolean ->
             // Show the Progress horizontal when [started], else leave it hidden
-            progress_horizontal_home.visibility = if (started) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            progress_horizontal_home.setVisibility(started)
         })
 
         // Register an observer on the Post creation LiveData to add the New Post to the top of the List
