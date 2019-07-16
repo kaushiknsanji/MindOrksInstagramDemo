@@ -59,3 +59,13 @@ data class Post(
     )
 
 }
+
+/**
+ * Extension function utility on [Post] that calculates the width ratio of the target screen/window to the source image,
+ * in order to scale the source Image height to fit the width of the target screen/window, respecting the aspect ratio
+ * of the source Image.
+ *
+ * @param targetWidth [Float] value of the target screen/window width
+ */
+fun Post.calculateImageScaleFactor(targetWidth: Float): Float =
+    this.imageWidth?.let { imageWidth -> targetWidth / imageWidth.toFloat() } ?: 1f

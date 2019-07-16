@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
+import com.mindorks.kaushiknsanji.instagram.demo.data.model.calculateImageScaleFactor
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
@@ -70,10 +71,11 @@ class PostItemViewModel @Inject constructor(
             placeHolderWidth = screenWidth, // Image will take the entire width of the screen
             placeHolderHeight = post.imageHeight?.let { imageHeight ->
                 // If the source Image height is available, then it will be scaled to the Image width on the screen
-                (calculateImageScaleFactor(post) * imageHeight).toInt()
-            } ?: (screenHeight / 3
-                    // If the source Image height is unavailable, then it will be fixed to 1/3rd of the screen height
-                    )
+                (post.calculateImageScaleFactor(screenWidth.toFloat()) * imageHeight).toInt()
+            } ?: run {
+                // If the source Image height is unavailable, then it will be fixed to 1/3rd of the screen height
+                screenHeight / 3
+            }
         )
     }
 
@@ -83,16 +85,6 @@ class PostItemViewModel @Inject constructor(
     override fun onCreate() {
         //No-op
     }
-
-    /**
-     * Calculates the width ratio of the target screen to the source image, in order to scale the source Image height
-     * to fit the width of the target screen maintaining the aspect ratio of the source Image.
-     *
-     * @return [Float] value of the Image scaling factor for scaling the source Image height. Can be a value of 1
-     * if the source Image width is unavailable.
-     */
-    private fun calculateImageScaleFactor(post: Post): Float =
-        post.imageWidth?.let { imageWidth -> screenWidth.toFloat() / imageWidth.toFloat() } ?: 1f
 
     /**
      * Called when the "Heart" image on the Post is clicked, to like/unlike the Post.
