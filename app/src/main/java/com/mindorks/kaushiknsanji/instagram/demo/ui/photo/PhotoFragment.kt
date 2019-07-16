@@ -53,6 +53,13 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
      * Initializes the Layout of the Fragment.
      */
     override fun setupView(view: View, savedInstanceState: Bundle?) {
+
+        // Initialize Toolbar
+        toolbar_photo.apply {
+            // Set Title
+            title = getString(R.string.title_photo_toolbar)
+        }
+
         // Register click listener on "Camera" option
         view_photo_camera_option_background.setOnClickListener {
             try {
