@@ -61,10 +61,10 @@
             android:layout_marginTop="@dimen/image_home_item_post_photo_margin_top"
             android:contentDescription="@string/cd_image_home_item_post_photo"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="1.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_home_item_post_creator_profile"
+            tools:layout_constraintDimensionRatio="1.5"
             tools:src="@tools:sample/backgrounds/scenic" />
 
         <ImageButton
