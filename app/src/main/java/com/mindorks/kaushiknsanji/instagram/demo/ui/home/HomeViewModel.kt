@@ -35,7 +35,10 @@ class HomeViewModel(
     val paginatedPosts: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
 
     // LiveData for when the List of All Posts needs to be reloaded
-    val refreshAllPosts: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
+    val reloadAllPosts: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
+
+    // Scroll Event LiveData when the RecyclerView needs to be scrolled to the Top
+    val scrollToTop: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     // Stores the logged-in [User] information
     private val user: User = userRepository.getCurrentUser()!!
@@ -103,7 +106,12 @@ class HomeViewModel(
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
      */
     override fun onCreate() {
-        // Load the initial list of Posts
+        // Restore all Posts into the Adapter if we have already downloaded some posts
+        if (allPostList.size > 0) {
+            // Trigger List of All Posts to be reloaded
+            reloadAllPosts.postValue(Resource.success(allPostList.map { it }))
+        }
+        // Load the following list of Posts
         loadMorePosts()
     }
 

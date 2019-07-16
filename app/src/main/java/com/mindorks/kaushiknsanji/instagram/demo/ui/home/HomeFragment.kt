@@ -116,12 +116,18 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             viewModel.onNewPost(newPost)
         }
 
-        // Register an observer on the Refreshed List of All Posts LiveData to reload the adapter
-        // with new list of All Posts
-        viewModel.refreshAllPosts.observe(this, Observer { resourceWrapper: Resource<List<Post>> ->
+        // Register an observer on the List of All Posts LiveData to reload the adapter
+        // with the list of All Posts
+        viewModel.reloadAllPosts.observe(this, Observer { resourceWrapper: Resource<List<Post>> ->
             resourceWrapper.data?.run {
                 // Reset the Adapter data with the new data
                 postsAdapter.resetData(this)
+            }
+        })
+
+        // Register an observer on the Scroll Event to scroll to the Top of the List
+        viewModel.scrollToTop.observeEvent(this) { scroll: Boolean ->
+            if (scroll) {
                 // Scroll immediately to the top of the RecyclerView
                 rv_home_posts.scrollToPosition(0)
             }
