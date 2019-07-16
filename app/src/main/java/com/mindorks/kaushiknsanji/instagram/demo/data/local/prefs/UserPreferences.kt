@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import javax.inject.Inject
 
 /**
- * [SharedPreferences] wrapper for the logged-in User information.
+ * [SharedPreferences] wrapper for the logged-in [com.mindorks.kaushiknsanji.instagram.demo.data.model.User] information.
  *
  * @property prefs Instance of [SharedPreferences] provided by Dagger.
  * @constructor Creates an Instance of [UserPreferences]

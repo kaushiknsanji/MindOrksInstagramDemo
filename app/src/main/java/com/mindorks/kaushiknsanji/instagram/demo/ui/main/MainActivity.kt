@@ -175,6 +175,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
      * 3. If the fragment was previously shown, then the same instance will be shown, hiding the fragment
      * previously shown in the container.
      *
+     * @param T The Type of [BaseFragment].
      * @param fragmentTag [String] representing the Tag of the Fragment to be shown. Required for
      * looking up fragments loaded by the FragmentManager.
      * @param kInstanceFunction Kotlin Method reference that creates and provides the instance of the Fragment to be shown.

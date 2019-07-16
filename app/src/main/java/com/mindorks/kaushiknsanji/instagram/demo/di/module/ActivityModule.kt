@@ -35,6 +35,9 @@ import java.io.File
 @Module
 class ActivityModule(private val activity: BaseActivity<*>) {
 
+    /**
+     * Provides instance of activity [Context]
+     */
     @ActivityContext
     @Provides
     fun provideContext(): Context = activity

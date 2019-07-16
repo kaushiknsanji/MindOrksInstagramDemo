@@ -16,7 +16,8 @@ object Validator {
     private const val MIN_PASSWORD_LENGTH = 6
 
     /**
-     * Method that validates [email] and [password], and returns a resulting list of [Validation]s
+     * Method that validates [email] and [password], and returns a resulting list of [Validation]s.
+     * Required for [com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity]
      */
     fun validateLoginFields(email: String?, password: String?): List<Validation> =
         mutableListOf<Validation>().apply {
@@ -30,7 +31,8 @@ object Validator {
         }
 
     /**
-     * Method that validates [email], [password] and [name], and returns a resulting list of [Validation]s
+     * Method that validates [email], [password] and [name], and returns a resulting list of [Validation]s.
+     * Required for [com.mindorks.kaushiknsanji.instagram.demo.ui.signup.SignUpActivity]
      */
     fun validateSignUpFields(email: String?, password: String?, name: String?): List<Validation> =
         mutableListOf<Validation>().apply {

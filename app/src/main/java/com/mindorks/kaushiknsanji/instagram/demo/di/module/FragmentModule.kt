@@ -40,6 +40,9 @@ import java.io.File
 @Module
 class FragmentModule(private val fragment: BaseFragment<*>) {
 
+    /**
+     * Provides instance of fragment [Context]
+     */
     @ActivityContext
     @Provides
     fun provideContext(): Context = fragment.requireContext()

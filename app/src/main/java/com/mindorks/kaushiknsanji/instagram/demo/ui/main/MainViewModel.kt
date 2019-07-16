@@ -60,5 +60,4 @@ class MainViewModel(
         navigateProfile.postValue(Event(true))
     }
 
-
 }
