@@ -2,18 +2,23 @@ package com.mindorks.kaushiknsanji.instagram.demo.di.module
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PhotoRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
+import com.mindorks.kaushiknsanji.instagram.demo.di.FragmentScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.photo.PhotoViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts.ProfilePostsAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.DIRECTORY_TEMP
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.IMAGE_MAX_HEIGHT_SCALE
@@ -45,6 +50,20 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
     @Provides
     fun provideLinearLayoutManager(@ActivityContext context: Context): LinearLayoutManager =
         LinearLayoutManager(context)
+
+    /**
+     * Provides instance of Vertical [GridLayoutManager] with [GridLayoutManager.DEFAULT_SPAN_COUNT] span count
+     */
+    @Provides
+    fun provideVerticalGridLayoutManager(@ActivityContext context: Context): GridLayoutManager =
+        GridLayoutManager(context, GridLayoutManager.DEFAULT_SPAN_COUNT, RecyclerView.VERTICAL, false)
+
+    /**
+     * Provides instance of [DialogManager]
+     */
+    @FragmentScope
+    @Provides
+    fun provideDialogManager(): DialogManager = DialogManager(fragment.childFragmentManager)
 
     /**
      * Provides instance of [HomeViewModel]
@@ -99,10 +118,12 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
     fun provideProfileViewModel(
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
-        networkHelper: NetworkHelper
+        networkHelper: NetworkHelper,
+        userRepository: UserRepository,
+        postRepository: PostRepository
     ): ProfileViewModel = ViewModelProviders.of(fragment, ViewModelProviderFactory(ProfileViewModel::class) {
         // [creator] lambda that creates and returns the ViewModel instance
-        ProfileViewModel(schedulerProvider, compositeDisposable, networkHelper)
+        ProfileViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository, postRepository)
     }).get(ProfileViewModel::class.java)
 
     /**
@@ -138,5 +159,29 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
             // [creator] lambda that creates and returns the ViewModel instance
             MainSharedViewModel(schedulerProvider, compositeDisposable, networkHelper)
         }).get(MainSharedViewModel::class.java)
+
+    /**
+     * Provides instance of [ProfilePostsAdapter]
+     */
+    @Provides
+    fun provideProfilePostsAdapter() = ProfilePostsAdapter(fragment.lifecycle)
+
+    /**
+     * Provides instance of [SharedProgressTextViewModel]
+     */
+    @Provides
+    fun provideSharedProgressTextViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper
+    ): SharedProgressTextViewModel = ViewModelProviders.of(fragment.requireActivity(),
+        ViewModelProviderFactory(SharedProgressTextViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            SharedProgressTextViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper
+            )
+        }).get(SharedProgressTextViewModel::class.java)
 
 }

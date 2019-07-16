@@ -4,10 +4,12 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.model.MyPostItem
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.LikePostRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.PostCreationRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.UnlikePostRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.AllPostsListResponse
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.MyPostsListResponse
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.PostCreationResponse
 import io.reactivex.Single
 import javax.inject.Inject
@@ -130,4 +132,34 @@ class PostRepository @Inject constructor(
                 likedBy = mutableListOf()
             )
         }
+
+    /**
+     * Performs [user]'s Posts List request via the Remote API and returns a [Single] of the List of [Post]s
+     * from the response.
+     *
+     * @param user Instance of logged-in [User] information.
+     * @return A [Single] of the List of [Post]s created by the logged-in [user], from the response.
+     */
+    fun getUserPostsList(user: User): Single<List<Post>> =
+        networkService.doMyPostsListCall(user.id, user.accessToken)
+            .map { response: MyPostsListResponse ->
+                // Transforming [MyPostsListResponse] to List of [Post]
+                response.posts?.run {
+                    map { item: MyPostItem ->
+                        Post(
+                            id = item.id,
+                            imageUrl = item.imageUrl,
+                            imageWidth = item.imageWidth,
+                            imageHeight = item.imageHeight,
+                            createdAt = item.createdAt,
+                            creator = Post.User(
+                                id = user.id,
+                                name = user.name,
+                                profilePicUrl = user.profilePicUrl
+                            ),
+                            likedBy = mutableListOf()
+                        )
+                    }
+                }
+            }
 }

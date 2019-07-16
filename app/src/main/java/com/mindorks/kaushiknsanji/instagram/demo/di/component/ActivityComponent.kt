@@ -4,6 +4,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ActivityModule
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.signup.SignUpActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.splash.SplashActivity
 import dagger.Component
@@ -25,5 +26,7 @@ interface ActivityComponent {
     fun inject(signUpActivity: SignUpActivity)
 
     fun inject(mainActivity: MainActivity)
+
+    fun inject(editProfileActivity: EditProfileActivity)
 
 }

@@ -19,5 +19,5 @@ data class UpdateMyInfoRequest(
 
     @Expose
     @SerializedName("tagline")
-    val tagline: String
+    val tagline: String?
 )

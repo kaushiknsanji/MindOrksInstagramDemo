@@ -68,6 +68,7 @@
         <!-- Output will be like '123 likes' -->
         <xliff:g example="123" id="like_count">%1$d</xliff:g> likes
     </string>
+    <string name="message_home_post_published">Your new post is created and published!</string>
 
     <!-- ================================================================ -->
     <!-- STRINGS USED IN PHOTO FRAGMENT AND PHOTO OPTIONS DIALOG FRAGMENT -->
@@ -77,5 +78,41 @@
     <string name="label_photo_option_gallery">Gallery</string>
     <string name="cd_photo_option_gallery">Gallery option button icon</string>
     <string name="title_photo_toolbar">Add Image</string>
+    <string name="progress_photo_uploading_image">Uploading Image…</string>
+
+    <!-- ================================ -->
+    <!-- STRINGS USED IN PROFILE FRAGMENT -->
+    <!-- ================================ -->
+    <!-- Label shown for the number of posts created by the logged-in user -->
+    <string name="label_profile_post_count">
+        <!-- Output will be like '123 Posts' --> &lt;b&gt;<xliff:g example="123" id="post_count">%1$d</xliff:g>&lt;/b&gt; Posts
+    </string>
+    <string name="label_text_button_profile_logout">Logout</string>
+    <string name="cd_image_profile_user">User profile picture</string>
+    <string name="label_button_profile_edit">Edit Profile</string>
+    <string name="title_profile_my_posts">My Posts</string>
+    <string name="title_profile_no_posts">No Posts</string>
+    <string name="profile_no_posts_description">Create your post using the plus button below</string>
+    <string name="cd_image_profile_posts_empty">My Posts empty icon</string>
+    <string name="cd_image_profile_item_post">Image posted by the logged-in User</string>
+
+    <!-- ===================================== -->
+    <!-- STRINGS USED IN EDIT PROFILE ACTIVITY -->
+    <!-- ===================================== -->
+    <string name="hint_edit_profile_name">Name</string>
+    <string name="hint_edit_profile_bio">Bio</string>
+    <string name="hint_edit_profile_email">Email Address</string>
+    <string name="title_edit_profile_toolbar">Edit Profile</string>
+    <string name="label_text_button_edit_profile_change_pic">Change Photo</string>
+    <string name="title_edit_profile_private_info">Private information</string>
+    <string name="cd_image_edit_profile_change_pic">Profile picture</string>
+    <string name="progress_edit_profile_loading_image">Loading Image…</string>
+    <string name="progress_edit_profile_uploading_image">Uploading Image…</string>
+    <string name="progress_edit_profile_save">Saving changes…</string>
+    <string name="message_edit_profile_no_change">No changes detected. Closed without updating.</string>
+    <string name="title_action_edit_profile_reset">Reset to defaults</string>
+    <string name="title_condensed_action_edit_profile_reset">Reset</string>
+    <string name="title_action_edit_profile_save">Save changes</string>
+    <string name="title_condensed_action_edit_profile_save">Save</string>
 
 </resources>

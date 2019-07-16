@@ -46,7 +46,7 @@ data class FetchMyInfoResponse(
 
         @Expose
         @SerializedName("tagline")
-        val tagline: String
+        val tagline: String?
     )
 
 }

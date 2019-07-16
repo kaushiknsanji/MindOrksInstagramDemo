@@ -285,4 +285,103 @@
         <item name="android:paddingEnd">@dimen/text_login_sign_up_divider_horizontal_padding</item>
     </style>
 
+    <!-- ================================ -->
+    <!-- STYLES FOR EDIT PROFILE ACTIVITY -->
+    <!-- ================================ -->
+    <!-- Base Style for TextInputLayouts -->
+    <style name="EditProfileTextInputFields" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:layout_width">@dimen/match_constraint_0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
+
+    <!-- Base Style for TextInputEditTexts -->
+    <style name="EditProfileEditTextFields">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/edit_profile_input_fields_text_size</item>
+    </style>
+
+    <!-- Derived TextInputLayout Style for Name field -->
+    <style name="EditProfileTextInputFields.UserName">
+        <item name="android:hint">@string/hint_edit_profile_name</item>
+    </style>
+
+    <!-- Derived TextInputEditText Style for Name field -->
+    <style name="EditProfileEditTextFields.UserName">
+        <item name="android:inputType">textPersonName|textCapWords</item>
+        <item name="android:maxLength">100</item>
+    </style>
+
+    <!-- Derived TextInputLayout Style for Bio field -->
+    <style name="EditProfileTextInputFields.Bio">
+        <item name="android:hint">@string/hint_edit_profile_bio</item>
+    </style>
+
+    <!-- Derived TextInputEditText Style for Bio field -->
+    <style name="EditProfileEditTextFields.Bio">
+        <item name="android:inputType">textShortMessage|textMultiLine|textCapSentences|textAutoComplete</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <!-- Derived TextInputLayout Style for Email field -->
+    <style name="EditProfileTextInputFields.Email">
+        <item name="android:hint">@string/hint_edit_profile_email</item>
+    </style>
+
+    <!-- Derived TextInputEditText Style for Email field -->
+    <style name="EditProfileEditTextFields.Email">
+        <item name="android:inputType">textEmailAddress</item>
+        <item name="android:enabled">false</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- =========================================================== -->
+    <!-- STYLES FOR PHOTO FRAGMENT AND PHOTO OPTIONS DIALOG FRAGMENT -->
+    <!-- =========================================================== -->
+    <!-- Base Style for Icons -->
+    <style name="PhotoOptionsIcon">
+        <item name="android:layout_width">@dimen/image_photo_option_icon_size</item>
+        <item name="android:layout_height">@dimen/image_photo_option_icon_size</item>
+    </style>
+
+    <!-- Derived Style for Camera Icon -->
+    <style name="PhotoOptionsIcon.Camera">
+        <item name="android:src">@drawable/ic_camera</item>
+    </style>
+
+    <!-- Derived Style for Gallery Icon -->
+    <style name="PhotoOptionsIcon.Gallery">
+        <item name="android:src">@drawable/ic_gallery</item>
+    </style>
+
+    <!-- Base Style for Icon Labels -->
+    <style name="PhotoOptionsLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/AppTheme.Subtitle1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginTop">@dimen/text_photo_option_label_margin_top</item>
+    </style>
+
+    <!-- Derived Style for Camera Icon Label -->
+    <style name="PhotoOptionsLabel.Camera">
+        <item name="android:text">@string/label_photo_option_camera</item>
+    </style>
+
+    <!-- Derived Style for Gallery Icon Label -->
+    <style name="PhotoOptionsLabel.Gallery">
+        <item name="android:text">@string/label_photo_option_gallery</item>
+    </style>
+
+    <!-- Style for the background of Icons -->
+    <style name="PhotoOptionsBackground">
+        <item name="android:layout_width">@dimen/view_photo_option_background_size</item>
+        <item name="android:layout_height">@dimen/view_photo_option_background_size</item>
+        <item name="android:background">@color/black</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+    </style>
+
 </resources>

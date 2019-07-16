@@ -1,21 +1,25 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.home
 
 import androidx.lifecycle.MutableLiveData
+import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
+import com.mindorks.kaushiknsanji.instagram.demo.utils.log.Logger
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.PublishProcessor
 
 /**
  * [BaseViewModel] subclass for [HomeFragment]
  *
- * @param userRepository [UserRepository] instance for [User] data.
+ * @property userRepository [UserRepository] instance for [User] data.
  * @property postRepository [PostRepository] instance for [Post] data.
  *
  * @author Kaushik N Sanji
@@ -24,7 +28,7 @@ class HomeViewModel(
     schedulerProvider: SchedulerProvider,
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper,
-    userRepository: UserRepository,
+    private val userRepository: UserRepository,
     private val postRepository: PostRepository
 ) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
 
@@ -141,7 +145,75 @@ class HomeViewModel(
         // Update the new Post to the Top of All Posts
         allPostList.add(0, newPost)
         // Trigger New List of All Posts to be reloaded
-        refreshAllPosts.postValue(Resource.success(allPostList.map { it }))
+        reloadAllPosts.postValue(Resource.success(allPostList.map { it }))
+        // Trigger an Event to scroll to the Top of the list
+        scrollToTop.postValue(Event(true))
+        // Display post creation success message
+        messageStringId.postValue(Resource.success(R.string.message_home_post_published))
+    }
+
+    /**
+     * Called when the User Profile information has been updated
+     * successfully through [com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActivity].
+     *
+     * Updates logged-in User information on User's activity and reloads all Post list.
+     */
+    fun onRefreshUserInfo() {
+        // Construct a Single and save the resulting disposable
+        compositeDisposable.add(
+            // Create a Single from the logged-in User information retrieved from the repository
+            Single.fromCallable {
+                // Get updated user information from preferences
+                userRepository.getCurrentUser()
+            }
+                .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
+                .subscribe(
+                    // OnSuccess
+                    { updatedUser: User? ->
+                        updatedUser?.run {
+                            // When we have the Updated user information, filter and update only the user's posts loaded till now
+                            allPostList.takeIf { it.isNotEmpty() }?.forEachIndexed { index, post: Post ->
+                                if (post.creator.id == id) {
+                                    allPostList[index] = Post(
+                                        id = post.id,
+                                        imageUrl = post.imageUrl,
+                                        imageWidth = post.imageWidth,
+                                        imageHeight = post.imageHeight,
+                                        createdAt = post.createdAt,
+                                        likedBy = post.likedBy,
+                                        creator = Post.User(
+                                            id = post.creator.id,
+                                            name = name,
+                                            profilePicUrl = profilePicUrl
+                                        )
+                                    )
+                                }
+                            }
+
+                            // Trigger List of All Posts to be reloaded
+                            reloadAllPosts.postValue(Resource.success(allPostList.map { it }))
+                        }
+                    },
+                    // OnError
+                    { throwable: Throwable? ->
+                        // Log the error
+                        throwable?.let {
+                            Logger.e(
+                                TAG,
+                                "Failed while updating current list of Posts with new User information\nError: ${it.message}"
+                            )
+                        }
+                        // Handle and display the appropriate network error if any
+                        handleNetworkError(throwable)
+                    }
+                )
+        )
+
+    }
+
+    companion object {
+        // Constant used for logs
+        const val TAG = "HomeViewModel"
     }
 
 }

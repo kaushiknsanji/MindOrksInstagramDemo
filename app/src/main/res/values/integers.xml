@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ==================== -->
+    <!-- FOR PROFILE FRAGMENT -->
+    <!-- ==================== -->
+    <!-- Span Count for the Grid of Posts -->
+    <integer name="profile_posts_grid_span">3</integer>
+
+</resources>

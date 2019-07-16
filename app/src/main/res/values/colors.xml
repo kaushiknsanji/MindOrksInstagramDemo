@@ -16,4 +16,9 @@
     <color name="red">#D0021B</color>
     <color name="white">#FFFFFF</color>
 
+    <!-- =============================== -->
+    <!-- COLORS USED IN PROFILE FRAGMENT -->
+    <!-- =============================== -->
+    <color name="profileMyPostsBackgroundColor">#f3f3f3</color>
+
 </resources>

@@ -6,15 +6,208 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PROFILE"
-        android:textAppearance="@style/AppTheme.Headline6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_profile_vertical_begin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/guideline_profile_vertical_keyline" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_profile_vertical_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/guideline_profile_vertical_keyline" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_profile_horizontal_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="@dimen/guideline_profile_horizontal_keyline" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/text_button_profile_logout"
+                style="@style/AppTheme.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_text_button_profile_logout"
+                android:textAppearance="@style/AppTheme.Subtitle1"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_profile_user"
+                android:layout_width="@dimen/image_profile_user_size"
+                android:layout_height="@dimen/image_profile_user_size"
+                android:layout_marginTop="@dimen/image_profile_user_margin_top"
+                android:contentDescription="@string/cd_image_profile_user"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toEndOf="@+id/guideline_profile_vertical_begin"
+                app:layout_constraintTop_toBottomOf="@+id/guideline_profile_horizontal_top"
+                tools:src="@drawable/ic_profile_signup" />
+
+            <TextView
+                android:id="@+id/text_profile_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_profile_user_name_margin_top"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/AppTheme.Body1"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/guideline_profile_vertical_begin"
+                app:layout_constraintTop_toBottomOf="@+id/image_profile_user"
+                tools:text="@tools:sample/full_names" />
+
+            <TextView
+                android:id="@+id/text_profile_post_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/text_profile_post_count_margin_start"
+                android:layout_marginTop="@dimen/text_profile_post_count_margin_top"
+                android:textAppearance="@style/AppTheme.Subtitle2"
+                app:layout_constraintStart_toEndOf="@+id/image_profile_user"
+                app:layout_constraintTop_toTopOf="@+id/image_profile_user"
+                tools:text="@string/label_profile_post_count" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_profile_edit"
+                style="@style/AppTheme.OutlinedButton"
+                android:layout_width="@dimen/match_constraint_0dp"
+                android:layout_height="wrap_content"
+                android:insetTop="@dimen/button_profile_edit_vertical_inset"
+                android:insetBottom="@dimen/button_profile_edit_vertical_inset"
+                android:paddingTop="@dimen/button_profile_edit_vertical_padding"
+                android:paddingBottom="@dimen/button_profile_edit_vertical_padding"
+                android:text="@string/label_button_profile_edit"
+                android:textAppearance="@style/AppTheme.Body1"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_profile_vertical_end"
+                app:layout_constraintStart_toStartOf="@+id/text_profile_post_count"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_post_count"
+                app:strokeColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/text_profile_user_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_profile_user_bio_margin_top"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/AppTheme.Body2"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_profile_vertical_end"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@+id/guideline_profile_vertical_begin"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_user_name"
+                tools:text="@tools:sample/lorem/random" />
+
+            <View
+                android:id="@+id/divider_profile_bio_posts_1"
+                style="@style/HorizontalDivider"
+                android:layout_marginTop="@dimen/divider_profile_bio_posts_1_margin_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_user_bio" />
+
+            <TextView
+                android:id="@+id/text_profile_my_posts_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_profile_my_posts_title_margin_top"
+                android:text="@string/title_profile_my_posts"
+                android:textAppearance="@style/AppTheme.Body1"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/guideline_profile_vertical_begin"
+                app:layout_constraintTop_toBottomOf="@+id/divider_profile_bio_posts_1" />
+
+            <View
+                android:id="@+id/divider_profile_bio_posts_2"
+                style="@style/HorizontalDivider"
+                android:layout_marginTop="@dimen/divider_profile_bio_posts_2_margin_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_my_posts_title" />
+
+            <View
+                android:id="@+id/view_profile_my_posts_background"
+                android:layout_width="@dimen/match_constraint_0dp"
+                android:layout_height="@dimen/match_constraint_0dp"
+                android:background="@color/profileMyPostsBackgroundColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_profile_bio_posts_2" />
+
+            <ImageView
+                android:id="@+id/image_profile_posts_empty"
+                android:layout_width="@dimen/match_constraint_0dp"
+                android:layout_height="@dimen/match_constraint_0dp"
+                android:layout_marginStart="@dimen/image_profile_posts_empty_horizontal_margin"
+                android:layout_marginTop="@dimen/image_profile_posts_empty_margin_top"
+                android:layout_marginEnd="@dimen/image_profile_posts_empty_horizontal_margin"
+                android:contentDescription="@string/cd_image_profile_posts_empty"
+                android:src="@drawable/ic_my_posts_empty"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_no_posts_title"
+                app:layout_constraintDimensionRatio="1.5"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_profile_vertical_end"
+                app:layout_constraintStart_toEndOf="@+id/guideline_profile_vertical_begin"
+                app:layout_constraintTop_toBottomOf="@+id/divider_profile_bio_posts_2"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/text_profile_no_posts_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_profile_no_posts_title_margin_top"
+                android:text="@string/title_profile_no_posts"
+                android:textAppearance="@style/AppTheme.Headline6"
+                android:textColor="@color/gray"
+                app:layout_constraintBottom_toTopOf="@+id/text_profile_no_posts_desc"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_profile_vertical_end"
+                app:layout_constraintStart_toEndOf="@+id/guideline_profile_vertical_begin"
+                app:layout_constraintTop_toBottomOf="@+id/image_profile_posts_empty" />
+
+            <TextView
+                android:id="@+id/text_profile_no_posts_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_profile_no_posts_desc_margin_top"
+                android:text="@string/profile_no_posts_description"
+                android:textAppearance="@style/AppTheme.Body1"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_profile_vertical_end"
+                app:layout_constraintStart_toEndOf="@+id/guideline_profile_vertical_begin"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_no_posts_title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_profile_my_posts"
+                android:layout_width="@dimen/match_constraint_0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_profile_bio_posts_2" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_profile_no_posts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="image_profile_posts_empty,text_profile_no_posts_title,text_profile_no_posts_desc"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

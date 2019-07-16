@@ -74,13 +74,50 @@
     <dimen name="text_home_item_post_like_count_margin_start">2dp</dimen>
     <dimen name="text_home_item_post_like_count_margin_end">8dp</dimen>
 
-    <!-- ================== -->
-    <!-- FOR PHOTO FRAGMENT -->
-    <!-- ================== -->
-    <dimen name="view_photo_pick_option_background_size">96dp</dimen>
-    <dimen name="image_photo_pick_option_size">48dp</dimen>
-    <dimen name="text_photo_pick_option_label_margin_top">5dp</dimen>
-    <dimen name="photo_pick_option_margin">80dp</dimen>
+    <!-- ==================================================== -->
+    <!-- FOR PHOTO FRAGMENT AND PHOTO OPTIONS DIALOG FRAGMENT -->
+    <!-- ==================================================== -->
+    <dimen name="view_photo_option_background_size">96dp</dimen>
+    <dimen name="image_photo_option_icon_size">48dp</dimen>
+    <dimen name="text_photo_option_label_margin_top">5dp</dimen>
+    <dimen name="photo_options_space">110dp</dimen>
+
+    <!-- ==================== -->
+    <!-- FOR PROFILE FRAGMENT -->
+    <!-- ==================== -->
+    <dimen name="guideline_profile_vertical_keyline">16dp</dimen>
+    <dimen name="guideline_profile_horizontal_keyline">16dp</dimen>
+    <dimen name="image_profile_user_size">86dp</dimen>
+    <dimen name="image_profile_user_margin_top">16dp</dimen>
+    <dimen name="text_profile_user_name_margin_top">12dp</dimen>
+    <dimen name="text_profile_post_count_margin_start">42dp</dimen>
+    <dimen name="text_profile_post_count_margin_top">8dp</dimen>
+    <dimen name="button_profile_edit_vertical_inset">8dp</dimen>
+    <dimen name="button_profile_edit_vertical_padding">2dp</dimen>
+    <dimen name="text_profile_user_bio_margin_top">8dp</dimen>
+    <dimen name="text_profile_my_posts_title_margin_top">8dp</dimen>
+    <dimen name="image_profile_posts_empty_horizontal_margin">28dp</dimen>
+    <dimen name="image_profile_posts_empty_margin_top">16dp</dimen>
+    <dimen name="text_profile_no_posts_title_margin_top">12dp</dimen>
+    <dimen name="text_profile_no_posts_desc_margin_top">10dp</dimen>
+    <dimen name="divider_profile_bio_posts_1_margin_top">16dp</dimen>
+    <dimen name="divider_profile_bio_posts_2_margin_top">8dp</dimen>
+    <dimen name="profile_item_grid_spacing">2dp</dimen>
+
+    <!-- ========================= -->
+    <!-- FOR EDIT PROFILE ACTIVITY -->
+    <!-- ========================= -->
+    <dimen name="edit_profile_input_fields_text_size">16sp</dimen>
+    <dimen name="text_edit_profile_toolbar_title_margin_start">20dp</dimen>
+    <dimen name="guideline_edit_profile_vertical_keyline">30dp</dimen>
+    <dimen name="image_edit_profile_change_pic_size">80dp</dimen>
+    <dimen name="image_edit_profile_change_pic_margin_top">16dp</dimen>
+    <dimen name="text_button_edit_profile_change_pic_margin_top">4dp</dimen>
+    <dimen name="text_input_edit_profile_name_margin_top">36dp</dimen>
+    <dimen name="text_input_edit_profile_bio_margin_top">16dp</dimen>
+    <dimen name="divider_edit_profile_public_private_info_margin_top">16dp</dimen>
+    <dimen name="text_edit_profile_private_info_title_margin_top">16dp</dimen>
+    <dimen name="text_input_edit_profile_email_margin_top">14dp</dimen>
 
 
 </resources>

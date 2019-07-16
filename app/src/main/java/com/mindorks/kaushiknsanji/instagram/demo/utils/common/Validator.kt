@@ -47,6 +47,18 @@ object Validator {
         }
 
     /**
+     * Method that validates [name] and returns a resulting list of [Validation]s.
+     * Required for [com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActivity]
+     */
+    fun validateEditProfileFields(name: String?): List<Validation> =
+        mutableListOf<Validation>().apply {
+            // Building the Validation results
+
+            // For [name]
+            validateUserName(name)
+        }
+
+    /**
      * Validates [email] and appends the results of [Validation]
      */
     private fun MutableList<Validation>.validateEmail(email: String?) {

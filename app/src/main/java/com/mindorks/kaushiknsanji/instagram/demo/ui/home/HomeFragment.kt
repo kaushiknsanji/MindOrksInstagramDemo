@@ -111,7 +111,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         })
 
         // Register an observer on the Post creation LiveData to add the New Post to the top of the List
-        mainSharedViewModel.postPublished.observeEvent(this) { newPost: Post ->
+        mainSharedViewModel.postPublishUpdateToHome.observeEvent(this) { newPost: Post ->
             // Delegate to the ViewModel to handle
             viewModel.onNewPost(newPost)
         }
@@ -131,7 +131,15 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
                 // Scroll immediately to the top of the RecyclerView
                 rv_home_posts.scrollToPosition(0)
             }
-        })
+        }
+
+        // Register an observer for Profile information update events
+        mainSharedViewModel.userProfileInfoUpdateToHome.observeEvent(this) { reload: Boolean ->
+            if (reload) {
+                // On reload, delegate to the ViewModel to refresh logged-in User information on User's activity
+                viewModel.onRefreshUserInfo()
+            }
+        }
     }
 
     companion object {

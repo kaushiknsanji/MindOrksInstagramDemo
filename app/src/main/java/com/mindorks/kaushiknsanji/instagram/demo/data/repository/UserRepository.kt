@@ -6,9 +6,14 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.LoginRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.SignUpRequest
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.UpdateMyInfoRequest
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.FetchMyInfoResponse
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.GeneralResponse
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.LoginResponse
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.SignUpResponse
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import io.reactivex.Single
+import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,6 +42,8 @@ class UserRepository @Inject constructor(
         userPreferences.setUserName(user.name)
         userPreferences.setUserEmail(user.email)
         userPreferences.setAccessToken(user.accessToken)
+        userPreferences.setProfilePicUrl(user.profilePicUrl)
+        userPreferences.setTagline(user.tagline)
     }
 
     /**
@@ -47,6 +54,8 @@ class UserRepository @Inject constructor(
         userPreferences.removeUserName()
         userPreferences.removeUserEmail()
         userPreferences.removeAccessToken()
+        userPreferences.removeProfilePicUrl()
+        userPreferences.removeTagline()
     }
 
     /**
@@ -61,7 +70,14 @@ class UserRepository @Inject constructor(
 
         // Returning user information if present, else null
         return if (userId !== null && userName != null && userEmail != null && accessToken != null)
-            User(userId, userName, userEmail, accessToken)
+            User(
+                id = userId,
+                name = userName,
+                email = userEmail,
+                accessToken = accessToken,
+                profilePicUrl = userPreferences.getProfilePicUrl(),
+                tagline = userPreferences.getTagline()
+            ) // ( profilePicUrl and tagline can be null, need not necessarily be present at the time of reading )
         else
             null
     }
@@ -105,4 +121,76 @@ class UserRepository @Inject constructor(
                 )
             }
 
+    /**
+     * Performs [user] Info request with the Remote API and returns a [Single] of [User] from the response.
+     *
+     * @param user Instance of logged-in [User] information.
+     * @return A [Single] of [User] from the response updated with [User.profilePicUrl] and [User.tagline] information.
+     */
+    fun doFetchUserInfo(user: User): Single<User> =
+        networkService.doFetchMyInfoCall(user.id, user.accessToken)
+            .map { response: FetchMyInfoResponse ->
+                // Transforming the [FetchMyInfoResponse] to [User]
+                // Updating profilePicUrl and tagline information as it is not available in preferences initially
+                user.copy(
+                    profilePicUrl = response.user.profilePicUrl,
+                    tagline = response.user.tagline
+                ).also {
+                    // Also, save the user information to preferences
+                    saveCurrentUser(it)
+                }
+            }
+
+    /**
+     * Performs [user] Logout request with the Remote API and returns a [Single] of [Resource] from the response.
+     *
+     * @param user Instance of logged-in [User] information.
+     * @return A [Single] of [Resource] from the response.
+     */
+    fun doUserLogout(user: User): Single<Resource<String>> =
+        networkService.doLogoutCall(user.id, user.accessToken)
+            .map { response: GeneralResponse ->
+                // Transforming the [GeneralResponse] to [Resource]
+                when (response.status) {
+                    // On Success
+                    HttpURLConnection.HTTP_OK -> {
+                        // Clear the current user from the preferences
+                        removeCurrentUser()
+                        // Return the message with Success status
+                        Resource.success(response.message)
+                    }
+                    // else, return the message with Unknown status
+                    else -> Resource.unknown(response.message)
+                }
+            }
+
+    /**
+     * Performs [user] Info update with Remote API and returns a [Single] of [Resource] from the response.
+     *
+     * @param user Instance of logged-in [User] with information to be updated.
+     * @return A [Single] of [Resource] from the response.
+     */
+    fun doUpdateUserInfo(user: User): Single<Resource<String>> =
+        networkService.doUpdateMyInfoCall(
+            UpdateMyInfoRequest(
+                name = user.name,
+                profilePicUrl = user.profilePicUrl,
+                tagline = user.tagline
+            ),
+            user.id,
+            user.accessToken
+        ).map { response: GeneralResponse ->
+            // Transforming the [GeneralResponse] to [Resource]
+            when (response.status) {
+                // On Success
+                HttpURLConnection.HTTP_OK -> {
+                    // Save the updated user information to preferences
+                    saveCurrentUser(user)
+                    // Return the message with Success status
+                    Resource.success(response.message)
+                }
+                // else, return the message with Unknown status
+                else -> Resource.unknown(response.message)
+            }
+        }
 }

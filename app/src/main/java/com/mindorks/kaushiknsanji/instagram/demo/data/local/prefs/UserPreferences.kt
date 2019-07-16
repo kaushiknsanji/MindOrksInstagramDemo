@@ -19,6 +19,8 @@ class UserPreferences @Inject constructor(private val prefs: SharedPreferences) 
         const val KEY_USER_NAME = "PREF_KEY_USER_NAME"
         const val KEY_USER_EMAIL = "PREF_KEY_USER_EMAIL"
         const val KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
+        const val KEY_PROFILE_PIC_URL = "PREF_KEY_PROFILE_PIC_URL"
+        const val KEY_TAGLINE = "PREF_KEY_TAGLINE"
     }
 
     /**
@@ -92,5 +94,41 @@ class UserPreferences @Inject constructor(private val prefs: SharedPreferences) 
      */
     fun removeAccessToken() =
         prefs.edit().remove(KEY_ACCESS_TOKEN).apply()
+
+    /**
+     * Getter for the [KEY_PROFILE_PIC_URL]
+     */
+    fun getProfilePicUrl(): String? =
+        prefs.getString(KEY_PROFILE_PIC_URL, null)
+
+    /**
+     * Saves the Profile Picture [url] in [KEY_PROFILE_PIC_URL]
+     */
+    fun setProfilePicUrl(url: String?) =
+        prefs.edit().putString(KEY_PROFILE_PIC_URL, url).apply()
+
+    /**
+     * Deletes the [KEY_PROFILE_PIC_URL]
+     */
+    fun removeProfilePicUrl() =
+        prefs.edit().remove(KEY_PROFILE_PIC_URL).apply()
+
+    /**
+     * Getter for the [KEY_TAGLINE]
+     */
+    fun getTagline(): String? =
+        prefs.getString(KEY_TAGLINE, null)
+
+    /**
+     * Saves the [tagline] in [KEY_TAGLINE]
+     */
+    fun setTagline(tagline: String?) =
+        prefs.edit().putString(KEY_TAGLINE, tagline).apply()
+
+    /**
+     * Deletes the [KEY_TAGLINE]
+     */
+    fun removeTagline() =
+        prefs.edit().remove(KEY_TAGLINE).apply()
 
 }
