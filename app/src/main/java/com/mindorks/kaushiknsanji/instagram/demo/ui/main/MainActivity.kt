@@ -90,6 +90,15 @@ class MainActivity : BaseActivity<MainViewModel>() {
                 }
             }
         }
+
+        // Restore the last active fragment instance if any, from the FragmentManager to prevent possible overlap
+        if (activeFragment == null) {
+            activeFragment = supportFragmentManager.fragments.takeIf { it.size > 0 }?.find { fragment: Fragment ->
+                // Fragment to restore will be our container fragment that is added, not yet hidden and not yet visible
+                fragment.id == R.id.container_main_nav_fragment && fragment.isAdded && !fragment.isVisible && !fragment.isHidden
+            }
+        }
+
     }
 
     /**
