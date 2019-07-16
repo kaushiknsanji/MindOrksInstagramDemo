@@ -9,6 +9,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DaggerActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ActivityModule
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.DialogManager
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.Toaster
 import javax.inject.Inject
 
@@ -25,6 +26,10 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
     // Primary ViewModel instance of the Activity, injected by Dagger
     @Inject
     lateinit var viewModel: VM
+
+    // DialogManager instance provided by Dagger
+    @Inject
+    lateinit var dialogManager: DialogManager
 
     /**
      * Called when the activity is starting.  This is where most initialization should be done.
@@ -45,6 +50,8 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
         setupObservers()
         // Setup the Activity view
         setupView(savedInstanceState)
+        // Initialize DialogManager
+        dialogManager.setup()
         // Invoke BaseViewModel's "onCreate()" method
         viewModel.onCreate()
     }

@@ -69,13 +69,13 @@
         <xliff:g example="123" id="like_count">%1$d</xliff:g> likes
     </string>
 
-    <!-- ============================== -->
-    <!-- STRINGS USED IN PHOTO FRAGMENT -->
-    <!-- ============================== -->
-    <string name="label_photo_camera_option">Camera</string>
-    <string name="cd_photo_camera_option">Camera option button icon</string>
-    <string name="label_photo_gallery_option">Gallery</string>
-    <string name="cd_photo_gallery_option">Gallery option button icon</string>
+    <!-- ================================================================ -->
+    <!-- STRINGS USED IN PHOTO FRAGMENT AND PHOTO OPTIONS DIALOG FRAGMENT -->
+    <!-- ================================================================ -->
+    <string name="label_photo_option_camera">Camera</string>
+    <string name="cd_photo_option_camera">Camera option button icon</string>
+    <string name="label_photo_option_gallery">Gallery</string>
+    <string name="cd_photo_option_gallery">Gallery option button icon</string>
     <string name="title_photo_toolbar">Add Image</string>
 
 </resources>

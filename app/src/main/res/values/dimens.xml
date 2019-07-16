@@ -3,11 +3,24 @@
     <!-- MATCH CONSTRAINT Dimension used for ConstraintLayouts -->
     <dimen name="match_constraint_0dp">0dp</dimen>
 
+    <!-- Common Divider Height -->
+    <dimen name="divider_height">1dp</dimen>
+
+    <!-- Common ProgressBar Horizontal Height -->
+    <dimen name="progress_horizontal_height">4dp</dimen>
+
+    <!-- Dialog Padding provided by its Background Drawable -->
+    <dimen name="dialog_background_content_padding">16dp</dimen>
+
     <!-- =========== -->
     <!-- FOR APP BAR -->
     <!-- =========== -->
     <dimen name="app_bar_elevation">4dp</dimen>
-    <dimen name="app_bar_horizontal_padding">16dp</dimen>
+
+    <!-- ================================= -->
+    <!-- FOR PROGRESS TEXT DIALOG FRAGMENT -->
+    <!-- ================================= -->
+    <dimen name="text_progress_circle_status_margin_start">8dp</dimen>
 
     <!-- =================== -->
     <!-- FOR SPLASH ACTIVITY -->
@@ -49,7 +62,6 @@
     <!-- FOR HOME FRAGMENT -->
     <!-- ================= -->
     <dimen name="image_home_app_bar_logo_height">32dp</dimen>
-    <dimen name="progress_horizontal_home_height">4dp</dimen>
     <dimen name="card_home_item_elevation">2dp</dimen>
     <dimen name="card_home_item_cl_padding_top">8dp</dimen>
     <dimen name="card_home_item_cl_padding_bottom">16dp</dimen>

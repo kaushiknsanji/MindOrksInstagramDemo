@@ -11,8 +11,11 @@ import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.FragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.TYPE_IMAGE
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.paracamera.Camera
 import kotlinx.android.synthetic.main.fragment_photo.*
@@ -36,6 +39,10 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
     // Instance of the ViewModel shared with the MainActivity provided by Dagger
     @Inject
     lateinit var mainSharedViewModel: MainSharedViewModel
+
+    // SharedProgressTextViewModel instance provided by Dagger
+    @Inject
+    lateinit var sharedProgressTextViewModel: SharedProgressTextViewModel
 
     /**
      * Injects dependencies exposed by [FragmentComponent] into Fragment.
@@ -61,7 +68,7 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
         }
 
         // Register click listener on "Camera" option
-        view_photo_camera_option_background.setOnClickListener {
+        view_photo_option_camera_background!!.setOnClickListener {
             try {
                 // Launches the Camera activity with the ACTION_IMAGE_CAPTURE Intent, that saves the captured image
                 // to a temporary file
@@ -72,7 +79,7 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
         }
 
         // Register click listener on "Gallery" option
-        view_photo_gallery_option_background.setOnClickListener {
+        view_photo_option_gallery_background!!.setOnClickListener {
             Intent(Intent.ACTION_OPEN_DOCUMENT).run {
                 // With the Intent that can open any document..
                 // Filter results that can be streamed like files (this excludes stuff like timezones and contacts)
@@ -92,13 +99,23 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
     override fun setupObservers() {
         super.setupObservers()
 
-        // Register an observer on the photo and post creation loading progress to show/hide the Progress Circle
-        viewModel.loadingProgress.observe(this, Observer { started: Boolean ->
-            // Show the Progress Circle when [started], else leave it hidden
-            progress_photo_loading.visibility = if (started) {
-                View.VISIBLE
-            } else {
-                View.GONE
+        // Register an observer on the photo and post creation loading progress to show/hide the Progress Dialog
+        viewModel.loadingProgress.observe(this, Observer { resourceWrapper ->
+            // Show/hide the Progress Dialog based on the Resource Status
+            when (resourceWrapper.status) {
+                Status.LOADING -> {
+                    // When Loading, show the Progress Dialog immediately and update the Status Text via its ViewModel
+                    dialogManager.showDialogNow(
+                        ProgressTextDialogFragment.Companion::newInstance,
+                        ProgressTextDialogFragment::class.java
+                    )
+                    // Update the Status Text
+                    sharedProgressTextViewModel.onProgressStatusChange(resourceWrapper)
+                }
+                else -> {
+                    // When not loading, dismiss any active dialog
+                    dialogManager.dismissActiveDialog()
+                }
             }
         })
 
@@ -107,6 +124,7 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
         viewModel.postPublished.observeEvent(this) { newPost: Post ->
             mainSharedViewModel.onPostCreated(newPost)
         }
+
     }
 
     /**

@@ -16,85 +16,61 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <View
-        android:id="@+id/view_photo_camera_option_background"
-        android:layout_width="@dimen/view_photo_pick_option_background_size"
-        android:layout_height="@dimen/view_photo_pick_option_background_size"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/text_photo_camera_option_label"
-        app:layout_constraintEnd_toEndOf="@+id/image_photo_camera_option"
-        app:layout_constraintStart_toStartOf="@+id/image_photo_camera_option"
-        app:layout_constraintTop_toTopOf="@+id/image_photo_camera_option" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/image_photo_camera_option"
-        android:layout_width="@dimen/image_photo_pick_option_size"
-        android:layout_height="@dimen/image_photo_pick_option_size"
-        android:contentDescription="@string/cd_photo_camera_option"
-        android:src="@drawable/ic_camera"
-        app:layout_constraintBottom_toTopOf="@+id/text_photo_camera_option_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        <View
+            android:id="@+id/view_photo_option_camera_background"
+            style="@style/PhotoOptionsBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/text_photo_option_camera_label"
+            app:layout_constraintEnd_toEndOf="@+id/image_photo_option_camera"
+            app:layout_constraintStart_toStartOf="@+id/image_photo_option_camera"
+            app:layout_constraintTop_toTopOf="@+id/image_photo_option_camera" />
 
-    <TextView
-        android:id="@+id/text_photo_camera_option_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/AppTheme.Subtitle1"
-        android:layout_marginTop="@dimen/text_photo_pick_option_label_margin_top"
-        android:text="@string/label_photo_camera_option"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/image_photo_gallery_option"
-        app:layout_constraintEnd_toEndOf="@+id/image_photo_camera_option"
-        app:layout_constraintStart_toStartOf="@+id/image_photo_camera_option"
-        app:layout_constraintTop_toBottomOf="@+id/image_photo_camera_option" />
+        <ImageView
+            android:id="@+id/image_photo_option_camera"
+            style="@style/PhotoOptionsIcon.Camera"
+            android:contentDescription="@string/cd_photo_option_camera"
+            app:layout_constraintBottom_toTopOf="@+id/text_photo_option_camera_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-    <View
-        android:id="@+id/view_photo_gallery_option_background"
-        android:layout_width="@dimen/view_photo_pick_option_background_size"
-        android:layout_height="@dimen/view_photo_pick_option_background_size"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/text_photo_gallery_option_label"
-        app:layout_constraintEnd_toEndOf="@+id/image_photo_gallery_option"
-        app:layout_constraintStart_toStartOf="@+id/image_photo_gallery_option"
-        app:layout_constraintTop_toTopOf="@+id/image_photo_gallery_option" />
+        <TextView
+            android:id="@+id/text_photo_option_camera_label"
+            style="@style/PhotoOptionsLabel.Camera"
+            app:layout_constraintBottom_toTopOf="@+id/image_photo_option_gallery"
+            app:layout_constraintEnd_toEndOf="@+id/image_photo_option_camera"
+            app:layout_constraintStart_toStartOf="@+id/image_photo_option_camera"
+            app:layout_constraintTop_toBottomOf="@+id/image_photo_option_camera" />
 
-    <ImageView
-        android:id="@+id/image_photo_gallery_option"
-        android:layout_width="@dimen/image_photo_pick_option_size"
-        android:layout_height="@dimen/image_photo_pick_option_size"
-        android:layout_marginTop="@dimen/photo_pick_option_margin"
-        android:contentDescription="@string/cd_photo_gallery_option"
-        android:src="@drawable/ic_gallery"
-        app:layout_constraintBottom_toTopOf="@+id/text_photo_gallery_option_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_photo_camera_option_label" />
+        <View
+            android:id="@+id/view_photo_option_gallery_background"
+            style="@style/PhotoOptionsBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/text_photo_option_gallery_label"
+            app:layout_constraintEnd_toEndOf="@+id/image_photo_option_gallery"
+            app:layout_constraintStart_toStartOf="@+id/image_photo_option_gallery"
+            app:layout_constraintTop_toTopOf="@+id/image_photo_option_gallery" />
 
-    <TextView
-        android:id="@+id/text_photo_gallery_option_label"
-        style="@style/AppTheme.Subtitle1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/text_photo_pick_option_label_margin_top"
-        android:text="@string/label_photo_gallery_option"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/image_photo_gallery_option"
-        app:layout_constraintStart_toStartOf="@+id/image_photo_gallery_option"
-        app:layout_constraintTop_toBottomOf="@+id/image_photo_gallery_option" />
+        <ImageView
+            android:id="@+id/image_photo_option_gallery"
+            style="@style/PhotoOptionsIcon.Gallery"
+            android:layout_marginTop="@dimen/photo_options_space"
+            android:contentDescription="@string/cd_photo_option_gallery"
+            app:layout_constraintBottom_toTopOf="@+id/text_photo_option_gallery_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_photo_option_camera_label" />
 
-    <ProgressBar
-        android:id="@+id/progress_photo_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/text_photo_option_gallery_label"
+            style="@style/PhotoOptionsLabel.Gallery"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/image_photo_option_gallery"
+            app:layout_constraintStart_toStartOf="@+id/image_photo_option_gallery"
+            app:layout_constraintTop_toBottomOf="@+id/image_photo_option_gallery" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

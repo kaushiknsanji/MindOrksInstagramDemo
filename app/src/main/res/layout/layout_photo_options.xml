@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <View
+        android:id="@+id/view_photo_option_camera_background"
+        style="@style/PhotoOptionsBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/text_photo_option_camera_label"
+        app:layout_constraintEnd_toEndOf="@+id/image_photo_option_camera"
+        app:layout_constraintStart_toStartOf="@+id/image_photo_option_camera"
+        app:layout_constraintTop_toTopOf="@+id/image_photo_option_camera" />
+
+    <ImageView
+        android:id="@+id/image_photo_option_camera"
+        style="@style/PhotoOptionsIcon.Camera"
+        android:contentDescription="@string/cd_photo_option_camera"
+        app:layout_constraintBottom_toTopOf="@+id/text_photo_option_camera_label"
+        app:layout_constraintEnd_toStartOf="@+id/image_photo_option_gallery"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/text_photo_option_camera_label"
+        style="@style/PhotoOptionsLabel.Camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_photo_option_camera"
+        app:layout_constraintStart_toStartOf="@+id/image_photo_option_camera"
+        app:layout_constraintTop_toBottomOf="@+id/image_photo_option_camera" />
+
+    <View
+        android:id="@+id/view_photo_option_gallery_background"
+        style="@style/PhotoOptionsBackground"
+        app:layout_constraintBottom_toBottomOf="@+id/text_photo_option_gallery_label"
+        app:layout_constraintEnd_toEndOf="@+id/image_photo_option_gallery"
+        app:layout_constraintStart_toStartOf="@+id/image_photo_option_gallery"
+        app:layout_constraintTop_toTopOf="@+id/image_photo_option_gallery" />
+
+    <ImageView
+        android:id="@+id/image_photo_option_gallery"
+        style="@style/PhotoOptionsIcon.Gallery"
+        android:layout_marginStart="@dimen/photo_options_space"
+        android:contentDescription="@string/cd_photo_option_gallery"
+        app:layout_constraintBottom_toTopOf="@+id/text_photo_option_gallery_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image_photo_option_camera"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/text_photo_option_gallery_label"
+        style="@style/PhotoOptionsLabel.Gallery"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/image_photo_option_gallery"
+        app:layout_constraintStart_toStartOf="@+id/image_photo_option_gallery"
+        app:layout_constraintTop_toBottomOf="@+id/image_photo_option_gallery" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

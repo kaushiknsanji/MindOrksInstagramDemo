@@ -11,6 +11,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.signup.SignUpViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.splash.SplashViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.DialogManager
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import dagger.Module
@@ -28,6 +30,13 @@ class ActivityModule(private val activity: BaseActivity<*>) {
     @ActivityContext
     @Provides
     fun provideContext(): Context = activity
+
+    /**
+     * Provides instance of [DialogManager]
+     */
+    @ActivityScope
+    @Provides
+    fun provideDialogManager(): DialogManager = DialogManager(activity.supportFragmentManager)
 
     /**
      * Provides instance of [SplashViewModel]

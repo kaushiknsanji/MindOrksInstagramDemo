@@ -37,3 +37,13 @@ annotation class FragmentScope
 @Scope
 @Retention(AnnotationRetention.SOURCE)
 annotation class ViewHolderScope
+
+/**
+ * [Scope] annotation for scoping the dependencies
+ * exposed by [com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent]
+ * and for distinguishing with the scoped dependencies exposed by its component
+ * [com.mindorks.kaushiknsanji.instagram.demo.di.component.ApplicationComponent] dependency.
+ */
+@Scope
+@Retention(AnnotationRetention.SOURCE)
+annotation class DialogFragmentScope

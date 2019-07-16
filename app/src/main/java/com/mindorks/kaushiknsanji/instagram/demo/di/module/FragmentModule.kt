@@ -18,6 +18,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.DIRECTORY_TEMP
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.IMAGE_MAX_HEIGHT_SCALE
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.JPEG_COMPRESSION_QUALITY
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.DialogManager
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import com.mindorks.paracamera.Camera
