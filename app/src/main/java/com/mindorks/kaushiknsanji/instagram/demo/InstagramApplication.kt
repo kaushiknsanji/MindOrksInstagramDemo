@@ -1,9 +1,11 @@
 package com.mindorks.kaushiknsanji.instagram.demo
 
 import android.app.Application
+import androidx.annotation.RestrictTo
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ApplicationComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DaggerApplicationComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ApplicationModule
+import org.jetbrains.annotations.TestOnly
 
 /**
  * [Application] subclass for exposing [ApplicationComponent]
@@ -33,4 +35,14 @@ class InstagramApplication : Application() {
         DaggerApplicationComponent.builder()
             .applicationModule(ApplicationModule(this))
             .build()
+
+    /**
+     * Setter for the [applicationComponent], to replace [ApplicationComponent] with the Test specific component.
+     */
+    @TestOnly
+    @RestrictTo(value = [RestrictTo.Scope.TESTS])
+    fun setTestComponent(applicationComponent: ApplicationComponent) {
+        this.applicationComponent = applicationComponent
+    }
+
 }
