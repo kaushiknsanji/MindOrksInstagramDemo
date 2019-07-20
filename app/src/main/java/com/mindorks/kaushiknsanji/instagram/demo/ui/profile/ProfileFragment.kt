@@ -19,8 +19,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts.ProfilePostsAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.TextAppearanceUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.log.Logger
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalGridItemSpacingDecoration
@@ -102,12 +102,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
         })
 
         // Register an observer on User's Posts LiveData to reload the adapter with the new List of Posts
-        viewModel.userPosts.observe(this, Observer { resourceWrapper: Resource<List<Post>> ->
-            resourceWrapper.data?.run {
+        viewModel.userPosts.observeResource(this) { _, posts: List<Post>? ->
+            posts?.run {
                 // Reset the Adapter data with the new data
                 profilePostsAdapter.resetData(this)
             }
-        })
+        }
 
         // Register an observer on the Name LiveData to set its value on the corresponding TextView
         viewModel.userName.observe(this, Observer { userName: String ->

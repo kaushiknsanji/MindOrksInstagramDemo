@@ -352,7 +352,7 @@ class EditProfileViewModel(
                                     // When Resource status is Success, we have updated the user info
                                     // to the remote successfully.
                                     // Hence trigger an event to close the Activity with Success Result of response
-                                    finishWithSuccess.postValue(Event(resource.data ?: ""))
+                                    finishWithSuccess.postValue(Event(resource.getData() ?: ""))
                                 } else {
                                     // When Resource status is other than Success, user info did not update successfully
                                     // Hence display the Resource message and do not close the activity

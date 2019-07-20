@@ -8,12 +8,12 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DaggerViewHolderComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ViewHolderModule
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResourceEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.Toaster
 import javax.inject.Inject
 
@@ -118,20 +118,16 @@ abstract class BaseItemViewHolder<T : Any, VM : BaseItemViewModel<T>>(
      */
     protected open fun setupObservers() {
         // Register an observer for message LiveData
-        itemViewModel.messageString.observe(this, Observer { resourceWrapper ->
-            resourceWrapper.data?.run {
-                // Show the message when the event occurs
-                showMessage(this)
-            }
-        })
+        itemViewModel.messageString.observeResourceEvent(this) { _, message: String ->
+            // Show the message when the event occurs
+            showMessage(message)
+        }
 
         // Register an observer for message-id LiveData
-        itemViewModel.messageStringId.observe(this, Observer { resourceWrapper ->
-            resourceWrapper.data?.run {
-                // Show the message when the event occurs
-                showMessage(this)
-            }
-        })
+        itemViewModel.messageStringId.observeResourceEvent(this) { _, messageResId: Int ->
+            // Show the message when the event occurs
+            showMessage(messageResId)
+        }
 
     }
 

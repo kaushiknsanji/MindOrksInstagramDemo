@@ -4,11 +4,11 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DaggerActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ActivityModule
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResourceEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.DialogManager
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.Toaster
 import javax.inject.Inject
@@ -62,20 +62,16 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
      */
     protected open fun setupObservers() {
         // Register an observer for message LiveData
-        viewModel.messageString.observe(this, Observer { resourceWrapper ->
-            resourceWrapper.data?.run {
-                // Show the message when the event occurs
-                showMessage(this)
-            }
-        })
+        viewModel.messageString.observeResourceEvent(this) { _, message: String ->
+            // Show the message when the event occurs
+            showMessage(message)
+        }
 
         // Register an observer for message-id LiveData
-        viewModel.messageStringId.observe(this, Observer { resourceWrapper ->
-            resourceWrapper.data?.run {
-                // Show the message when the event occurs
-                showMessage(this)
-            }
-        })
+        viewModel.messageStringId.observeResourceEvent(this) { _, messageResId: Int ->
+            // Show the message when the event occurs
+            showMessage(messageResId)
+        }
     }
 
     /**

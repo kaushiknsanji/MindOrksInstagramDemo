@@ -55,3 +55,47 @@ inline fun <T> LiveData<Event<T>>.observeEvent(
         event?.getContentIfNotConsumed()?.let(onEventUnconsumedContent)
     })
 }
+
+/**
+ * Extension function on the [LiveData] of [Resource]s to let observe the [Resource] any time when its
+ * content wrapped in [Resource.dataEvent] is needed. This will allow the content to be replayed
+ * any number of times, and the given action [onEventAction] will be executed on the content.
+ *
+ * @param T The type of content wrapped in the [Resource.dataEvent] of the [Resource]. Can be `null`.
+ * @param owner The [LifecycleOwner] which controls the observer
+ * @param onEventAction The lambda action to be executed on the content [T].
+ */
+inline fun <T> LiveData<Resource<T>>.observeResource(
+    owner: LifecycleOwner,
+    crossinline onEventAction: (status: Status, data: T?) -> Unit
+) {
+    observe(owner, Observer { resourceWrapper: Resource<T> ->
+        resourceWrapper.getData()?.let { data: T ->
+            // When there is content
+            onEventAction(resourceWrapper.status, data)
+        } ?: run {
+            // When there is no content
+            onEventAction(resourceWrapper.status, null)
+        }
+    })
+}
+
+/**
+ * Extension function on the [LiveData] of [Resource]s to let observe the [Resource] only when its
+ * content wrapped in [Resource.dataEvent] has never been consumed. When the Resource's content was never consumed,
+ * the given action [onEventUnconsumedContent] will be executed on the content.
+ *
+ * @param T The type of content wrapped in the [Resource.dataEvent] of the [Resource]
+ * @param owner The [LifecycleOwner] which controls the observer
+ * @param onEventUnconsumedContent The lambda action to be executed on the content [T].
+ */
+inline fun <T> LiveData<Resource<T>>.observeResourceEvent(
+    owner: LifecycleOwner,
+    crossinline onEventUnconsumedContent: (status: Status, data: T) -> Unit
+) {
+    observe(owner, Observer { resourceWrapper: Resource<T> ->
+        resourceWrapper.dataEvent?.getContentIfNotConsumed()?.let { data: T ->
+            onEventUnconsumedContent(resourceWrapper.status, data)
+        }
+    })
+}

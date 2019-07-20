@@ -3,11 +3,11 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import kotlinx.android.synthetic.main.dialog_progress_text.*
 
 /**
@@ -55,13 +55,13 @@ class ProgressTextDialogFragment() : BaseDialogFragment<SharedProgressTextViewMo
         super.setupObservers()
 
         // Register an observer on the Progress status LiveData to set/hide the Status Text
-        viewModel.progressStatus.observe(this, Observer { resourceWrapper ->
+        viewModel.progressStatus.observeResource(this) { status: Status, data: Int? ->
             // Setting the Status Text based on Resource Status
-            when (resourceWrapper.status) {
+            when (status) {
                 Status.LOADING -> {
                     // When Loading, initialize and show the Status TextView if available
                     text_progress_circle_status.run {
-                        resourceWrapper.data?.let { statusResourceId: Int ->
+                        data?.let { statusResourceId: Int ->
                             visibility = View.VISIBLE
                             text = getString(statusResourceId)
                         } ?: run {
@@ -75,7 +75,8 @@ class ProgressTextDialogFragment() : BaseDialogFragment<SharedProgressTextViewMo
                     text_progress_circle_status.visibility = View.GONE
                 }
             }
-        })
+        }
+
     }
 
     /**

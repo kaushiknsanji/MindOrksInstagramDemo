@@ -11,8 +11,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainActivity
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setTextOnChange
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -212,28 +213,28 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
         })
 
         // Register an observer on Email field validation result to show the error if any
-        viewModel.emailValidation.observe(this, Observer { resourceWrapper: Resource<Int> ->
+        viewModel.emailValidation.observeResource(this) { status: Status, messageResId: Int? ->
             text_input_sign_up_email.setErrorStatus(
-                resourceWrapper.status,
-                resourceWrapper.data?.run { getString(this) }
+                status,
+                messageResId?.run { getString(this) }
             )
-        })
+        }
 
         // Register an observer on Password field validation result to show the error if any
-        viewModel.passwordValidation.observe(this, Observer { resourceWrapper: Resource<Int> ->
+        viewModel.passwordValidation.observeResource(this) { status: Status, messageResId: Int? ->
             text_input_sign_up_password.setErrorStatus(
-                resourceWrapper.status,
-                resourceWrapper.data?.run { getString(this) }
+                status,
+                messageResId?.run { getString(this) }
             )
-        })
+        }
 
         // Register an observer on Name field validation result to show the error if any
-        viewModel.nameValidation.observe(this, Observer { resourceWrapper: Resource<Int> ->
+        viewModel.nameValidation.observeResource(this) { status: Status, messageResId: Int? ->
             text_input_sign_up_name.setErrorStatus(
-                resourceWrapper.status,
-                resourceWrapper.data?.run { getString(this) }
+                status,
+                messageResId?.run { getString(this) }
             )
-        })
+        }
 
         // Register an observer on Sign-Up request progress to show/hide the Progress Circle
         viewModel.signUpProgress.observe(this, Observer { started: Boolean ->

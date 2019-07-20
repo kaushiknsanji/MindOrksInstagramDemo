@@ -12,8 +12,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.FragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -98,11 +98,11 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
         super.setupObservers()
 
         // Register an observer on Paginated Posts LiveData to load the adapter with new list of Posts
-        viewModel.paginatedPosts.observe(this, Observer { resourceWrapper: Resource<List<Post>> ->
-            resourceWrapper.data?.run {
+        viewModel.paginatedPosts.observeResource(this) { _, posts: List<Post>? ->
+            posts?.run {
                 postsAdapter.appendMore(this)
             }
-        })
+        }
 
         // Register an observer on Posts download progress to show/hide the Progress horizontal
         viewModel.loadingProgress.observe(this, Observer { started: Boolean ->
@@ -118,12 +118,12 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
         // Register an observer on the List of All Posts LiveData to reload the adapter
         // with the list of All Posts
-        viewModel.reloadAllPosts.observe(this, Observer { resourceWrapper: Resource<List<Post>> ->
-            resourceWrapper.data?.run {
+        viewModel.reloadAllPosts.observeResource(this) { _, posts: List<Post>? ->
+            posts?.run {
                 // Reset the Adapter data with the new data
                 postsAdapter.resetData(this)
             }
-        })
+        }
 
         // Register an observer on the Scroll Event to scroll to the Top of the List
         viewModel.scrollToTop.observeEvent(this) { scroll: Boolean ->

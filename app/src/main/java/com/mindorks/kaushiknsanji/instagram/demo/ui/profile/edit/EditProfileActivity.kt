@@ -236,12 +236,12 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         })
 
         // Register an observer on Name field validation result to show the error if any
-        viewModel.nameValidation.observe(this, Observer { resourceWrapper: Resource<Int> ->
+        viewModel.nameValidation.observeResource(this) { status: Status, messageResId: Int? ->
             text_input_edit_profile_name.setErrorStatus(
-                resourceWrapper.status,
-                resourceWrapper.data?.run { getString(this) }
+                status,
+                messageResId?.run { getString(this) }
             )
-        })
+        }
 
         // Register an observer on the LiveData that detects changes to user information in order to allow
         // the user to reset using the menu button

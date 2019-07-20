@@ -62,10 +62,10 @@ class ProfileViewModel(
     }
     // Transform the [userPosts] to get the count of Posts created by the logged-in User
     val userPostsCount: LiveData<Int> =
-        Transformations.map(userPosts) { resourceWrapper -> resourceWrapper.data?.size ?: 0 }
+        Transformations.map(userPosts) { resourceWrapper -> resourceWrapper.getData()?.size ?: 0 }
     // Transform the [userPosts] to get the presence of Posts created by the logged-in User
     val userPostsEmpty: LiveData<Boolean> =
-        Transformations.map(userPosts) { resourceWrapper -> resourceWrapper.data?.isEmpty() ?: false }
+        Transformations.map(userPosts) { resourceWrapper -> resourceWrapper.getData()?.isEmpty() ?: false }
 
     // LiveData for launching EditProfileActivity
     val launchEditProfile: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
@@ -212,7 +212,7 @@ class ProfileViewModel(
         // Hence we need to ensure that the [newPost] is not already present in the list of user posts before updating.
 
         // Get the current list of Posts
-        val currentPosts: List<Post>? = userPosts.value?.data
+        val currentPosts: List<Post>? = userPosts.value?.getData()
 
         // Check if the list contains the New Post before adding
         currentPosts?.takeIf { it.isNotEmpty() }?.none { post: Post -> post.id == newPost.id }
