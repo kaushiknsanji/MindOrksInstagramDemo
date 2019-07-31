@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mindorks.kaushiknsanji.instagram.demo">
+
     <!-- Internet permission to communicate with Remote API -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permission to read network state -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Permission to read network state -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -13,7 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".ui.detail.photo.ImmersivePhotoActivity"
+            android:theme="@style/AppThemeFullscreen" />
+        <activity android:name=".ui.like.PostLikeActivity" />
+        <activity
+            android:name=".ui.detail.PostDetailActivity"
+            android:parentActivityName=".ui.main.MainActivity" />
         <activity android:name=".ui.profile.edit.EditProfileActivity" />
         <activity
             android:name=".ui.signup.SignUpActivity"
@@ -32,6 +41,7 @@
         </activity>
         <activity android:name=".ui.main.MainActivity" />
 
+        <!-- Pre-loading fonts to decrease load time -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.detail.PostDetailActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_post_detail"
+        style="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_post_detail"
+            style="@style/AppTheme.Toolbar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_post_detail_vertical_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:id="@+id/image_post_detail_photo"
+            style="@style/PostDetailImage"
+            android:contentDescription="@string/cd_image_post_photo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_post_detail_vertical_center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <View
+            android:id="@+id/view_post_detail_creator_info_background"
+            android:layout_width="@dimen/match_constraint_0dp"
+            android:layout_height="@dimen/match_constraint_0dp"
+            android:background="@drawable/shape_post_detail_scrim_bottom"
+            app:layout_constraintBottom_toBottomOf="@+id/image_post_detail_photo"
+            app:layout_constraintEnd_toEndOf="@+id/image_post_detail_photo"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/image_post_detail_photo"
+            app:layout_constraintTop_toTopOf="@+id/image_post_detail_photo"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/image_post_detail_photo_launch"
+            style="@style/PostDetailPhotoLaunchIcon"
+            android:contentDescription="@string/cd_image_post_detail_photo_launch"
+            app:layout_constraintEnd_toEndOf="@+id/image_post_detail_photo"
+            app:layout_constraintTop_toTopOf="@+id/image_post_detail_photo" />
+
+        <ImageView
+            android:id="@+id/image_post_detail_creator_profile"
+            style="@style/PostDetailCreatorProfileImage"
+            android:layout_marginStart="@dimen/guideline_post_detail_vertical_keyline"
+            android:contentDescription="@string/cd_image_post_creator_profile"
+            app:layout_constraintBottom_toBottomOf="@+id/image_post_detail_photo"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/text_post_detail_creator_name"
+            style="@style/PostDetailCreatorProfileName"
+            app:layout_constraintBottom_toBottomOf="@+id/image_post_detail_creator_profile"
+            app:layout_constraintEnd_toStartOf="@+id/text_post_detail_time"
+            app:layout_constraintStart_toEndOf="@+id/image_post_detail_creator_profile"
+            app:layout_constraintTop_toTopOf="@+id/image_post_detail_creator_profile"
+            tools:text="@tools:sample/full_names" />
+
+        <TextView
+            android:id="@+id/text_post_detail_time"
+            style="@style/PostDetailCreationTime"
+            android:layout_marginEnd="@dimen/guideline_post_detail_vertical_keyline"
+            app:layout_constraintBaseline_toBaselineOf="@+id/text_post_detail_creator_name"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_post_detail_vertical_center"
+            tools:text="4 hrs ago" />
+
+        <TextView
+            android:id="@+id/text_post_detail_likes_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/guideline_post_detail_vertical_keyline"
+            android:layout_marginTop="@dimen/text_post_detail_likes_title_vertical_margin"
+            android:text="@string/title_post_detail_likes"
+            android:textAppearance="@style/AppTheme.Body1"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/guideline_post_detail_vertical_center"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_post_detail_like_count"
+            style="@style/PostDetailLikeCount"
+            android:layout_marginEnd="@dimen/guideline_post_detail_vertical_keyline"
+            app:layout_constraintBaseline_toBaselineOf="@+id/text_post_detail_likes_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="@string/label_home_item_post_like_count" />
+
+        <View
+            android:id="@+id/divider_post_detail_likes"
+            style="@style/HorizontalDivider"
+            android:layout_marginTop="@dimen/text_post_detail_likes_title_vertical_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_post_detail_vertical_center"
+            app:layout_constraintTop_toBottomOf="@+id/text_post_detail_likes_title" />
+
+        <View
+            android:id="@+id/view_post_detail_likes_background"
+            android:layout_width="@dimen/match_constraint_0dp"
+            android:layout_height="@dimen/match_constraint_0dp"
+            android:background="@color/postDetailLikesBackgroundColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_post_detail_vertical_center"
+            app:layout_constraintTop_toBottomOf="@+id/divider_post_detail_likes" />
+
+        <include
+            android:id="@+id/include_post_detail_no_likes"
+            layout="@layout/layout_no_likes"
+            android:layout_width="@dimen/match_constraint_0dp"
+            android:layout_height="@dimen/match_constraint_0dp"
+            android:layout_marginStart="@dimen/guideline_post_detail_vertical_keyline"
+            android:layout_marginEnd="@dimen/guideline_post_detail_vertical_keyline"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline_post_detail_vertical_center"
+            app:layout_constraintTop_toBottomOf="@+id/divider_post_detail_likes"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_post_detail_likes"
+            android:layout_width="@dimen/match_constraint_0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_post_detail_vertical_center"
+            app:layout_constraintTop_toBottomOf="@+id/divider_post_detail_likes" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_post_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -86,6 +86,9 @@ dependencies {
     // ParaCamera for capturing Images
     implementation "com.mindorks:paracamera:$paracamera_version"
 
+    // PhotoView for viewing Photos
+    implementation "com.github.chrisbanes:PhotoView:$photoview_version"
+
     // Networking
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"

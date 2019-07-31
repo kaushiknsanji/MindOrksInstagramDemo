@@ -48,7 +48,7 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
     fun provideContext(): Context = fragment.requireContext()
 
     /**
-     * Provides instance of [LinearLayoutManager]
+     * Provides instance of Vertical [LinearLayoutManager]
      */
     @Provides
     fun provideLinearLayoutManager(@ActivityContext context: Context): LinearLayoutManager =

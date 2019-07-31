@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.detail.photo.ImmersivePhotoActivity">
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/view_immersive_photo"
+        android:layout_width="@dimen/match_constraint_0dp"
+        android:layout_height="@dimen/match_constraint_0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/image_immersive_photo_close"
+        android:layout_width="@dimen/image_immersive_photo_close_size"
+        android:layout_height="@dimen/image_immersive_photo_close_size"
+        android:layout_marginStart="@dimen/image_immersive_photo_close_corner_margin"
+        android:layout_marginTop="@dimen/image_immersive_photo_close_corner_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/cd_image_immersive_photo_close"
+        android:src="@drawable/layer_immersive_photo_close"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress_immersive_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

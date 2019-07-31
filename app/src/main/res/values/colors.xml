@@ -21,4 +21,14 @@
     <!-- =============================== -->
     <color name="profileMyPostsBackgroundColor">#f3f3f3</color>
 
+    <!-- =================================== -->
+    <!-- COLORS USED IN POST DETAIL ACTIVITY -->
+    <!-- =================================== -->
+    <color name="postDetailLikesBackgroundColor">#f3f3f3</color>
+
+    <!-- ================================= -->
+    <!-- COLORS USED IN POST LIKE ACTIVITY -->
+    <!-- ================================= -->
+    <color name="postLikeBottomAppBarColor">#FD6C20</color>
+
 </resources>

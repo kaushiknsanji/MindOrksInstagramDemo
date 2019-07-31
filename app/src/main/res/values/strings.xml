@@ -18,6 +18,8 @@
     <!-- ============== -->
     <!-- COMMON STRINGS -->
     <!-- ============== -->
+    <!-- Common progress message shown while deleting a Post -->
+    <string name="progress_post_delete">Deleting Post…</string>
     <!-- Common Content description for App Logo -->
     <string name="cd_image_logo">App logo</string>
     <!-- Common error message shown for Retry -->
@@ -118,5 +120,38 @@
     <string name="title_condensed_action_edit_profile_reset">Reset</string>
     <string name="title_action_edit_profile_save">Save changes</string>
     <string name="title_condensed_action_edit_profile_save">Save</string>
+
+    <!-- ==================================== -->
+    <!-- STRINGS USED IN POST DETAIL ACTIVITY -->
+    <!-- ==================================== -->
+    <string name="title_post_detail_toolbar">Post Details</string>
+    <string name="title_post_detail_likes">Liked by</string>
+    <string name="title_action_post_detail_like">Like/Unlike</string>
+    <string name="title_action_post_detail_delete">Delete</string>
+    <string name="title_condensed_action_post_detail_like">Like/Unlike the Post</string>
+    <string name="title_condensed_action_post_detail_delete">Delete the Post</string>
+    <string name="cd_image_post_detail_photo_launch">Launch Photo</string>
+
+    <!-- ================================== -->
+    <!-- STRINGS USED IN POST LIKE ACTIVITY -->
+    <!-- ================================== -->
+    <string name="title_post_like_toolbar">Liked By</string>
+    <string name="cd_image_post_like_item_user_profile">Post liked User\'s profile picture</string>
+    <string name="title_action_post_like">Like/Unlike</string>
+    <string name="title_condensed_action_post_like">Like/Unlike the Post</string>
+    <string name="cd_image_post_like_heart">Heart Icon for likes count</string>
+
+    <!-- =============================== -->
+    <!-- STRINGS USED IN NO LIKES LAYOUT -->
+    <!-- =============================== -->
+    <string name="cd_image_no_likes">No Likes empty heart icon</string>
+    <string name="title_no_likes">No Likes</string>
+    <string name="no_likes_description">Tap the Heart and be the first to Like!</string>
+
+    <!-- ======================================== -->
+    <!-- STRINGS USED IN IMMERSIVE PHOTO ACTIVITY -->
+    <!-- ======================================== -->
+    <string name="cd_image_immersive_photo_close">Close button</string>
+
 
 </resources>

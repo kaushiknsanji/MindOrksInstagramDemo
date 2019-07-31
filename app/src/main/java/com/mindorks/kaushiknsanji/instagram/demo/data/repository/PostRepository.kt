@@ -8,10 +8,10 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.model.MyPostItem
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.LikePostRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.PostCreationRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.UnlikePostRequest
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.AllPostsListResponse
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.MyPostsListResponse
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.PostCreationResponse
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.*
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import io.reactivex.Single
+import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -162,4 +162,45 @@ class PostRepository @Inject constructor(
                     }
                 }
             }
+
+    /**
+     * Performs "Post Detail" request with the Remote API for the given [postId] and returns a [Single] of the
+     * corresponding [Post] from the response.
+     *
+     * @param postId [Post.id] of the [Post] whose details are required.
+     * @param user Instance of logged-in [User] information.
+     * @return A [Single] of the [Post] containing the details, retrieved from the response.
+     */
+    fun getPostDetail(postId: String, user: User): Single<Post> =
+        networkService.doPostDetailCall(
+            postId,
+            user.id,
+            user.accessToken
+        ).map { response: PostDetailResponse ->
+            // Transforming the [PostDetailResponse] to [Post]
+            response.post
+        }
+
+    /**
+     * Performs deletion of the given [post] via the Remote API and returns a [Single] of [Resource]
+     * from the response.
+     *
+     * @param post The [Post] to be deleted.
+     * @param user Instance of logged-in [User] information.
+     * @return A [Single] of [Resource] from the response.
+     */
+    fun deletePost(post: Post, user: User): Single<Resource<String>> =
+        networkService.doDeletePostCall(
+            post.id,
+            user.id,
+            user.accessToken
+        ).map { response: GeneralResponse ->
+            // Transforming the [GeneralResponse] to [Resource]
+            when (response.status) {
+                // On Success, return the message with Success status
+                HttpURLConnection.HTTP_OK -> Resource.success(response.message)
+                // else, return the message with Unknown status
+                else -> Resource.unknown(response.message)
+            }
+        }
 }

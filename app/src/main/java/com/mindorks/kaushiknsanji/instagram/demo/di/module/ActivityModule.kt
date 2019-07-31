@@ -2,7 +2,9 @@ package com.mindorks.kaushiknsanji.instagram.demo.di.module
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PhotoRepository
+import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityScope
@@ -10,6 +12,10 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.SharedPhotoOptionsViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
+import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo.ImmersivePhotoViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainViewModel
@@ -48,6 +54,12 @@ class ActivityModule(private val activity: BaseActivity<*>) {
     @ActivityScope
     @Provides
     fun provideDialogManager(): DialogManager = DialogManager(activity.supportFragmentManager)
+
+    /**
+     * Provides instance of Vertical [LinearLayoutManager]
+     */
+    @Provides
+    fun provideLinearLayoutManager(): LinearLayoutManager = LinearLayoutManager(activity)
 
     /**
      * Provides instance of [SplashViewModel]
@@ -190,5 +202,73 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         .setCompression(Constants.JPEG_COMPRESSION_QUALITY) // JPEG Image compression/quality
         .setImageHeight(Constants.IMAGE_MAX_HEIGHT_SCALE) // Max height to which the Image will be scaled/downsized while respecting its aspect ratio
         .build(activity)
+
+    /**
+     * Provides instance of [PostLikesAdapter]
+     */
+    @Provides
+    fun providePostLikesAdapter() = PostLikesAdapter(activity.lifecycle)
+
+    /**
+     * Provides instance of [PostLikeViewModel]
+     */
+    @Provides
+    fun providePostLikeViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper,
+        userRepository: UserRepository,
+        postRepository: PostRepository
+    ): PostLikeViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(PostLikeViewModel::class) {
+        // [creator] lambda that creates and returns the ViewModel instance
+        PostLikeViewModel(
+            schedulerProvider,
+            compositeDisposable,
+            networkHelper,
+            userRepository,
+            postRepository
+        )
+    }).get(PostLikeViewModel::class.java)
+
+    /**
+     * Provides instance of [PostDetailViewModel]
+     */
+    @Provides
+    fun providePostDetailViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper,
+        userRepository: UserRepository,
+        postRepository: PostRepository
+    ): PostDetailViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(PostDetailViewModel::class) {
+        // [creator] lambda that creates and returns the ViewModel instance
+        PostDetailViewModel(
+            schedulerProvider,
+            compositeDisposable,
+            networkHelper,
+            userRepository,
+            postRepository
+        )
+    }).get(PostDetailViewModel::class.java)
+
+    /**
+     * Provides instance of [ImmersivePhotoViewModel]
+     */
+    @Provides
+    fun provideImmersivePhotoViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper,
+        userRepository: UserRepository
+    ): ImmersivePhotoViewModel =
+        ViewModelProviders.of(activity, ViewModelProviderFactory(ImmersivePhotoViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            ImmersivePhotoViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper,
+                userRepository
+            )
+        }).get(ImmersivePhotoViewModel::class.java)
 
 }

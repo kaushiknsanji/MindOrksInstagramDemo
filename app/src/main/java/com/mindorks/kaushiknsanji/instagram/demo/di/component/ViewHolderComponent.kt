@@ -2,6 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.di.component
 
 import com.mindorks.kaushiknsanji.instagram.demo.di.ViewHolderScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ViewHolderModule
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikeItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts.ProfilePostItemViewHolder
 import dagger.Component
@@ -19,5 +20,7 @@ interface ViewHolderComponent {
     fun inject(postItemViewHolder: PostItemViewHolder)
 
     fun inject(profilePostItemViewHolder: ProfilePostItemViewHolder)
+
+    fun inject(postLikeItemViewHolder: PostLikeItemViewHolder)
 
 }

@@ -2,6 +2,9 @@ package com.mindorks.kaushiknsanji.instagram.demo.di.component
 
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ActivityModule
+import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo.ImmersivePhotoActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActivity
@@ -29,4 +32,9 @@ interface ActivityComponent {
 
     fun inject(editProfileActivity: EditProfileActivity)
 
+    fun inject(postLikeActivity: PostLikeActivity)
+
+    fun inject(postDetailActivity: PostDetailActivity)
+
+    fun inject(immersivePhotoActivity: ImmersivePhotoActivity)
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_no_likes"
+        android:layout_width="@dimen/match_constraint_0dp"
+        android:layout_height="@dimen/match_constraint_0dp"
+        android:layout_marginTop="@dimen/image_no_likes_margin_top"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/cd_image_no_likes"
+        android:src="@drawable/ic_no_likes"
+        app:layout_constraintBottom_toTopOf="@+id/text_no_likes_title"
+        app:layout_constraintDimensionRatio="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="@dimen/image_no_likes_height_max"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/text_no_likes_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_no_likes_title_margin_top"
+        android:text="@string/title_no_likes"
+        android:textAppearance="@style/AppTheme.Headline6"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toTopOf="@+id/text_no_likes_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_no_likes" />
+
+    <TextView
+        android:id="@+id/text_no_likes_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_no_likes_desc_margin_top"
+        android:text="@string/no_likes_description"
+        android:textAppearance="@style/AppTheme.Body1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_no_likes_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

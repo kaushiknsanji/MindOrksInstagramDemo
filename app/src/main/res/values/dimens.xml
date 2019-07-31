@@ -126,5 +126,40 @@
     <dimen name="text_edit_profile_private_info_title_margin_top">16dp</dimen>
     <dimen name="text_input_edit_profile_email_margin_top">14dp</dimen>
 
+    <!-- ======================== -->
+    <!-- FOR POST DETAIL ACTIVITY -->
+    <!-- ======================== -->
+    <dimen name="guideline_post_detail_vertical_keyline">16dp</dimen>
+    <dimen name="image_post_detail_creator_profile_margin_bottom">16dp</dimen>
+    <dimen name="text_post_detail_likes_title_vertical_margin">8dp</dimen>
+    <dimen name="image_post_detail_photo_launch_size">36dp</dimen>
+    <dimen name="image_post_detail_photo_launch_corner_margin">8dp</dimen>
+
+    <!-- ====================== -->
+    <!-- FOR POST LIKE ACTIVITY -->
+    <!-- ====================== -->
+    <dimen name="card_post_like_item_elevation">2dp</dimen>
+    <dimen name="card_post_like_item_cl_vertical_padding">12dp</dimen>
+    <dimen name="guideline_post_like_item_vertical_keyline">16dp</dimen>
+    <dimen name="text_post_like_item_user_profile_name_margin_start">8dp</dimen>
+    <dimen name="text_post_like_item_user_profile_name_margin_top">4dp</dimen>
+    <dimen name="bottom_app_bar_post_like_content_margin_end">16dp</dimen>
+    <dimen name="image_post_like_heart_size">28dp</dimen>
+    <dimen name="text_post_like_count_margin_start">2dp</dimen>
+
+    <!-- =================== -->
+    <!-- FOR NO LIKES LAYOUT -->
+    <!-- =================== -->
+    <dimen name="image_no_likes_margin_top">16dp</dimen>
+    <dimen name="text_no_likes_title_margin_top">12dp</dimen>
+    <dimen name="text_no_likes_desc_margin_top">10dp</dimen>
+    <dimen name="image_no_likes_height_max">180dp</dimen>
+
+    <!-- ============================ -->
+    <!-- FOR IMMERSIVE PHOTO ACTIVITY -->
+    <!-- ============================ -->
+    <dimen name="image_immersive_photo_close_size">60dp</dimen>
+    <dimen name="image_immersive_photo_close_corner_margin">16dp</dimen>
+
 
 </resources>

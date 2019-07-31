@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_post_like"
+        android:icon="@drawable/ic_heart_unselected"
+        android:orderInCategory="1"
+        android:title="@string/title_action_post_like"
+        android:titleCondensed="@string/title_condensed_action_post_like"
+        app:showAsAction="always" />
+
+</menu>
