@@ -15,7 +15,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
  * @author Kaushik N Sanji
  */
 class PostsAdapter(parentLifecycle: Lifecycle) :
-    BaseAdapter<Post, PostItemViewHolder>(parentLifecycle, mutableListOf()) {
+    BaseAdapter<Post, PostItemViewHolder>(parentLifecycle) {
 
     /**
      * Called when RecyclerView needs a new [PostItemViewHolder] of the given type to represent

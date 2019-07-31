@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @author Kaushik N Sanji
  */
 abstract class BaseAdapter<T : Any, VH : BaseItemViewHolder<T, out BaseItemViewModel<T>>>(
-    parentLifecycle: Lifecycle, private val dataList: MutableList<T>
+    parentLifecycle: Lifecycle, private val dataList: MutableList<T> = mutableListOf()
 ) : RecyclerView.Adapter<VH>() {
 
     // For the RecyclerView instance
