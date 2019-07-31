@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import androidx.lifecycle.Observer
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
@@ -16,6 +15,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setTextOnChange
+import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
@@ -180,11 +180,7 @@ class LoginActivity : BaseActivity<LoginViewModel>() {
         // Register an observer on login request progress to show/hide the Progress Circle
         viewModel.loginProgress.observe(this, Observer { started: Boolean ->
             // Show the Progress Circle when [started], else leave it hidden
-            progress_login.visibility = if (started) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            progress_login.setVisibility(started)
         })
 
         // Register an observer for MainActivity launch events
