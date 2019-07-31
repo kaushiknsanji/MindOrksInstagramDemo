@@ -139,8 +139,8 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
                 Status.LOADING -> {
                     // When Loading, show the Progress Dialog immediately and update the Status Text via its ViewModel
                     dialogManager.showDialogNow(
-                        ProgressTextDialogFragment.Companion::newInstance,
-                        ProgressTextDialogFragment::class.java
+                        ProgressTextDialogFragment::class.java,
+                        ProgressTextDialogFragment.Companion::newInstance
                     )
                     // Update the Status Text
                     sharedProgressTextViewModel.onProgressStatusChange(resourceWrapper)

@@ -207,8 +207,8 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
                 Status.LOADING -> {
                     // When Loading, show the Progress Dialog immediately and update the Status Text via its ViewModel
                     dialogManager.showDialogNow(
-                        ProgressTextDialogFragment.Companion::newInstance,
-                        ProgressTextDialogFragment::class.java
+                        ProgressTextDialogFragment::class.java,
+                        ProgressTextDialogFragment.Companion::newInstance
                     )
                     // Update the Status Text
                     sharedProgressTextViewModel.onProgressStatusChange(resourceWrapper)
@@ -274,8 +274,8 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         viewModel.launchPhotoOptions.observeEvent(this) {
             // Show the Dialog for Photo Options if not shown
             dialogManager.showDialog(
-                PhotoOptionsDialogFragment.Companion::newInstance,
-                PhotoOptionsDialogFragment::class.java
+                PhotoOptionsDialogFragment::class.java,
+                PhotoOptionsDialogFragment.Companion::newInstance
             )
         }
 

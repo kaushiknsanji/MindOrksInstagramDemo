@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
-import kotlin.reflect.KFunction0
 
 /**
  * Utility class for the management of custom Dialogs shown by Activities/Fragments of the App.
@@ -61,18 +60,18 @@ class DialogManager(private val fragmentManager: FragmentManager) {
      * Displays the Dialog immediately for the DialogFragment of type [dialogFragmentClass] if it is currently not shown.
      *
      * @param T The type of [BaseDialogFragment].
-     * @param kInstanceFunction Kotlin Method reference that creates and provides the instance of the DialogFragment to be shown.
      * @param dialogFragmentClass [Class] of the DialogFragment to be shown.
+     * @param creator Lambda that creates and provides the instance of the DialogFragment to be shown.
      */
     fun <T : BaseDialogFragment<out BaseViewModel>> showDialogNow(
-        kInstanceFunction: KFunction0<T>,
-        dialogFragmentClass: Class<T>
+        dialogFragmentClass: Class<T>,
+        creator: () -> T
     ) {
         // If the DialogFragment required is currently NOT shown, then create the instance and show the Dialog immediately
         if (!isDialogSameAndActive(dialogFragmentClass)) {
             dismissActiveDialog() // Dismiss active dialog if any
             // Create the DialogFragment instance and save
-            activeDialogFragment = kInstanceFunction.invoke().also {
+            activeDialogFragment = creator.invoke().also {
                 // Also, show the dialog immediately
                 it.showNow(fragmentManager, DIALOG_FRAGMENT_TAG)
             }
@@ -83,18 +82,18 @@ class DialogManager(private val fragmentManager: FragmentManager) {
      * Displays the Dialog for the DialogFragment of type [dialogFragmentClass] if it is currently not shown.
      *
      * @param T The type of [BaseDialogFragment].
-     * @param kInstanceFunction Kotlin Method reference that creates and provides the instance of the DialogFragment to be shown.
      * @param dialogFragmentClass [Class] of the DialogFragment to be shown.
+     * @param creator Lambda that creates and provides the instance of the DialogFragment to be shown.
      */
     fun <T : BaseDialogFragment<out BaseViewModel>> showDialog(
-        kInstanceFunction: KFunction0<T>,
-        dialogFragmentClass: Class<T>
+        dialogFragmentClass: Class<T>,
+        creator: () -> T
     ) {
         // If the DialogFragment required is currently NOT shown, then create the instance and show the Dialog
         if (!isDialogSameAndActive(dialogFragmentClass)) {
             dismissActiveDialog() // Dismiss active dialog if any
             // Create the DialogFragment instance and save
-            activeDialogFragment = kInstanceFunction.invoke().also {
+            activeDialogFragment = creator.invoke().also {
                 // Also, show the dialog
                 it.show(fragmentManager, DIALOG_FRAGMENT_TAG)
             }

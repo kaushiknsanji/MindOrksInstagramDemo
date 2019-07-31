@@ -15,7 +15,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActi
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-import kotlin.reflect.KFunction0
 
 /**
  * [BaseActivity] subclass that inflates the layout 'R.layout.activity_main' to show the Main screen
@@ -147,7 +146,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
      * Displays the [HomeFragment] in the fragment container.
      */
     private fun showHome() {
-        showFragment(HomeFragment.TAG, HomeFragment.Companion::newInstance, HomeFragment::class.java)
+        showFragment(HomeFragment.TAG, HomeFragment::class.java, HomeFragment.Companion::newInstance)
     }
 
     /**
@@ -155,7 +154,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
      * Displays the [PhotoFragment] in the fragment container.
      */
     private fun showAddPhoto() {
-        showFragment(PhotoFragment.TAG, PhotoFragment.Companion::newInstance, PhotoFragment::class.java)
+        showFragment(PhotoFragment.TAG, PhotoFragment::class.java, PhotoFragment.Companion::newInstance)
     }
 
     /**
@@ -163,7 +162,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
      * Displays the [ProfileFragment] in the fragment container.
      */
     private fun showProfile() {
-        showFragment(ProfileFragment.TAG, ProfileFragment.Companion::newInstance, ProfileFragment::class.java)
+        showFragment(ProfileFragment.TAG, ProfileFragment::class.java, ProfileFragment.Companion::newInstance)
     }
 
     /**
@@ -178,11 +177,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
      * @param T The Type of [BaseFragment].
      * @param fragmentTag [String] representing the Tag of the Fragment to be shown. Required for
      * looking up fragments loaded by the FragmentManager.
-     * @param kInstanceFunction Kotlin Method reference that creates and provides the instance of the Fragment to be shown.
      * @param fragmentClass [Class] of the Fragment to be shown.
+     * @param creator Lambda that creates and provides the instance of the Fragment to be shown.
      */
     private fun <T : BaseFragment<out BaseViewModel>> showFragment(
-        fragmentTag: String, kInstanceFunction: KFunction0<T>, fragmentClass: Class<T>
+        fragmentTag: String, fragmentClass: Class<T>, creator: () -> T
     ) {
 
         // If the fragment required is currently shown, then head back
@@ -195,7 +194,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
         if (fragment == null) {
             // If the Fragment was not loaded previously, then create a new instance and add to the FragmentTransaction
-            fragment = kInstanceFunction.invoke()
+            fragment = creator.invoke()
             fragmentTransaction.add(R.id.container_main_nav_fragment, fragment, fragmentTag)
         } else {
             // If the Fragment was previously loaded, then show that same Fragment instance
