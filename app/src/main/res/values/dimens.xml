@@ -12,6 +12,9 @@
     <!-- Dialog Padding provided by its Background Drawable -->
     <dimen name="dialog_background_content_padding">16dp</dimen>
 
+    <!-- Common spacing applied between the items in a RecyclerView List -->
+    <dimen name="all_list_items_spacing">1dp</dimen>
+
     <!-- =========== -->
     <!-- FOR APP BAR -->
     <!-- =========== -->

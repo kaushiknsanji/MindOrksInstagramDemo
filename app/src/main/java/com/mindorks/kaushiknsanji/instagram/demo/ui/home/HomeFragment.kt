@@ -14,6 +14,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
+import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -62,6 +63,13 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
             layoutManager = linearLayoutManager
             // Set the Adapter for RecyclerView
             adapter = postsAdapter
+            // Add List Spacing Decoration
+            addItemDecoration(
+                VerticalListItemSpacingDecoration(
+                    resources.getDimensionPixelSize(R.dimen.all_list_items_spacing),
+                    0
+                )
+            )
             // Register OnScrollListener to load more data when the user scrolls to the bottom of the list
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 /**
