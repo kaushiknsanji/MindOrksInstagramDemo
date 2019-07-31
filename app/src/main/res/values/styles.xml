@@ -155,6 +155,46 @@
         <item name="android:indeterminate">true</item>
     </style>
 
+    <!-- Base Style for Post Creator's Profile Picture -->
+    <style name="BasePostCreatorProfileImage">
+        <item name="android:layout_width">@dimen/image_post_creator_profile_size</item>
+        <item name="android:layout_height">@dimen/image_post_creator_profile_size</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <!-- Base Style for Post Creator's Profile Name -->
+    <style name="BasePostCreatorProfileName">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/text_post_creator_name_margin_start</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAppearance">@style/AppTheme.Body1</item>
+    </style>
+
+    <!-- Base Style for Post's Photo -->
+    <style name="BasePostImage">
+        <item name="android:layout_width">@dimen/match_constraint_0dp</item>
+        <item name="android:layout_height">@dimen/match_constraint_0dp</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <!-- Base Style for the Number of Likes on the Post -->
+    <style name="BasePostLikeCount">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/AppTheme.Body2</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- Base Style for the Creation Time of the Post -->
+    <style name="BasePostCreationTime">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/AppTheme.Body2</item>
+    </style>
+
     <!-- ========================== -->
     <!-- STYLES FOR SPLASH ACTIVITY -->
     <!-- ========================== -->
@@ -283,6 +323,36 @@
         <item name="android:paddingBottom">@dimen/text_login_sign_up_divider_vertical_padding</item>
         <item name="android:paddingStart">@dimen/text_login_sign_up_divider_horizontal_padding</item>
         <item name="android:paddingEnd">@dimen/text_login_sign_up_divider_horizontal_padding</item>
+    </style>
+
+    <!-- ======================== -->
+    <!-- STYLES FOR HOME FRAGMENT -->
+    <!-- ======================== -->
+    <!-- Derived Style for Post Creator's Profile Picture -->
+    <style name="HomePostCreatorProfileImage" parent="BasePostCreatorProfileImage" />
+
+    <!-- Derived Style for Post Creator's Profile Name -->
+    <style name="HomePostCreatorProfileName" parent="BasePostCreatorProfileName">
+        <item name="layout_constrainedWidth">true</item>
+        <item name="layout_constraintHorizontal_bias">0</item>
+    </style>
+
+    <!-- Derived Style for Post's Photo -->
+    <style name="HomePostImage" parent="BasePostImage">
+        <item name="android:layout_marginTop">@dimen/image_home_item_post_photo_margin_top</item>
+    </style>
+
+    <!-- Derived Style for the Number of Likes on the Post -->
+    <style name="HomePostLikeCount" parent="BasePostLikeCount">
+        <item name="android:layout_marginStart">@dimen/text_home_item_post_like_count_margin_start</item>
+        <item name="android:layout_marginEnd">@dimen/text_home_item_post_like_count_margin_end</item>
+        <item name="layout_constrainedWidth">true</item>
+        <item name="layout_constraintHorizontal_bias">0</item>
+    </style>
+
+    <!-- Derived Style for the Creation Time of the Post -->
+    <style name="HomePostCreationTime" parent="BasePostCreationTime">
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <!-- ================================ -->

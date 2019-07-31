@@ -23,6 +23,12 @@
     <!-- Common error message shown for Retry -->
     <string name="error_retry">Please try again</string>
 
+    <!-- ======================== -->
+    <!-- COMMON POST DATA STRINGS -->
+    <!-- ======================== -->
+    <string name="cd_image_post_creator_profile">Post creator\'s profile picture</string>
+    <string name="cd_image_post_photo">Post creator\'s photo</string>
+
     <!-- ============================== -->
     <!-- STRINGS USED IN LOGIN ACTIVITY -->
     <!-- ============================== -->
@@ -60,8 +66,6 @@
     <!-- ============================= -->
     <!-- STRINGS USED IN HOME FRAGMENT -->
     <!-- ============================= -->
-    <string name="cd_image_home_item_post_creator_profile">Post creator\'s profile picture</string>
-    <string name="cd_image_home_item_post_photo">Post creator\'s photo</string>
     <string name="cd_imgbtn_home_item_toggle_post_like">Post like/unlike toggle button</string>
     <!-- Label shown in the item view where the number of likes needs to be displayed -->
     <string name="label_home_item_post_like_count">
