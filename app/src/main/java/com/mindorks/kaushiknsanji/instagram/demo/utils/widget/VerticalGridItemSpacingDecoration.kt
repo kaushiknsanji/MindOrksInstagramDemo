@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  * to add spacing between the items and its parent in the Grid managed by
  * [GridLayoutManager] or [StaggeredGridLayoutManager].
  *
- * NOTE: Applicable for Grid Layout in [RecyclerView.VERTICAL] orientation only.
+ * NOTE: Applicable for Grid based layout in [RecyclerView.VERTICAL] orientation only.
  *
  * @property verticalOffsetSize The top and bottom spacing in Pixels to be applied between the items in the Grid
  * @property horizontalOffsetSize The left and right spacing in Pixels to be applied between the items in the Grid
@@ -52,8 +52,9 @@ class VerticalGridItemSpacingDecoration(
             spanCount = (parent.layoutManager as StaggeredGridLayoutManager).spanCount
         }
 
-        if (spanCount == 0) {
-            super.getItemOffsets(outRect, view, parent, state)
+        // Ensure spanCount is at least 1 before proceeding
+        if (spanCount < 1) {
+            throw IllegalArgumentException("Span count should be at least 1. Determined is $spanCount")
         }
 
         // Get the Child View position in the adapter
