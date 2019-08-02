@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -304,8 +303,8 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Register an observer for Up Navigation events
         viewModel.navigateParent.observeEvent(this) { event: Boolean ->
             if (event) {
-                // Navigate back to parent on [event]
-                NavUtils.navigateUpFromSameTask(this)
+                // Navigate back to parent using back key navigation
+                goBack()
             }
         }
 
