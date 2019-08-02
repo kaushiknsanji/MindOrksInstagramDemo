@@ -152,7 +152,7 @@
     <!-- =================== -->
     <!-- FOR NO LIKES LAYOUT -->
     <!-- =================== -->
-    <dimen name="image_no_likes_margin_top">16dp</dimen>
+    <dimen name="no_likes_content_vertical_margin">36dp</dimen>
     <dimen name="text_no_likes_title_margin_top">12dp</dimen>
     <dimen name="text_no_likes_desc_margin_top">10dp</dimen>
     <dimen name="image_no_likes_height_max">180dp</dimen>
