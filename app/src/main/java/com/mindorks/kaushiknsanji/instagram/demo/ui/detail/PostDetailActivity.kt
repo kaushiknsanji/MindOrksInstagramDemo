@@ -112,7 +112,8 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
             addItemDecoration(
                 VerticalListItemSpacingDecoration(
                     resources.getDimensionPixelSize(R.dimen.all_list_items_spacing),
-                    0
+                    0,
+                    resources.getDimensionPixelSize(R.dimen.post_detail_likes_list_bottom_offset)
                 )
             )
         }

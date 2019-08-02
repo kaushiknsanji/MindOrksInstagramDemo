@@ -132,7 +132,7 @@
                 android:id="@+id/include_post_detail_no_likes"
                 layout="@layout/layout_no_likes"
                 android:layout_width="@dimen/match_constraint_0dp"
-                android:layout_height="@dimen/match_constraint_0dp"
+                android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_post_detail_vertical_end"

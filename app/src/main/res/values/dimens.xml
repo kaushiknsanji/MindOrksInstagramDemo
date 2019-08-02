@@ -133,8 +133,9 @@
     <dimen name="guideline_post_detail_vertical_keyline">16dp</dimen>
     <dimen name="image_post_detail_creator_profile_margin_bottom">16dp</dimen>
     <dimen name="text_post_detail_likes_title_vertical_margin">8dp</dimen>
-    <dimen name="image_post_detail_photo_launch_size">36dp</dimen>
+    <dimen name="image_post_detail_photo_launch_size">28dp</dimen>
     <dimen name="image_post_detail_photo_launch_corner_margin">8dp</dimen>
+    <dimen name="post_detail_likes_list_bottom_offset">36dp</dimen>
 
     <!-- ====================== -->
     <!-- FOR POST LIKE ACTIVITY -->
