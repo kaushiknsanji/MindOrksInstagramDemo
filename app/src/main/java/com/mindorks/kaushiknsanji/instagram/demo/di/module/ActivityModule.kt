@@ -10,6 +10,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.SharedPhotoOptionsViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
@@ -271,4 +272,21 @@ class ActivityModule(private val activity: BaseActivity<*>) {
             )
         }).get(ImmersivePhotoViewModel::class.java)
 
+    /**
+     * Provides instance of [SharedConfirmOptionDialogViewModel]
+     */
+    @Provides
+    fun provideSharedConfirmOptionDialogViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper
+    ): SharedConfirmOptionDialogViewModel = ViewModelProviders.of(activity,
+        ViewModelProviderFactory(SharedConfirmOptionDialogViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            SharedConfirmOptionDialogViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper
+            )
+        }).get(SharedConfirmOptionDialogViewModel::class.java)
 }

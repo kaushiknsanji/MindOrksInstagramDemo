@@ -100,6 +100,8 @@ class PostDetailViewModel(
         )
     }
 
+    // LiveData for Delete Post confirmation request events
+    val launchDeletePostConfirm: MutableLiveData<Resource<Int>> = MutableLiveData()
     // LiveData for ImmersivePhotoActivity launch events
     val launchImmersivePhoto: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
     // LiveData for navigating back to the Parent
@@ -196,9 +198,19 @@ class PostDetailViewModel(
     /**
      * Called when the Delete menu item is clicked, to Delete the Post shown.
      *
+     * Triggers an event to confirm the action with the user before proceeding.
+     */
+    fun onDeleteRequest() {
+        // Trigger the event and pass the title of the dialog to be shown
+        launchDeletePostConfirm.postValue(Resource.success(R.string.dialog_confirm_title_delete_post))
+    }
+
+    /**
+     * Called when the Post Delete action is confirmed by the User to delete the Post shown.
+     *
      * Communicates with the Remote API to delete the Post shown.
      */
-    fun onDeleteAction() {
+    fun onDeleteConfirm() {
         postData.value?.run {
             if (checkInternetConnectionWithMessage()) {
                 // When we have the network connectivity, initiate Post Deletion

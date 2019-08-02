@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModelProviders
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.SharedPhotoOptionsViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
@@ -63,5 +64,23 @@ class DialogFragmentModule(private val fragment: BaseDialogFragment<*>) {
                 networkHelper
             )
         }).get(SharedPhotoOptionsViewModel::class.java)
+
+    /**
+     * Provides instance of [SharedConfirmOptionDialogViewModel]
+     */
+    @Provides
+    fun provideSharedConfirmOptionDialogViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper
+    ): SharedConfirmOptionDialogViewModel = ViewModelProviders.of(fragment.requireActivity(),
+        ViewModelProviderFactory(SharedConfirmOptionDialogViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            SharedConfirmOptionDialogViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper
+            )
+        }).get(SharedConfirmOptionDialogViewModel::class.java)
 
 }

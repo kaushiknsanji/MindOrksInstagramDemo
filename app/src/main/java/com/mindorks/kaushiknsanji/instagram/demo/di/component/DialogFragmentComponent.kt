@@ -2,6 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.di.component
 
 import com.mindorks.kaushiknsanji.instagram.demo.di.DialogFragmentScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.DialogFragmentModule
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.PhotoOptionsDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
 import dagger.Component
@@ -19,5 +20,7 @@ interface DialogFragmentComponent {
     fun inject(dialogFragment: PhotoOptionsDialogFragment)
 
     fun inject(dialogFragment: ProgressTextDialogFragment)
+
+    fun inject(dialogFragment: ConfirmOptionDialogFragment)
 
 }

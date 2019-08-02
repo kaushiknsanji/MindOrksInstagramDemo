@@ -153,5 +153,13 @@
     <!-- ======================================== -->
     <string name="cd_image_immersive_photo_close">Close button</string>
 
+    <!-- ============================================== -->
+    <!-- STRINGS USED IN CONFIRM OPTION DIALOG FRAGMENT -->
+    <!-- ============================================== -->
+    <string name="dialog_confirm_title_default">Confirm</string>
+    <string name="dialog_confirm_positive_button_default">YES</string>
+    <string name="dialog_confirm_negative_button_default">NO</string>
+    <string name="dialog_confirm_title_delete_post">Delete Post?</string>
+
 
 </resources>

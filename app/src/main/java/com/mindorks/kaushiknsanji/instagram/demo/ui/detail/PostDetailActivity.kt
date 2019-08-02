@@ -14,6 +14,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
@@ -45,6 +47,10 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
     // SharedProgressTextViewModel instance provided by Dagger
     @Inject
     lateinit var sharedProgressTextViewModel: SharedProgressTextViewModel
+
+    // SharedConfirmOptionDialogViewModel instance provided by Dagger
+    @Inject
+    lateinit var sharedConfirmOptionDialogViewModel: SharedConfirmOptionDialogViewModel
 
     /**
      * Injects dependencies exposed by [ActivityComponent] into Activity.
@@ -299,6 +305,23 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
                 }
             }
         })
+
+        // Register an observer on Delete Post confirmation Request events
+        viewModel.launchDeletePostConfirm.observeResourceEvent(this) { _, titleResId: Int ->
+            // Show the Confirmation Dialog to the User for Delete Post request
+            dialogManager.showDialog(
+                ConfirmOptionDialogFragment::class.java,
+                ConfirmOptionDialogFragment.Companion::newInstance
+            )
+            // Pass the Dialog Title to be shown via its Shared ViewModel
+            sharedConfirmOptionDialogViewModel.onDialogTitleTextChange(Resource.success(titleResId))
+        }
+
+        // Register an observer on Delete Post confirmation - Positive response events
+        sharedConfirmOptionDialogViewModel.actionPositiveButton.observeEvent(this) {
+            // Delegate to the Primary ViewModel to begin the delete process
+            viewModel.onDeleteConfirm()
+        }
 
         // Register an observer for Up Navigation events
         viewModel.navigateParent.observeEvent(this) { event: Boolean ->
