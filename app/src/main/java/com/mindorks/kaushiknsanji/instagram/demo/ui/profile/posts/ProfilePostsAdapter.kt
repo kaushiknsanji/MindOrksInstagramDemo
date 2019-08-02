@@ -16,7 +16,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
  */
 class ProfilePostsAdapter(
     parentLifecycle: Lifecycle
-) : BaseAdapter<Post, ProfilePostItemViewHolder>(parentLifecycle) {
+) : BaseAdapter<Post, BaseAdapter.DefaultListener<Post>, ProfilePostItemViewHolder>(parentLifecycle) {
 
     /**
      * Called when RecyclerView needs a new [ProfilePostItemViewHolder] of the given type to represent
@@ -29,6 +29,21 @@ class ProfilePostsAdapter(
      * @return A new [ProfilePostItemViewHolder] that holds a View of the given view type.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfilePostItemViewHolder =
-        ProfilePostItemViewHolder(parent)
+        ProfilePostItemViewHolder(parent, object : Listener {
+            /**
+             * Callback Method of [BaseAdapter.DefaultListener] invoked when the user clicks on the Adapter Item.
+             *
+             * @param itemData Data of the Adapter Item which is an instance of [Post].
+             */
+            override fun onItemClick(itemData: Post) {
+                // Delegate to all registered listeners
+                listenerObservable.getListeners().forEach { it.onItemClick(itemData) }
+            }
+        })
 
+    /**
+     * Interface to be implemented by the Host [com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileFragment]
+     * to receive callback events.
+     */
+    interface Listener : DefaultListener<Post>
 }

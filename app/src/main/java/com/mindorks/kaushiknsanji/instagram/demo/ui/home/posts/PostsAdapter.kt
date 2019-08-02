@@ -15,7 +15,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
  * @author Kaushik N Sanji
  */
 class PostsAdapter(parentLifecycle: Lifecycle) :
-    BaseAdapter<Post, PostItemViewHolder>(parentLifecycle) {
+    BaseAdapter<Post, PostsAdapter.Listener, PostItemViewHolder>(parentLifecycle) {
 
     /**
      * Called when RecyclerView needs a new [PostItemViewHolder] of the given type to represent
@@ -27,6 +27,42 @@ class PostsAdapter(parentLifecycle: Lifecycle) :
      *
      * @return A new [PostItemViewHolder] that holds a View of the given view type.
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItemViewHolder = PostItemViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItemViewHolder =
+        PostItemViewHolder(parent, object : Listener {
+            /**
+             * Callback Method of [PostsAdapter.Listener] invoked when the user clicks on the TextView that
+             * displays the number of Likes on the Post.
+             *
+             * @param itemData Data of the Adapter Item which is an instance of [Post].
+             */
+            override fun onLikesCountClick(itemData: Post) {
+                // Delegate to all registered listeners
+                listenerObservable.getListeners().forEach { it.onLikesCountClick(itemData) }
+            }
+
+            /**
+             * Callback Method of [BaseAdapter.DefaultListener] invoked when the user clicks on the Adapter Item.
+             *
+             * @param itemData Data of the Adapter Item which is an instance of [Post].
+             */
+            override fun onItemClick(itemData: Post) {
+                // Delegate to all registered listeners
+                listenerObservable.getListeners().forEach { it.onItemClick(itemData) }
+            }
+        })
+
+    /**
+     * Interface to be implemented by the Host [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment]
+     * to receive callback events.
+     */
+    interface Listener : DefaultListener<Post> {
+        /**
+         * Callback Method of [PostsAdapter.Listener] invoked when the user clicks on the TextView that
+         * displays the number of Likes on the Post.
+         *
+         * @param itemData Data of the Adapter Item which is an instance of [Post].
+         */
+        fun onLikesCountClick(itemData: Post)
+    }
 
 }

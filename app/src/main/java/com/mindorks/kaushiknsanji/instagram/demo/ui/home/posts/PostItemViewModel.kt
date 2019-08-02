@@ -1,6 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
@@ -10,6 +11,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.TimeUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ScreenUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
@@ -79,6 +81,12 @@ class PostItemViewModel @Inject constructor(
         )
     }
 
+    // LiveData for ItemView Click event
+    val actionItemClick: MutableLiveData<Event<Post>> = MutableLiveData()
+
+    // LiveData for Likes Count TextView Click event
+    val actionLikesCountClick: MutableLiveData<Event<Post>> = MutableLiveData()
+
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
      */
@@ -124,6 +132,28 @@ class PostItemViewModel @Inject constructor(
                         )
                 )
             }
+        }
+    }
+
+    /**
+     * Called when the User clicks on the Post.
+     * Triggers an event to delegate it to the Host Listeners to handle.
+     */
+    fun onItemClick() {
+        // Triggering the event when we have the Post Item data
+        itemData.value?.let {
+            actionItemClick.postValue(Event(it))
+        }
+    }
+
+    /**
+     * Called when the User clicks on the TextView that displays the number of Likes on the Post.
+     * Triggers an event to delegate it to the Host Listeners to handle.
+     */
+    fun onLikeCountClick() {
+        // Triggering the event when we have the Post Item data
+        itemData.value?.let {
+            actionLikesCountClick.postValue(Event(it))
         }
     }
 

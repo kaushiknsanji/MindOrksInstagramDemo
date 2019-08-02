@@ -10,9 +10,11 @@ import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import kotlinx.android.synthetic.main.item_profile_post.view.*
 
 /**
@@ -24,8 +26,8 @@ import kotlinx.android.synthetic.main.item_profile_post.view.*
  * @author Kaushik N Sanji
  */
 class ProfilePostItemViewHolder(
-    private val container: ViewGroup
-) : BaseItemViewHolder<Post, ProfilePostItemViewModel>(R.layout.item_profile_post, container) {
+    private val container: ViewGroup, listener: BaseAdapter.DefaultListener<Post>?
+) : BaseItemViewHolder<Post, ProfilePostItemViewModel>(R.layout.item_profile_post, container, listener) {
 
     /**
      * Injects dependencies exposed by [ViewHolderComponent] into [androidx.recyclerview.widget.RecyclerView.ViewHolder].
@@ -38,7 +40,8 @@ class ProfilePostItemViewHolder(
      * Initializes the Layout of the [itemView].
      */
     override fun setupView(itemView: View) {
-        //No-op
+        //Register a Click Listener on the Post Item
+        itemView.setOnClickListener { itemViewModel.onItemClick() }
     }
 
     /**
@@ -87,6 +90,10 @@ class ProfilePostItemViewHolder(
             }
         })
 
+        // Register an observer for the User's Click action on Post Item
+        itemViewModel.actionItemClick.observeEvent(this) { post: Post ->
+            listener?.onItemClick(post)
+        }
     }
 
     /**

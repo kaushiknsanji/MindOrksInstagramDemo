@@ -5,21 +5,28 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerObservable
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.ListenerHost
 
 /**
  * An abstract base class for [RecyclerView.Adapter] that registers as a [LifecycleObserver]
  * on the [Lifecycle] of a LifecycleOwner to be Lifecycle aware. Provides abstraction for common tasks and setup.
+ * Implements [ListenerHost] to enable the Host of this Adapter to register its Listener for Navigation events.
  *
  * @param T The type of ItemView's data.
- * @param VH The type of ItemView's ViewHolder that extends [BaseItemViewHolder]
+ * @param L The type of Listeners that extends [BaseAdapter.DefaultListener].
+ * @param VH The type of ItemView's ViewHolder that extends [BaseItemViewHolder].
  * @param parentLifecycle The [Lifecycle] of a LifecycleOwner to observe on.
  * @property dataList [MutableList] of type [T] which is the data list of the Adapter.
+ * @property listenerObservable Instance of [BaseListenerObservable] that dispatches callback events to registered Listeners.
  *
  * @author Kaushik N Sanji
  */
-abstract class BaseAdapter<T : Any, VH : BaseItemViewHolder<T, out BaseItemViewModel<T>>>(
-    parentLifecycle: Lifecycle, private val dataList: MutableList<T> = mutableListOf()
-) : RecyclerView.Adapter<VH>() {
+abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : BaseItemViewHolder<T, out BaseItemViewModel<T>>>(
+    parentLifecycle: Lifecycle,
+    private val dataList: MutableList<T> = mutableListOf(),
+    protected val listenerObservable: BaseListenerObservable<L> = BaseListenerObservable()
+) : RecyclerView.Adapter<VH>(), ListenerHost<L> by listenerObservable {
 
     // For the RecyclerView instance
     private var recyclerView: RecyclerView? = null
@@ -199,6 +206,20 @@ abstract class BaseAdapter<T : Any, VH : BaseItemViewHolder<T, out BaseItemViewM
         dataList.addAll(newList)
         // Signal complete change after reload
         notifyDataSetChanged()
+    }
+
+    /**
+     * Interface to be implemented by the Host of this Adapter to receive callback events.
+     *
+     * @param T The type of ItemView's data.
+     */
+    interface DefaultListener<T> {
+        /**
+         * Callback Method of [BaseAdapter.DefaultListener] invoked when the user clicks on the Adapter Item.
+         *
+         * @param itemData Data of the Adapter Item.
+         */
+        fun onItemClick(itemData: T)
     }
 
 }

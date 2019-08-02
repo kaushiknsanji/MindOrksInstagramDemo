@@ -1,14 +1,18 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.main
 
+import android.util.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
+import java.io.Serializable
 
 /**
  * [BaseViewModel] subclass common for all the Bottom Navigation Fragments of the [MainActivity] to communicate
@@ -30,6 +34,12 @@ class MainSharedViewModel(
 
     // LiveData for launching EditProfileActivity
     val launchEditProfile: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
+
+    // LiveData for launching PostDetailActivity
+    val launchPostDetail: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
+
+    // LiveData for launching PostLikeActivity
+    val launchPostLike: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
 
     // LiveData triggered when the User Profile information is updated
     private val userProfileInfoChanged: MutableLiveData<Boolean> = MutableLiveData()
@@ -100,6 +110,37 @@ class MainSharedViewModel(
     fun onEditProfileSuccess() {
         // Update [userProfileInfoChanged] to trigger an event to reload information
         userProfileInfoChanged.postValue(true)
+    }
+
+    /**
+     * Called when the user clicks on the Post Item displayed in either
+     * [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment] or
+     * [com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileFragment].
+     *
+     * Triggers an event to launch the [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity]
+     * supplying the required [post] details as Intent Extras.
+     */
+    fun onPostItemClick(post: Post) {
+        launchPostDetail.postValue(
+            Event(ArrayMap<String, Serializable>().apply {
+                put(PostDetailActivity.EXTRA_POST_ID, post.id)
+            })
+        )
+    }
+
+    /**
+     * Called when the user clicks on the number of Likes on the Post Item displayed in
+     * [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment].
+     *
+     * Triggers an event to launch the [com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeActivity]
+     * supplying the required [post] details as Intent Extras.
+     */
+    fun onPostLikesCountClick(post: Post) {
+        launchPostLike.postValue(
+            Event(ArrayMap<String, Serializable>().apply {
+                put(PostLikeActivity.EXTRA_POST_ID, post.id)
+            })
+        )
     }
 
 }

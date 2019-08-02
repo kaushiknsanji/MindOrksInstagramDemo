@@ -16,7 +16,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
  * @author Kaushik N Sanji
  */
 class PostLikesAdapter(parentLifecycle: Lifecycle) :
-    BaseAdapter<Post.User, PostLikeItemViewHolder>(parentLifecycle) {
+    BaseAdapter<Post.User, BaseAdapter.DefaultListener<Post.User>, PostLikeItemViewHolder>(parentLifecycle) {
 
     /**
      * Called when RecyclerView needs a new [PostLikeItemViewHolder] of the given type to represent

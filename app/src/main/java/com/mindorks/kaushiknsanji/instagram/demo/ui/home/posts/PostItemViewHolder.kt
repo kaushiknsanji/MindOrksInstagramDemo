@@ -12,9 +12,11 @@ import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import kotlinx.android.synthetic.main.item_home_post.view.*
 
 /**
@@ -25,8 +27,8 @@ import kotlinx.android.synthetic.main.item_home_post.view.*
  *
  * @author Kaushik N Sanji
  */
-class PostItemViewHolder(container: ViewGroup) :
-    BaseItemViewHolder<Post, PostItemViewModel>(R.layout.item_home_post, container) {
+class PostItemViewHolder(container: ViewGroup, listener: BaseAdapter.DefaultListener<Post>?) :
+    BaseItemViewHolder<Post, PostItemViewModel>(R.layout.item_home_post, container, listener) {
 
     /**
      * Injects dependencies exposed by [ViewHolderComponent] into [androidx.recyclerview.widget.RecyclerView.ViewHolder].
@@ -219,5 +221,16 @@ class PostItemViewHolder(container: ViewGroup) :
             }
         })
 
+        // Register an observer for the User's Click action on Post Item
+        itemViewModel.actionItemClick.observeEvent(this) { post: Post ->
+            listener?.onItemClick(post)
+        }
+
+        // Register an observer for the User's Click action on Post Likes Count
+        itemViewModel.actionLikesCountClick.observeEvent(this) { post: Post ->
+            (listener as? PostsAdapter.Listener)?.onLikesCountClick(post)
+        }
+
     }
+
 }

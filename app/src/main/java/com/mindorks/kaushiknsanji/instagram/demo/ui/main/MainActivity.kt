@@ -8,12 +8,16 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.photo.PhotoFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.putExtrasFromMap
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.Serializable
 import javax.inject.Inject
 
 /**
@@ -139,6 +143,21 @@ class MainActivity : BaseActivity<MainViewModel>() {
             )
         }
 
+        // Register an observer for PostDetailActivity launch events
+        mainSharedViewModel.launchPostDetail.observeEvent(this) { intentMap: Map<String, Serializable> ->
+            // Start PostDetailActivity with the request code for results
+            startActivityForResult(
+                Intent(this, PostDetailActivity::class.java).putExtrasFromMap(intentMap),
+                PostDetailActivity.REQUEST_POST_DETAIL
+            )
+        }
+
+        // Register an observer for PostLikeActivity launch events
+        mainSharedViewModel.launchPostLike.observeEvent(this) { intentMap: Map<String, Serializable> ->
+            startActivity(
+                Intent(this, PostLikeActivity::class.java).putExtrasFromMap(intentMap)
+            )
+        }
     }
 
     /**

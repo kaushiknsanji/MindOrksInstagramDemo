@@ -22,7 +22,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.TextAppearanceUtils
-import com.mindorks.kaushiknsanji.instagram.demo.utils.log.Logger
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalGridItemSpacingDecoration
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -35,7 +34,7 @@ import javax.inject.Inject
  *
  * @author Kaushik N Sanji
  */
-class ProfileFragment : BaseFragment<ProfileViewModel>() {
+class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Listener {
 
     // GridLayoutManager instance provided by Dagger
     @Inject
@@ -225,6 +224,41 @@ class ProfileFragment : BaseFragment<ProfileViewModel>() {
             requireActivity().finish() //Terminate this activity
         }
 
+    }
+
+    /**
+     * Callback Method of [com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter.DefaultListener] invoked
+     * when the user clicks on the Adapter Item.
+     *
+     * @param itemData Data of the Adapter Item which is an instance of [Post].
+     */
+    override fun onItemClick(itemData: Post) {
+        // Delegate to the MainActivity via the Shared ViewModel
+        mainSharedViewModel.onPostItemClick(itemData)
+    }
+
+    /**
+     * Called when the Fragment is visible to the user.  This is generally
+     * tied to [android.app.Activity.onStart] of the containing
+     * Activity's lifecycle.
+     */
+    override fun onStart() {
+        super.onStart()
+
+        // Register the Adapter's Listener for Navigation events
+        profilePostsAdapter.registerListener(this)
+    }
+
+    /**
+     * Called when the Fragment is no longer started.  This is generally
+     * tied to [android.app.Activity.onStop] of the containing
+     * Activity's lifecycle.
+     */
+    override fun onStop() {
+        super.onStop()
+
+        // Unregister the Adapter's Listener
+        profilePostsAdapter.unregisterListener(this)
     }
 
     companion object {

@@ -25,11 +25,14 @@ import javax.inject.Inject
  * @param VM The type of ItemView's ViewModel that extends [BaseItemViewModel]
  * @param itemLayoutId [Int] value of the layout resource Id of the ItemView.
  * @param container [ViewGroup] that contains the ItemViews.
+ * @property listener Instance of [BaseAdapter.DefaultListener] to receive Navigation events.
  *
  * @author Kaushik N Sanji
  */
 abstract class BaseItemViewHolder<T : Any, VM : BaseItemViewModel<T>>(
-    @LayoutRes itemLayoutId: Int, container: ViewGroup
+    @LayoutRes itemLayoutId: Int,
+    container: ViewGroup,
+    protected val listener: BaseAdapter.DefaultListener<T>? = null
 ) : RecyclerView.ViewHolder(LayoutInflater.from(container.context).inflate(itemLayoutId, container, false)),
     LifecycleOwner {
 
