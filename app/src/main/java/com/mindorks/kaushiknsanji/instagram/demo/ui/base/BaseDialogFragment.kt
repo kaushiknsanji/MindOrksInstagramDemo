@@ -1,18 +1,22 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.base
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DaggerDialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.DialogFragmentModule
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResourceEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.Toaster
 import javax.inject.Inject
@@ -21,15 +25,18 @@ import javax.inject.Inject
  * An abstract base [DialogFragment] for all DialogFragments in the app, that facilitates
  * setup and abstraction to common tasks.
  *
- * @param VM The type of [BaseViewModel] which will be the Primary ViewModel of the DialogFragment.
+ * @param VM The type of [BaseDialogViewModel] which will be the Primary ViewModel of the DialogFragment.
  *
  * @author Kaushik N Sanji
  */
-abstract class BaseDialogFragment<VM : BaseViewModel> : DialogFragment() {
+abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
 
     // Primary ViewModel instance of the DialogFragment, injected by Dagger
     @Inject
     lateinit var viewModel: VM
+
+    // Instance of Dialog created
+    private lateinit var alertDialog: AlertDialog
 
     /**
      * Called to do initial creation of a fragment.
@@ -68,7 +75,9 @@ abstract class BaseDialogFragment<VM : BaseViewModel> : DialogFragment() {
      * @return Return the View for the fragment's UI, or null.
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(provideLayoutId(), container, false)
+        provideLayoutId().takeIf { it != 0 }?.run {
+            inflater.inflate(this, container, false).apply { alertDialog.setView(this) }
+        }
 
     /**
      * Override to build your own custom Dialog container.  This is typically
@@ -89,13 +98,14 @@ abstract class BaseDialogFragment<VM : BaseViewModel> : DialogFragment() {
      * @return Return a new Dialog instance to be displayed by the Fragment.
      */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-        Dialog(requireContext(), provideTheme()).apply {
-            // Fragment will always be shown as a Dialog
-            showsDialog = true
-            // Setup the Style of the Dialog
-            setStyle(provideDialogStyle(), theme)
+        AlertDialog.Builder(requireContext(), provideTheme()).apply {
+            // Construct the Dialog using builder
+            constructDialog(this, savedInstanceState)
+        }.create().apply {
             // Setup the Dialog
             setupDialog(this, savedInstanceState)
+            // Save the instance created
+            alertDialog = this
         }
 
     /**
@@ -130,7 +140,72 @@ abstract class BaseDialogFragment<VM : BaseViewModel> : DialogFragment() {
             // Show the message when the event occurs
             showMessage(messageResId)
         }
+
+        // Register an observer for the Dialog Title-id LiveData
+        viewModel.titleDialogId.observeResource(this) { _, titleResId: Int? ->
+            // Set the new Dialog Title
+            titleResId?.let { setDialogTitle(getString(it)) }
+        }
+
+        // Register an observer for the Dialog Message-id LiveData
+        viewModel.messageDialogId.observeResource(this) { _, messageResId: Int? ->
+            // Set the new Dialog Message
+            messageResId?.let { setDialogMessage(getString(it)) }
+        }
+
+        // Register an observer for the Dialog's Positive Button Text-id LiveData
+        viewModel.positiveButtonTextId.observeResource(this) { _, nameId: Int? ->
+            // Set the new Name for Positive Button
+            nameId?.let { setDialogButtonName(getString(it), DialogInterface.BUTTON_POSITIVE) }
+        }
+
+        // Register an observer for the Dialog's Negative Button Text-id LiveData
+        viewModel.negativeButtonTextId.observeResource(this) { _, nameId: Int? ->
+            // Set the new Name for Negative Button
+            nameId?.let { setDialogButtonName(getString(it), DialogInterface.BUTTON_NEGATIVE) }
+        }
+
+        // Register an observer for the Dialog's Neutral Button Text-id LiveData
+        viewModel.neutralButtonTextId.observeResource(this) { _, nameId: Int? ->
+            // Set the new Name for Neutral Button
+            nameId?.let { setDialogButtonName(getString(it), DialogInterface.BUTTON_NEUTRAL) }
+        }
+
     }
+
+    /**
+     * Updates the Button Name to the new [name] if the required [whichButton] is set.
+     *
+     * @param whichButton The identifier of the button like [DialogInterface.BUTTON_POSITIVE].
+     */
+    private fun setDialogButtonName(name: String, whichButton: Int) {
+        alertDialog.getButton(whichButton)?.text = name
+    }
+
+    /**
+     * Updates the Dialog message to the new [message], only when a Custom View is not being used for the Dialog.
+     */
+    private fun setDialogMessage(message: String) {
+        if (!hasCustomView()) {
+            alertDialog.setMessage(message)
+        }
+    }
+
+    /**
+     * Updates the Dialog title to the new [title], only when a Custom View is not being used for the Dialog.
+     */
+    private fun setDialogTitle(title: String) {
+        if (!hasCustomView()) {
+            alertDialog.setTitle(title)
+        }
+    }
+
+    /**
+     * Checks whether a Custom View is being used for the Dialog.
+     *
+     * @return Returns `true` if a Custom View is used; `false` otherwise
+     */
+    private fun hasCustomView(): Boolean = (provideLayoutId() != 0)
 
     /**
      * Displays a [android.widget.Toast] for the [message] string.
@@ -157,20 +232,37 @@ abstract class BaseDialogFragment<VM : BaseViewModel> : DialogFragment() {
     protected abstract fun injectDependencies(dialogFragmentComponent: DialogFragmentComponent)
 
     /**
-     * To be overridden by subclasses to provide the Resource Layout Id for the DialogFragment.
+     * Can be overridden by subclasses to provide the Resource Layout Id for the DialogFragment.
+     * If not provided, value of `0` will be returned.
      */
     @LayoutRes
-    protected abstract fun provideLayoutId(): Int
+    protected open fun provideLayoutId(): Int = 0
 
     /**
-     * To be overridden by subclasses to setup the [Dialog] of the DialogFragment.
+     * Can be overridden by subclasses to construct a [Dialog] using [dialogBuilder].
      */
-    protected abstract fun setupDialog(dialog: Dialog, savedInstanceState: Bundle?)
+    @CallSuper
+    protected open fun constructDialog(dialogBuilder: AlertDialog.Builder, savedInstanceState: Bundle?) {
+    }
 
     /**
-     * To be overridden by subclasses to setup the Layout of the DialogFragment.
+     * Can be overridden by subclasses to setup the [Dialog] of the DialogFragment.
      */
-    protected abstract fun setupView(view: View, savedInstanceState: Bundle?)
+    @CallSuper
+    protected open fun setupDialog(dialog: Dialog, savedInstanceState: Bundle?) {
+        // Fragment will always be shown as a Dialog
+        showsDialog = true
+        // Setup the Style of the Dialog
+        setStyle(provideDialogStyle(), theme)
+    }
+
+    /**
+     * Can be overridden by subclasses to setup the Layout of the DialogFragment
+     * when the Layout Id of the Custom View has been provided through [provideLayoutId].
+     */
+    @CallSuper
+    protected open fun setupView(view: View, savedInstanceState: Bundle?) {
+    }
 
     /**
      * Can be overridden to provide the style resource describing the theme to be used for the [Dialog].

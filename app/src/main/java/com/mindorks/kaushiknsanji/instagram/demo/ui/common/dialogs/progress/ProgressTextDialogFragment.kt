@@ -36,6 +36,7 @@ class ProgressTextDialogFragment() : BaseDialogFragment<SharedProgressTextViewMo
      * Initializes the [Dialog] of the DialogFragment.
      */
     override fun setupDialog(dialog: Dialog, savedInstanceState: Bundle?) {
+        super.setupDialog(dialog, savedInstanceState)
         // This Dialog should not be cancelable
         isCancelable = false
     }
@@ -44,7 +45,7 @@ class ProgressTextDialogFragment() : BaseDialogFragment<SharedProgressTextViewMo
      * Initializes the Layout of the DialogFragment.
      */
     override fun setupView(view: View, savedInstanceState: Bundle?) {
-        //No-op
+        super.setupView(view, savedInstanceState)
     }
 
     /**

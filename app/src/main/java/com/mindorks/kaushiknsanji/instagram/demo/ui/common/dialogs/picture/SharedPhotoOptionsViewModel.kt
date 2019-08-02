@@ -1,14 +1,14 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture
 
 import androidx.lifecycle.MutableLiveData
-import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * [BaseViewModel] subclass for [PhotoOptionsDialogFragment].
+ * [BaseDialogViewModel] subclass for [PhotoOptionsDialogFragment].
  *
  * @author Kaushik N Sanji
  */
@@ -16,7 +16,7 @@ class SharedPhotoOptionsViewModel(
     schedulerProvider: SchedulerProvider,
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper
-) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
+) : BaseDialogViewModel(schedulerProvider, compositeDisposable, networkHelper) {
 
     // LiveData for launching System Camera
     val launchCamera: MutableLiveData<Event<Boolean>> = MutableLiveData()

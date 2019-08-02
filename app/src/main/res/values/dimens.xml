@@ -10,7 +10,8 @@
     <dimen name="progress_horizontal_height">4dp</dimen>
 
     <!-- Dialog Padding provided by its Background Drawable -->
-    <dimen name="dialog_background_content_padding">16dp</dimen>
+    <dimen name="dialog_background_content_vertical_padding">24dp</dimen>
+    <dimen name="dialog_background_content_horizontal_padding">16dp</dimen>
 
     <!-- Common spacing applied between the items in a RecyclerView List -->
     <dimen name="all_list_items_spacing">1dp</dimen>

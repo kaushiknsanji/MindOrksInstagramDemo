@@ -31,16 +31,10 @@ class PhotoOptionsDialogFragment() : BaseDialogFragment<SharedPhotoOptionsViewMo
     override fun provideLayoutId(): Int = R.layout.dialog_photo_options
 
     /**
-     * Initializes the [Dialog] of the DialogFragment.
-     */
-    override fun setupDialog(dialog: Dialog, savedInstanceState: Bundle?) {
-        //No-op
-    }
-
-    /**
      * Initializes the Layout of the DialogFragment.
      */
     override fun setupView(view: View, savedInstanceState: Bundle?) {
+        super.setupView(view, savedInstanceState)
         // Register click listener on "Camera" option
         view_photo_option_camera_background.setOnClickListener {
             // Delegate to the Primary Shared ViewModel

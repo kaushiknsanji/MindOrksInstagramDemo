@@ -12,10 +12,10 @@
 
     <!-- Content padding -->
     <padding
-        android:bottom="@dimen/dialog_background_content_padding"
-        android:left="@dimen/dialog_background_content_padding"
-        android:right="@dimen/dialog_background_content_padding"
-        android:top="@dimen/dialog_background_content_padding" />
+        android:bottom="@dimen/dialog_background_content_vertical_padding"
+        android:left="@dimen/dialog_background_content_horizontal_padding"
+        android:right="@dimen/dialog_background_content_horizontal_padding"
+        android:top="@dimen/dialog_background_content_vertical_padding" />
 
     <!-- Corner curve radius -->
     <corners android:radius="5dp" />

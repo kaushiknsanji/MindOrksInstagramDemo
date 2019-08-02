@@ -1,14 +1,14 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress
 
 import androidx.lifecycle.MutableLiveData
-import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * [BaseViewModel] subclass for [ProgressTextDialogFragment].
+ * [BaseDialogViewModel] subclass for [ProgressTextDialogFragment].
  *
  * @author Kaushik N Sanji
  */
@@ -16,7 +16,7 @@ class SharedProgressTextViewModel(
     schedulerProvider: SchedulerProvider,
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper
-) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
+) : BaseDialogViewModel(schedulerProvider, compositeDisposable, networkHelper) {
 
     // LiveData for the Progress status with message
     val progressStatus: MutableLiveData<Resource<Int>> = MutableLiveData()
