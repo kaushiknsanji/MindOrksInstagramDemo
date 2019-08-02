@@ -66,7 +66,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
             // Add List Spacing Decoration
             addItemDecoration(
                 VerticalListItemSpacingDecoration(
-                    resources.getDimensionPixelSize(R.dimen.all_list_items_spacing),
+                    resources.getDimensionPixelSize(R.dimen.home_item_list_spacing),
                     0
                 )
             )

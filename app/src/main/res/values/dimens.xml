@@ -14,7 +14,7 @@
     <dimen name="dialog_background_content_horizontal_padding">16dp</dimen>
 
     <!-- Common spacing applied between the items in a RecyclerView List -->
-    <dimen name="all_list_items_spacing">1dp</dimen>
+    <dimen name="all_list_items_spacing">2dp</dimen>
 
     <!-- =========== -->
     <!-- FOR APP BAR -->
@@ -81,6 +81,7 @@
     <dimen name="imgbtn_home_item_toggle_post_like_margin_top">8dp</dimen>
     <dimen name="text_home_item_post_like_count_margin_start">2dp</dimen>
     <dimen name="text_home_item_post_like_count_margin_end">8dp</dimen>
+    <dimen name="home_item_list_spacing">4dp</dimen>
 
     <!-- ==================================================== -->
     <!-- FOR PHOTO FRAGMENT AND PHOTO OPTIONS DIALOG FRAGMENT -->
