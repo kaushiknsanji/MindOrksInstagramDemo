@@ -1,15 +1,12 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
-import com.mindorks.kaushiknsanji.instagram.demo.utils.display.WindowUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
@@ -28,9 +25,6 @@ class ImmersivePhotoViewModel(
     userRepository: UserRepository
 ) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
 
-    // LiveData for the Image loading progress indication
-    val loadingProgress: MutableLiveData<Boolean> = MutableLiveData()
-
     // Stores the logged-in [User] information
     private val user: User = userRepository.getCurrentUser()!!
 
@@ -46,13 +40,9 @@ class ImmersivePhotoViewModel(
 
     // LiveData for Fullscreen Toggle events
     val toggleFullscreen: MutableLiveData<Event<Boolean>> = MutableLiveData()
-    // Transform [toggleFullscreen] to get the current Immersive Mode state
-    val isImmersiveMode: LiveData<Boolean> = Transformations.map(toggleFullscreen) { event: Event<Boolean>? ->
-        event?.peekContent()?.takeIf { it }?.run {
-            // On Toggle, read the Immersive Mode state
-            WindowUtils.isImmersiveModeEnabled()
-        } ?: false // Otherwise, return false
-    }
+
+    // LiveData for Immersive Mode state change events
+    val immersiveModeState: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     // LiveData for closing the Activity
     val closeAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
@@ -96,5 +86,15 @@ class ImmersivePhotoViewModel(
      * Triggers an event to finish the Activity.
      */
     fun onClose() = closeAction.postValue(Event(true))
+
+    /**
+     * Called by the activity when there is a change in the Sticky Immersive Mode of the System UI Visibility flags.
+     * Triggers the state change event to [immersiveModeState] LiveData.
+     *
+     * @param immersiveModeOn When `true`, the Immersive Mode is enabled; `false` otherwise.
+     */
+    fun onUpdateImmersiveModeState(immersiveModeOn: Boolean) {
+        immersiveModeState.postValue(Event(immersiveModeOn))
+    }
 
 }

@@ -12,7 +12,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
-import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.activity_immersive_photo.*
 
 /**
@@ -50,6 +49,9 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
             )
         }
 
+        // Dispatch the current Immersive Mode state to ViewModel
+        updateImmersiveModeState(window.decorView.systemUiVisibility)
+
         // Register Tap listener on the Post Photo
         view_immersive_photo.setOnPhotoTapListener { _, _, _ -> viewModel.onToggleFullscreen() }
 
@@ -63,12 +65,6 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
      */
     override fun setupObservers() {
         super.setupObservers()
-
-        // Register an observer on Post Photo loading progress to show/hide the Progress Circle
-        viewModel.loadingProgress.observe(this, Observer { started: Boolean ->
-            // Show the Progress Circle when [started], else leave it hidden
-            progress_immersive_photo.setVisibility(started)
-        })
 
         // Register an observer on the Post Creator's Photo LiveData to load the Image
         // into the corresponding ImageView
@@ -102,29 +98,33 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
             }
         })
 
-        // Register an observer for Fullscreen Toggle events to toggle the UI Options for Fullscreen Immersive mode
+        // Register an observer for Fullscreen Toggle events to toggle the System UI Visibility bits
+        // for Fullscreen Sticky Immersive mode
         viewModel.toggleFullscreen.observeEvent(this) { toggle: Boolean ->
             if (toggle) {
-                // On [toggle], toggle the bits corresponding to Fullscreen Immersive in UI Options
+                // On [toggle], toggle the bits corresponding to Fullscreen Sticky Immersive in System UI Visibility
 
-                // Set the new UI Options
-                window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.also { uiOptions: Int ->
-                    // Toggle "Navigation bar", "Status bar" and "Immersive mode" bits
+                // Set the new System UI Visibility
+                window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.let { uiOptions: Int ->
+                    // Toggle "Navigation bar", "Status bar" and "Sticky Immersive mode" bits
                     uiOptions xor View.SYSTEM_UI_FLAG_HIDE_NAVIGATION xor View.SYSTEM_UI_FLAG_FULLSCREEN xor View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                }.also {
+                    // Also, update the Immersive Mode state to ViewModel
+                    updateImmersiveModeState(it)
                 }
             }
         }
 
-        // Register an observer on Immersive Mode LiveData to show/hide other views accordingly
-        viewModel.isImmersiveMode.observe(this, Observer { isImmersive: Boolean ->
-            if (isImmersive) {
-                // On [isImmersive], hide the required views
+        // Register an observer on Immersive Mode state change events to show/hide other views accordingly
+        viewModel.immersiveModeState.observeEvent(this) { immersiveModeOn: Boolean ->
+            if (immersiveModeOn) {
+                // When Immersive Mode is On, hide the required views
                 image_immersive_photo_close.visibility = View.GONE
             } else {
-                // Otherwise, show the required views
+                // When Immersive Mode is Off, show the required views
                 image_immersive_photo_close.visibility = View.VISIBLE
             }
-        })
+        }
 
         // Register an observer for close action events, to close this Activity
         viewModel.closeAction.observeEvent(this) { close: Boolean ->
@@ -133,6 +133,18 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
                 finish()
             }
         }
+    }
+
+    /**
+     * Updates the current Immersive Mode state to the Primary ViewModel to handle.
+     *
+     * @param uiOptions The Bitwise-or flags of System UI Visibility, to check for Immersive Mode state.
+     * Value published will be `true` when the [View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY] bit is already set.
+     */
+    private fun updateImmersiveModeState(uiOptions: Int) {
+        viewModel.onUpdateImmersiveModeState(
+            uiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY == uiOptions
+        )
     }
 
     companion object {
