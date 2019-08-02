@@ -211,6 +211,20 @@ class HomeViewModel(
 
     }
 
+    /**
+     * Called when the User Deletes the Post from the current Fragment or
+     * [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity].
+     *
+     * Removes the Post with the [postId] from the [allPostList] and updates [reloadAllPosts] to reload the list.
+     */
+    fun onPostDeleted(postId: String): Unit? =
+        allPostList.takeIf { it.isNotEmpty() }?.apply {
+            removeAll { post: Post -> post.id == postId }
+        }?.run {
+            // Trigger List of All Posts to be reloaded
+            reloadAllPosts.postValue(Resource.success(this.map { it }))
+        }
+
     companion object {
         // Constant used for logs
         const val TAG = "HomeViewModel"

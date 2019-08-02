@@ -149,6 +149,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
             }
         }
 
+        // Register an observer for Post Deleted events
+        mainSharedViewModel.postDeletedEventToHome.observeEvent(this) { postId: String ->
+            // Delegate to the ViewModel to remove the Post from the list
+            viewModel.onPostDeleted(postId)
+        }
+
     }
 
     /**

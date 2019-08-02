@@ -211,7 +211,6 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
 
         // Register an observer for Profile information update events
         mainSharedViewModel.userProfileInfoUpdateToProfile.observeEvent(this) { reload: Boolean ->
-            Logger.i(TAG, "Reload User Profile: $reload")
             if (reload) {
                 // On reload, delegate to the ViewModel to refresh User information
                 viewModel.onRefreshUserInfo()
@@ -222,6 +221,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         viewModel.launchLogin.observeEvent(this) {
             startActivity(Intent(requireContext(), LoginActivity::class.java))
             requireActivity().finish() //Terminate this activity
+        }
+
+        // Register an observer for Post Deleted events
+        mainSharedViewModel.postDeletedEventToProfile.observeEvent(this) { postId: String ->
+            // Delegate to the ViewModel to remove the Post from the list
+            viewModel.onPostDeleted(postId)
         }
 
     }

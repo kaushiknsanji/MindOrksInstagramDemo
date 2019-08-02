@@ -238,4 +238,15 @@ class ProfileViewModel(
         userInfo.postValue(userRepository.getCurrentUser())
     }
 
+    /**
+     * Called when the User Deletes the Post from [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity]
+     * or [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment].
+     *
+     * Removes the Post with the [postId] from the [userPosts] and reloads the list.
+     */
+    fun onPostDeleted(postId: String) =
+        userPosts.postValue(Resource.success(userPosts.value?.getData()?.toMutableList()?.apply {
+            removeAll { post: Post -> post.id == postId }
+        }))
+
 }

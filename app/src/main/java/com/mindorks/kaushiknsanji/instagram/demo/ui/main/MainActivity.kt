@@ -277,11 +277,35 @@ class MainActivity : BaseActivity<MainViewModel>() {
                             }
                         }
                     }
-                }
 
-            }
+                    // For PostDetailActivity request
+                    PostDetailActivity.REQUEST_POST_DETAIL -> {
+                        // Taking action based on the Result codes
+                        when (resultCode) {
+                            // For the Successful Delete
+                            PostDetailActivity.RESULT_DELETE_POST_SUCCESS -> {
+                                intent!!.extras.apply {
+                                    // When we have Intent extras of the result
 
-        }
+                                    // Delegate to the MainSharedViewModel, to trigger profile updates in HomeFragment
+                                    // and ProfileFragment
+                                    getString(PostDetailActivity.EXTRA_RESULT_DELETED_POST_ID)
+                                        ?.takeUnless { it.isBlank() }?.let { mainSharedViewModel.onPostItemDeleted(it) }
+                                    // Display the success message if available
+                                    getString(PostDetailActivity.EXTRA_RESULT_DELETE_POST_SUCCESS)
+                                        ?.takeUnless { it.isBlank() }?.let {
+                                            showMessage(it)
+                                        }
+                                }
+                            }
+                        }
+                    }
+
+                } // end: requestCode
+
+            } // end: RESULT_FIRST_USER
+
+        } // end: RESULT_OK
 
     }
 }

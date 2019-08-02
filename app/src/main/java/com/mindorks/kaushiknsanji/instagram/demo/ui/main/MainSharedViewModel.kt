@@ -66,6 +66,17 @@ class MainSharedViewModel(
             Event(reload)
         }
 
+    // LiveData triggered when the Post is deleted
+    private val postDeleted: MutableLiveData<String> = MutableLiveData()
+    // Transform the [postDeleted] to trigger an event to remove Post from [HomeFragment]
+    val postDeletedEventToHome: LiveData<Event<String>> = Transformations.map(postDeleted) { postId: String ->
+        Event(postId)
+    }
+    // Transform the [postDeleted] to trigger an event to remove Post from [ProfileFragment]
+    val postDeletedEventToProfile: LiveData<Event<String>> = Transformations.map(postDeleted) { postId: String ->
+        Event(postId)
+    }
+
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
      */
@@ -141,6 +152,22 @@ class MainSharedViewModel(
                 put(PostLikeActivity.EXTRA_POST_ID, post.id)
             })
         )
+    }
+
+    /**
+     * Called when a Post Item is deleted successfully, either from
+     * [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment] or
+     * [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity].
+     *
+     * Triggers an event for the [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment]
+     * and [com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileFragment] to reload the List of Posts after
+     * removing the Post with [postId].
+     *
+     * @param postId The Id of the [Post] that was deleted.
+     */
+    fun onPostItemDeleted(postId: String) {
+        // Delete the Post shown in [HomeFragment] and [ProfileFragment]
+        postDeleted.postValue(postId)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.detail
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -93,7 +94,7 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
                     }
                     // For "Delete" button
                     R.id.action_post_detail_delete -> {
-                        viewModel.onDeleteAction()
+                        viewModel.onDeleteRequest()
                         return@setOnMenuItemClickListener true
                     }
                     else -> false
@@ -331,6 +332,17 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
             }
         }
 
+        // Register an observer for Up Navigation events with Post Delete Success result, to update the Calling Activity
+        viewModel.navigateParentWithDeleteSuccess.observeEvent(this) { intentMap: Map<String, Serializable> ->
+            // Set the Result
+            setResult(
+                RESULT_DELETE_POST_SUCCESS,
+                Intent().putExtrasFromMap(intentMap)
+            )
+            // Navigate back to parent using back key navigation
+            goBack()
+        }
+
         // Register an observer for ImmersivePhotoActivity launch events
         viewModel.launchImmersivePhoto.observeEvent(this) { intentMap: Map<String, Serializable> ->
             startActivity(
@@ -343,6 +355,21 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Intent Extra constant for the Id of the Post whose details are to be loaded
         @JvmField
         val EXTRA_POST_ID = PostDetailActivity::class.java.`package`.toString() + "extra.POST_ID"
+
+        // Request code used by the activity that calls this activity for result
+        const val REQUEST_POST_DETAIL = 300 // 301 is reserved for the result of this request
+
+        // Custom Result code for Successful Delete operation
+        const val RESULT_DELETE_POST_SUCCESS = REQUEST_POST_DETAIL + Activity.RESULT_FIRST_USER
+
+        // Intent Extra constant for passing the Response message of the Successful Delete operation
+        @JvmField
+        val EXTRA_RESULT_DELETE_POST_SUCCESS =
+            PostDetailActivity::class.java.`package`.toString() + "extra.DELETE_SUCCESS"
+
+        // Intent Extra constant for passing the Id of Deleted Post on Successful Delete operation
+        @JvmField
+        val EXTRA_RESULT_DELETED_POST_ID = PostDetailActivity::class.java.`package`.toString() + "extra.DELETED_POST_ID"
     }
 
 }

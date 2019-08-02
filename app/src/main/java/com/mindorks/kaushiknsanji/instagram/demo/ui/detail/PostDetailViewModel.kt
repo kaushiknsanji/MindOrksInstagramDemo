@@ -106,6 +106,8 @@ class PostDetailViewModel(
     val launchImmersivePhoto: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
     // LiveData for navigating back to the Parent
     val navigateParent: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    // LiveData for navigating back to the Parent with the Result of Successful Post Delete action
+    val navigateParentWithDeleteSuccess: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
 
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
@@ -229,9 +231,13 @@ class PostDetailViewModel(
                                 deleteProgress.postValue(Resource.success())
                                 if (resource.status == Status.SUCCESS) {
                                     // When Resource status is Success, we have deleted the Post successfully
-                                    // Hence show the success message and then trigger an event to go back to the parent
-                                    messageString.postValue(resource)
-                                    navigateParent.postValue(Event(true))
+                                    // Hence trigger an event to go back to the parent with Successful Delete results
+                                    navigateParentWithDeleteSuccess.postValue(
+                                        Event(ArrayMap<String, Serializable>().apply {
+                                            put(PostDetailActivity.EXTRA_RESULT_DELETED_POST_ID, this@run.id)
+                                            put(PostDetailActivity.EXTRA_RESULT_DELETE_POST_SUCCESS, resource.getData())
+                                        })
+                                    )
                                 } else {
                                     // When Resource status is other than Success, Post deletion might have
                                     // failed for other unknown reasons. Hence display the Resource message and
