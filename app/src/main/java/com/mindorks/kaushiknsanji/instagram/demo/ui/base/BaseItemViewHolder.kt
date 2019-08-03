@@ -32,7 +32,7 @@ import javax.inject.Inject
 abstract class BaseItemViewHolder<T : Any, VM : BaseItemViewModel<T>>(
     @LayoutRes itemLayoutId: Int,
     container: ViewGroup,
-    protected val listener: BaseAdapter.DefaultListener<T>? = null
+    protected val listener: BaseAdapter.DefaultListener<T>?
 ) : RecyclerView.ViewHolder(LayoutInflater.from(container.context).inflate(itemLayoutId, container, false)),
     LifecycleOwner {
 

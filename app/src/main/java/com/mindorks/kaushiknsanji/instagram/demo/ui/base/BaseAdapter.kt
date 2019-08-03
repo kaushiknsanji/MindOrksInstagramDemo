@@ -6,17 +6,17 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerObservable
-import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.ListenerHost
 
 /**
  * An abstract base class for [RecyclerView.Adapter] that registers as a [LifecycleObserver]
  * on the [Lifecycle] of a LifecycleOwner to be Lifecycle aware. Provides abstraction for common tasks and setup.
- * Implements [ListenerHost] to enable the Host of this Adapter to register its Listener for Navigation events.
  *
  * @param T The type of ItemView's data.
  * @param L The type of Listeners that extends [BaseAdapter.DefaultListener].
  * @param VH The type of ItemView's ViewHolder that extends [BaseItemViewHolder].
  * @param parentLifecycle The [Lifecycle] of a LifecycleOwner to observe on.
+ * @param hostListener The Host of this Adapter that wishes to auto register/unregister as Listener of type [L]
+ * for Navigation events. The Host should implement the listener of type [L] for this to work. Can be `null` if not required.
  * @property dataList [MutableList] of type [T] which is the data list of the Adapter.
  * @property listenerObservable Instance of [BaseListenerObservable] that dispatches callback events to registered Listeners.
  *
@@ -24,9 +24,10 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.ListenerHost
  */
 abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : BaseItemViewHolder<T, out BaseItemViewModel<T>>>(
     parentLifecycle: Lifecycle,
+    hostListener: L?,
     private val dataList: MutableList<T> = mutableListOf(),
     protected val listenerObservable: BaseListenerObservable<L> = BaseListenerObservable()
-) : RecyclerView.Adapter<VH>(), ListenerHost<L> by listenerObservable {
+) : RecyclerView.Adapter<VH>() {
 
     // For the RecyclerView instance
     private var recyclerView: RecyclerView? = null
@@ -38,6 +39,8 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
             /**
              * Called when the parent's Lifecycle is Started. This should update the Lifecycle
              * of only the visible ViewHolders to Started state.
+             *
+             * This is also the place to register a [hostListener] if available.
              */
             @OnLifecycleEvent(Lifecycle.Event.ON_START)
             fun onParentStart() {
@@ -55,11 +58,16 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
                         }
                     }
                 }
+
+                // If the Host is also a Listener and is available, then register it during `onStart` event
+                hostListener?.let { listenerObservable.registerListener(it) }
             }
 
             /**
              * Called when the parent's Lifecycle is Stopped. This should update the Lifecycle
              * of all the ViewHolders to Stopped state.
+             *
+             * This is also the place to unregister a previously registered [hostListener].
              */
             @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
             fun onParentStop() {
@@ -70,6 +78,9 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
                         }
                     }
                 }
+
+                // If the Host is also a Listener and is available, then unregister it during `onStop` event
+                hostListener?.let { listenerObservable.unregisterListener(it) }
             }
 
             /**

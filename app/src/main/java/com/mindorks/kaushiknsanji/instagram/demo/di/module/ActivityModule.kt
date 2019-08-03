@@ -208,7 +208,7 @@ class ActivityModule(private val activity: BaseActivity<*>) {
      * Provides instance of [PostLikesAdapter]
      */
     @Provides
-    fun providePostLikesAdapter() = PostLikesAdapter(activity.lifecycle)
+    fun providePostLikesAdapter() = PostLikesAdapter(activity.lifecycle, (activity as? PostLikesAdapter.Listener))
 
     /**
      * Provides instance of [PostLikeViewModel]

@@ -133,7 +133,7 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
      * Provides instance of [PostsAdapter]
      */
     @Provides
-    fun providePostsAdapter() = PostsAdapter(fragment.lifecycle)
+    fun providePostsAdapter() = PostsAdapter(fragment.lifecycle, (fragment as? PostsAdapter.Listener))
 
     /**
      * Provides instance of [Camera] for taking a photo
@@ -167,7 +167,8 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
      * Provides instance of [ProfilePostsAdapter]
      */
     @Provides
-    fun provideProfilePostsAdapter() = ProfilePostsAdapter(fragment.lifecycle)
+    fun provideProfilePostsAdapter() =
+        ProfilePostsAdapter(fragment.lifecycle, (fragment as? ProfilePostsAdapter.Listener))
 
     /**
      * Provides instance of [SharedProgressTextViewModel]

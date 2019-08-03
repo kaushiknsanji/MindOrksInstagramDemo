@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.item_home_post.view.*
  * in [PostsAdapter].
  *
  * @param container [ViewGroup] that contains the ItemViews.
+ * @param listener Instance of [BaseAdapter.DefaultListener] to receive Navigation events.
  *
  * @author Kaushik N Sanji
  */

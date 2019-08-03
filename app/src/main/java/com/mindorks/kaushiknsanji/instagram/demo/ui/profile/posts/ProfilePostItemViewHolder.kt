@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.item_profile_post.view.*
  * in [ProfilePostsAdapter].
  *
  * @property container [ViewGroup] that contains the ItemViews.
+ * @param listener Instance of [BaseAdapter.DefaultListener] to receive Navigation events.
  *
  * @author Kaushik N Sanji
  */

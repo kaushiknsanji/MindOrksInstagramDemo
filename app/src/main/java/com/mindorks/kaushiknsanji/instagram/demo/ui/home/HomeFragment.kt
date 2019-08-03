@@ -179,30 +179,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
         mainSharedViewModel.onPostItemClick(itemData)
     }
 
-    /**
-     * Called when the Fragment is visible to the user.  This is generally
-     * tied to [android.app.Activity.onStart] of the containing
-     * Activity's lifecycle.
-     */
-    override fun onStart() {
-        super.onStart()
-
-        // Register the Adapter's Listener for Navigation events
-        postsAdapter.registerListener(this)
-    }
-
-    /**
-     * Called when the Fragment is no longer started.  This is generally
-     * tied to [android.app.Activity.onStop] of the containing
-     * Activity's lifecycle.
-     */
-    override fun onStop() {
-        super.onStop()
-
-        // Unregister the Adapter's Listener
-        postsAdapter.unregisterListener(this)
-    }
-
     companion object {
 
         // Constant used as Fragment Tag and also for logs

@@ -4,18 +4,23 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
+import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter.Listener
 
 /**
  * [BaseAdapter] subclass for the [androidx.recyclerview.widget.RecyclerView]
  * in [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment].
  *
  * @param parentLifecycle [Lifecycle] of [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment]
+ * @param hostListener The Host of this Adapter that wishes to auto register/unregister as [Listener]
+ * for Navigation events. The Host should implement the [Listener] for this to work.
  * @constructor Instance of [PostsAdapter] created and provided by Dagger.
  *
  * @author Kaushik N Sanji
  */
-class PostsAdapter(parentLifecycle: Lifecycle) :
-    BaseAdapter<Post, PostsAdapter.Listener, PostItemViewHolder>(parentLifecycle) {
+class PostsAdapter(
+    parentLifecycle: Lifecycle,
+    hostListener: Listener?
+) : BaseAdapter<Post, Listener, PostItemViewHolder>(parentLifecycle, hostListener) {
 
     /**
      * Called when RecyclerView needs a new [PostItemViewHolder] of the given type to represent
