@@ -217,13 +217,55 @@ class HomeViewModel(
      *
      * Removes the Post with the [postId] from the [allPostList] and updates [reloadAllPosts] to reload the list.
      */
-    fun onPostDeleted(postId: String): Unit? =
+    fun onPostDeleted(postId: String) =
         allPostList.takeIf { it.isNotEmpty() }?.apply {
             removeAll { post: Post -> post.id == postId }
         }?.run {
             // Trigger List of All Posts to be reloaded
             reloadAllPosts.postValue(Resource.success(this.map { it }))
         }
+
+    /**
+     * Called after the launch and completion of [com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeActivity]
+     * and [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity] for the Post with [postId].
+     *
+     * The Status of the logged-in User's Like on the Post may or may not be changed by the User in those activities.
+     * Hence its status will be checked before refreshing the Post Item in the List to be reloaded.
+     *
+     * @param postId The Id of the [Post] that was launched in the activities.
+     * @param likeStatus The new status of logged-in User's Like on the [Post].
+     * `true` if User has liked; `false` otherwise.
+     */
+    fun onPostLikeUpdated(postId: String, likeStatus: Boolean) {
+        allPostList.takeIf { it.isNotEmpty() }?.apply {
+            filter { post: Post ->
+                // Filter for the Post with [postId] that has a different user liked status with the current one,
+                // which needs an update
+                post.id == postId && (post.likedBy?.any { likedBy: Post.User -> likedBy.id == user.id } != likeStatus)
+            }.takeIf { it.isNotEmpty() }?.first()?.likedBy?.apply {
+                // When we have a Post and its liked list needs an update
+
+                if (likeStatus) {
+                    // If the Post has been liked by the logged-in User from other activities,
+                    // then add an entry into the liked list for the logged-in User
+                    add(
+                        Post.User(
+                            id = user.id,
+                            name = user.name,
+                            profilePicUrl = user.profilePicUrl
+                        )
+                    )
+                } else {
+                    // If the Post has been unliked by the logged-in User from other activities,
+                    // then remove the entry from the liked list
+                    removeAll { likedBy: Post.User -> likedBy.id == user.id }
+                }
+            }
+        }?.run {
+            // Trigger List of All Posts to be reloaded
+            reloadAllPosts.postValue(Resource.success(this.map { it }))
+        }
+    }
 
     companion object {
         // Constant used for logs

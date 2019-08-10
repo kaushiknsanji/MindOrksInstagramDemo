@@ -154,8 +154,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
         // Register an observer for PostLikeActivity launch events
         mainSharedViewModel.launchPostLike.observeEvent(this) { intentMap: Map<String, Serializable> ->
-            startActivity(
-                Intent(this, PostLikeActivity::class.java).putExtrasFromMap(intentMap)
+            // Start PostLikeActivity with the request code for results
+            startActivityForResult(
+                Intent(this, PostLikeActivity::class.java).putExtrasFromMap(intentMap),
+                PostLikeActivity.REQUEST_POST_LIKE
             )
         }
     }
@@ -295,6 +297,44 @@ class MainActivity : BaseActivity<MainViewModel>() {
                                     getString(PostDetailActivity.EXTRA_RESULT_DELETE_POST_SUCCESS)
                                         ?.takeUnless { it.isBlank() }?.let {
                                             showMessage(it)
+                                        }
+                                }
+                            }
+
+                            // For Post Like Updates
+                            PostDetailActivity.RESULT_LIKE_POST -> {
+                                intent!!.extras.apply {
+                                    // When we have Intent extras of the result
+
+                                    // Delegate to the MainSharedViewModel, to trigger the item update in HomeFragment
+                                    getString(PostDetailActivity.EXTRA_RESULT_LIKE_POST_ID)
+                                        ?.takeUnless { it.isBlank() }?.let { postId: String ->
+                                            mainSharedViewModel.onPostLikeUpdate(
+                                                postId,
+                                                getBoolean(PostDetailActivity.EXTRA_RESULT_LIKE_POST_STATE)
+                                            )
+                                        }
+                                }
+                            }
+                        }
+                    }
+
+                    // For PostLikeActivity request
+                    PostLikeActivity.REQUEST_POST_LIKE -> {
+                        // Taking action based on the Result codes
+                        when (resultCode) {
+                            // For Post Like Updates
+                            PostLikeActivity.RESULT_LIKE_POST -> {
+                                intent!!.extras.apply {
+                                    // When we have Intent extras of the result
+
+                                    // Delegate to the MainSharedViewModel, to trigger the item update in HomeFragment
+                                    getString(PostLikeActivity.EXTRA_RESULT_LIKE_POST_ID)
+                                        ?.takeUnless { it.isBlank() }?.let { postId: String ->
+                                            mainSharedViewModel.onPostLikeUpdate(
+                                                postId,
+                                                getBoolean(PostLikeActivity.EXTRA_RESULT_LIKE_POST_STATE)
+                                            )
                                         }
                                 }
                             }

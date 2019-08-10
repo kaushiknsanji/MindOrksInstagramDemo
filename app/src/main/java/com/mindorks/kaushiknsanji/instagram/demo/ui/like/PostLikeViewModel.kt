@@ -1,5 +1,6 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.like
 
+import android.util.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -12,6 +13,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
+import java.io.Serializable
 
 /**
  * [BaseViewModel] subclass for [PostLikeActivity].
@@ -49,8 +51,8 @@ class PostLikeViewModel(
     // Transform the [postData] to get the list of Likes on the Post
     val postLikes: LiveData<List<Post.User>?> = Transformations.map(postData) { post -> post.likedBy }
 
-    // LiveData for closing the Activity
-    val closeAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    // LiveData for closing the Activity with the status of logged-in User's Like on the Post
+    val closeWithLikeStatus: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
 
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
@@ -141,10 +143,16 @@ class PostLikeViewModel(
     }
 
     /**
-     * Called when the close button in the toolbar is clicked.
+     * Called when the close button in the toolbar or Back Key is pressed.
      *
-     * Triggers an event to finish the Activity.
+     * Triggers an event to finish the Activity, with the status of logged-in User's Like on the Post,
+     * dispatched to the Calling Activity.
      */
-    fun onClose() = closeAction.postValue(Event(true))
+    fun onClose() = closeWithLikeStatus.postValue(
+        Event(ArrayMap<String, Serializable>().apply {
+            put(PostLikeActivity.EXTRA_RESULT_LIKE_POST_ID, postData.value?.id)
+            put(PostLikeActivity.EXTRA_RESULT_LIKE_POST_STATE, hasUserLiked.value)
+        })
+    )
 
 }

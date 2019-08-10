@@ -77,6 +77,9 @@ class MainSharedViewModel(
         Event(postId)
     }
 
+    // LiveData for Post Like Update events to [HomeFragment]
+    val postLikeUpdateToHome: MutableLiveData<Event<Pair<String, Boolean>>> = MutableLiveData()
+
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
      */
@@ -168,6 +171,20 @@ class MainSharedViewModel(
     fun onPostItemDeleted(postId: String) {
         // Delete the Post shown in [HomeFragment] and [ProfileFragment]
         postDeleted.postValue(postId)
+    }
+
+    /**
+     * Called after the launch and completion of [PostLikeActivity] and [PostDetailActivity] for the Post with [postId].
+     * Triggers an event for the [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment] to reload
+     * the Post with [postId] with the new status of logged-in User's Like on the [Post].
+     *
+     * @param postId The Id of the [Post] that was launched in the activities.
+     * @param likeStatus The new status of logged-in User's Like on the [Post].
+     * `true` if User has liked; `false` otherwise. There may or may not be any change in the User's Like status,
+     * but an update will always be triggered to keep the status current.
+     */
+    fun onPostLikeUpdate(postId: String, likeStatus: Boolean) {
+        postLikeUpdateToHome.postValue(Event(postId to likeStatus))
     }
 
 }

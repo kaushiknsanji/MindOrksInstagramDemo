@@ -155,6 +155,11 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
             viewModel.onPostDeleted(postId)
         }
 
+        // Register an observer for Post Like Update events
+        mainSharedViewModel.postLikeUpdateToHome.observeEvent(this) { (postId: String, likeStatus: Boolean) ->
+            // Delegate to the ViewModel to refresh the Post Item with new Like Status
+            viewModel.onPostLikeUpdated(postId, likeStatus)
+        }
     }
 
     /**

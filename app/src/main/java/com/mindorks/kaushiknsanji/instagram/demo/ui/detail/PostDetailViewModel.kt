@@ -104,8 +104,8 @@ class PostDetailViewModel(
     val launchDeletePostConfirm: MutableLiveData<Resource<Int>> = MutableLiveData()
     // LiveData for ImmersivePhotoActivity launch events
     val launchImmersivePhoto: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
-    // LiveData for navigating back to the Parent
-    val navigateParent: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    // LiveData for navigating back to the Parent with the status of logged-in User's Like on the Post
+    val navigateParentWithLikeStatus: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
     // LiveData for navigating back to the Parent with the Result of Successful Post Delete action
     val navigateParentWithDeleteSuccess: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
 
@@ -280,10 +280,15 @@ class PostDetailViewModel(
     }
 
     /**
-     * Called by the activity when the user clicks on the Toolbar Up button.
+     * Called by the activity when the user clicks on the Toolbar Up button or Back Key.
      *
-     * Triggers an Event to navigate back to the Parent Activity.
+     * Triggers an Event to navigate back to the Parent Activity, with the status of logged-in User's Like on the Post.
      */
-    fun onNavigateUp() = navigateParent.postValue(Event(true))
+    fun onNavigateUp() = navigateParentWithLikeStatus.postValue(
+        Event(ArrayMap<String, Serializable>().apply {
+            put(PostDetailActivity.EXTRA_RESULT_LIKE_POST_ID, postData.value?.id)
+            put(PostDetailActivity.EXTRA_RESULT_LIKE_POST_STATE, hasUserLiked.value)
+        })
+    )
 
 }

@@ -1,5 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.like
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -12,11 +14,13 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.putExtrasFromMap
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ThemeUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.activity_post_like.*
 import kotlinx.android.synthetic.main.layout_no_likes.*
+import java.io.Serializable
 import javax.inject.Inject
 
 /**
@@ -154,19 +158,46 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
             }
         })
 
-        // Register an observer for close action events, to close this Activity
-        viewModel.closeAction.observeEvent(this) { close: Boolean ->
-            if (close) {
-                // Terminate the Activity on [close]
-                finish()
-            }
+        // Register an observer for close action events, to close this Activity and update the Calling Activity
+        // with the status of User's Like on the Post
+        viewModel.closeWithLikeStatus.observeEvent(this) { intentMap: Map<String, Serializable> ->
+            // Set the Result
+            setResult(
+                RESULT_LIKE_POST,
+                Intent().putExtrasFromMap(intentMap)
+            )
+            // Terminate the Activity
+            finish()
         }
+    }
+
+    /**
+     * Takes care of popping the fragment back stack or finishing the activity
+     * as appropriate.
+     */
+    override fun onBackPressed() {
+        // Delegate to the ViewModel to handle the back key navigation
+        viewModel.onClose()
     }
 
     companion object {
         // Intent Extra constant for the Id of the Post whose details are to be loaded
         @JvmField
         val EXTRA_POST_ID = PostLikeActivity::class.java.`package`.toString() + "extra.POST_ID"
+
+        // Request code used by the activity that calls this activity for result
+        const val REQUEST_POST_LIKE = 400 // 401 is reserved for the result of this request
+
+        // Custom Result code for Like operation
+        const val RESULT_LIKE_POST = REQUEST_POST_LIKE + Activity.RESULT_FIRST_USER
+
+        // Intent Extra constant for passing the Id of the Post Liked/Unliked
+        @JvmField
+        val EXTRA_RESULT_LIKE_POST_ID = PostLikeActivity::class.java.`package`.toString() + "extra.LIKE_POST_ID"
+
+        // Intent Extra constant for passing the Like status of the Post
+        @JvmField
+        val EXTRA_RESULT_LIKE_POST_STATE = PostLikeActivity::class.java.`package`.toString() + "extra.LIKE_POST_STATE"
     }
 
 }

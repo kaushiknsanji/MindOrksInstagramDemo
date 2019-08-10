@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -325,23 +326,26 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
             viewModel.onDeleteConfirm()
         }
 
-        // Register an observer for Up Navigation events
-        viewModel.navigateParent.observeEvent(this) { event: Boolean ->
-            if (event) {
-                // Navigate back to parent using back key navigation
-                goBack()
-            }
+        // Register an observer to return to the Calling Activity with the status of User's Like on the Post
+        viewModel.navigateParentWithLikeStatus.observeEvent(this) { intentMap: Map<String, Serializable> ->
+            // Set the Result
+            setResult(
+                RESULT_LIKE_POST,
+                Intent().putExtrasFromMap(intentMap)
+            )
+            // Navigate back to parent
+            NavUtils.navigateUpFromSameTask(this)
         }
 
-        // Register an observer for Up Navigation events with Post Delete Success result, to update the Calling Activity
+        // Register an observer to return to the Calling Activity with the Post Delete Success result
         viewModel.navigateParentWithDeleteSuccess.observeEvent(this) { intentMap: Map<String, Serializable> ->
             // Set the Result
             setResult(
                 RESULT_DELETE_POST_SUCCESS,
                 Intent().putExtrasFromMap(intentMap)
             )
-            // Navigate back to parent using back key navigation
-            goBack()
+            // Navigate back to parent
+            NavUtils.navigateUpFromSameTask(this)
         }
 
         // Register an observer for ImmersivePhotoActivity launch events
@@ -352,16 +356,28 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         }
     }
 
+    /**
+     * Takes care of popping the fragment back stack or finishing the activity
+     * as appropriate.
+     */
+    override fun onBackPressed() {
+        // Delegate to the ViewModel to handle the back key navigation
+        viewModel.onNavigateUp()
+    }
+
     companion object {
         // Intent Extra constant for the Id of the Post whose details are to be loaded
         @JvmField
         val EXTRA_POST_ID = PostDetailActivity::class.java.`package`.toString() + "extra.POST_ID"
 
         // Request code used by the activity that calls this activity for result
-        const val REQUEST_POST_DETAIL = 300 // 301 is reserved for the result of this request
+        const val REQUEST_POST_DETAIL = 300 // 301, 302 are reserved for the result of this request
+
+        // Custom Result code for Like operation
+        const val RESULT_LIKE_POST = REQUEST_POST_DETAIL + Activity.RESULT_FIRST_USER
 
         // Custom Result code for Successful Delete operation
-        const val RESULT_DELETE_POST_SUCCESS = REQUEST_POST_DETAIL + Activity.RESULT_FIRST_USER
+        const val RESULT_DELETE_POST_SUCCESS = RESULT_LIKE_POST + Activity.RESULT_FIRST_USER
 
         // Intent Extra constant for passing the Response message of the Successful Delete operation
         @JvmField
@@ -371,6 +387,14 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Intent Extra constant for passing the Id of Deleted Post on Successful Delete operation
         @JvmField
         val EXTRA_RESULT_DELETED_POST_ID = PostDetailActivity::class.java.`package`.toString() + "extra.DELETED_POST_ID"
+
+        // Intent Extra constant for passing the Id of the Post Liked/Unliked
+        @JvmField
+        val EXTRA_RESULT_LIKE_POST_ID = PostDetailActivity::class.java.`package`.toString() + "extra.LIKE_POST_ID"
+
+        // Intent Extra constant for passing the Like status of the Post
+        @JvmField
+        val EXTRA_RESULT_LIKE_POST_STATE = PostDetailActivity::class.java.`package`.toString() + "extra.LIKE_POST_STATE"
     }
 
 }
