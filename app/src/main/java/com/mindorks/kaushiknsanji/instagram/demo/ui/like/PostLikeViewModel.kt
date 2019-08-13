@@ -49,7 +49,7 @@ class PostLikeViewModel(
         post.likedBy?.any { postUser: Post.User -> postUser.id == user.id }
     }
     // Transform the [postData] to get the list of Likes on the Post
-    val postLikes: LiveData<List<Post.User>?> = Transformations.map(postData) { post -> post.likedBy }
+    val postLikes: LiveData<List<Post.User>?> = Transformations.map(postData) { post -> post.getLikesCopy() }
 
     // LiveData for closing the Activity with the status of logged-in User's Like on the Post
     val closeWithLikeStatus: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()

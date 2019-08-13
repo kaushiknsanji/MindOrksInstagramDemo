@@ -77,7 +77,7 @@ class PostDetailViewModel(
         post.likedBy?.any { postUser: Post.User -> postUser.id == user.id }
     }
     // Transform the [postData] to get the list of Likes on the Post
-    val postLikes: LiveData<List<Post.User>?> = Transformations.map(postData) { post -> post.likedBy }
+    val postLikes: LiveData<List<Post.User>?> = Transformations.map(postData) { post -> post.getLikesCopy() }
     // Transform the [postData] to check if the Post was created by the logged-in user
     val postByUser: LiveData<Boolean> = Transformations.map(postData) { post -> post.creator.id == user.id }
     // Transform the [postData] to get the [Image] model of the Post Creator's Profile Picture

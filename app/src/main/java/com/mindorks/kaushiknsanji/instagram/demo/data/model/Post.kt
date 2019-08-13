@@ -58,6 +58,15 @@ data class Post(
         val profilePicUrl: String?
     )
 
+    /**
+     * Creates and returns a copy of [Post] with the shallow copy of [likedBy] list.
+     */
+    fun shallowCopy(): Post = copy(likedBy = getLikesCopy())
+
+    /**
+     * Creates and returns a shallow copy of [likedBy] list.
+     */
+    fun getLikesCopy(): MutableList<User>? = likedBy?.map { it }?.toMutableList()
 }
 
 /**

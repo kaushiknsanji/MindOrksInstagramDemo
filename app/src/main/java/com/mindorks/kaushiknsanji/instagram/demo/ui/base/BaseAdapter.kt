@@ -3,8 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.base
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerObservable
 
 /**
@@ -17,7 +16,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerO
  * @param parentLifecycle The [Lifecycle] of a LifecycleOwner to observe on.
  * @param hostListener The Host of this Adapter that wishes to auto register/unregister as Listener of type [L]
  * for Navigation events. The Host should implement the listener of type [L] for this to work. Can be `null` if not required.
- * @property dataList [MutableList] of type [T] which is the data list of the Adapter.
  * @property listenerObservable Instance of [BaseListenerObservable] that dispatches callback events to registered Listeners.
  *
  * @author Kaushik N Sanji
@@ -25,12 +23,14 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerO
 abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : BaseItemViewHolder<T, out BaseItemViewModel<T>>>(
     parentLifecycle: Lifecycle,
     hostListener: L?,
-    private val dataList: MutableList<T> = mutableListOf(),
     protected val listenerObservable: BaseListenerObservable<L> = BaseListenerObservable()
 ) : RecyclerView.Adapter<VH>() {
 
     // For the RecyclerView instance
     private var recyclerView: RecyclerView? = null
+
+    // Helper for computing the difference between two lists in a background thread
+    private lateinit var differ: AsyncListDiffer<T>
 
     init {
         // Register an Observer on the parent's Lifecycle to keep the Adapter in-sync
@@ -109,6 +109,87 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
         super.onAttachedToRecyclerView(recyclerView)
         // When the RecyclerView is attached to this adapter, save the reference
         this.recyclerView = recyclerView
+        // Initialize the [differ]
+        setupDiffer()
+    }
+
+    /**
+     * Called when the [recyclerView] starts observing this Adapter.
+     * Initializes the [differ] for computing the difference between two lists in a background thread.
+     */
+    private fun setupDiffer() {
+        // Initialize [differ] with `ListUpdateCallback` and `AsyncDifferConfig`
+        differ = AsyncListDiffer(
+            object : ListUpdateCallback {
+                /**
+                 * Called when `count` number of items are updated at the given position.
+                 *
+                 * @param position The position of the item which has been updated.
+                 * @param count    The number of items which has changed.
+                 */
+                override fun onChanged(position: Int, count: Int, payload: Any?) {
+                    // Notify the changes to the adapter
+                    notifyItemRangeChanged(position, count, payload)
+                    // Rebuild item decorations on RecyclerView
+                    invalidateItemDecorations()
+                }
+
+                /**
+                 * Called when an item changes its position in the list.
+                 *
+                 * @param fromPosition The previous position of the item before the move.
+                 * @param toPosition   The new position of the item.
+                 */
+                override fun onMoved(fromPosition: Int, toPosition: Int) {
+                    // Notify the changes to the adapter
+                    notifyItemMoved(fromPosition, toPosition)
+                    // Rebuild item decorations on RecyclerView
+                    invalidateItemDecorations()
+                }
+
+                /**
+                 * Called when `count` number of items are inserted at the given position.
+                 *
+                 * @param position The position of the new item.
+                 * @param count    The number of items that have been added.
+                 */
+                override fun onInserted(position: Int, count: Int) {
+                    // Notify the changes to the adapter
+                    notifyItemRangeInserted(position, count)
+                    // Rebuild item decorations on RecyclerView
+                    invalidateItemDecorations()
+                }
+
+                /**
+                 * Called when `count` number of items are removed from the given position.
+                 *
+                 * @param position The position of the item which has been removed.
+                 * @param count    The number of items which have been removed.
+                 */
+                override fun onRemoved(position: Int, count: Int) {
+                    // Notify the changes to the adapter
+                    notifyItemRangeRemoved(position, count)
+                    // Rebuild item decorations on RecyclerView
+                    invalidateItemDecorations()
+                }
+
+                /**
+                 * Rebuilds the Item Decorations on [recyclerView].
+                 */
+                private fun invalidateItemDecorations() {
+                    // Invalidate with a delay of 2ms, for the adapter item notifications to complete first
+                    recyclerView?.run {
+                        postDelayed(
+                            { invalidateItemDecorations() },
+                            2
+                        )
+                    }
+                }
+
+            },
+            // Build AsyncDifferConfig instance with the provided `DiffUtil.ItemCallback` implementation
+            AsyncDifferConfig.Builder(provideItemCallback()).build()
+        )
     }
 
     /**
@@ -175,7 +256,7 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
      */
     override fun onBindViewHolder(holder: VH, position: Int) {
         // Delegate to the holder to bind the data to the ItemView at the position
-        holder.bind(dataList[position])
+        holder.bind(getItem(position))
     }
 
     /**
@@ -183,41 +264,28 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
      *
      * @return The total number of items in this adapter.
      */
-    override fun getItemCount(): Int = dataList.size
+    override fun getItemCount(): Int = differ.currentList.size
 
     /**
-     * Method to load additional data [newDataList]. Takes care of signaling complete change
-     * or range change to the Adapter appropriately.
+     * To be overridden by subclasses to provide the [DiffUtil.ItemCallback] instance for
+     * calculating the difference between two non-null items in a List.
      */
-    fun appendMore(newDataList: List<T>) {
-        // Get the current data list size
-        val oldDataListSize = dataList.size
-        // Append the new data list
-        dataList.addAll(newDataList)
-        // Get the updated data list size
-        val updatedDataListSize = dataList.size
+    protected abstract fun provideItemCallback(): DiffUtil.ItemCallback<T>
 
-        if (oldDataListSize == 0 && updatedDataListSize > 0) {
-            // Signal complete change when only new list has data
-            notifyDataSetChanged()
-        } else if (oldDataListSize in 1 until updatedDataListSize) {
-            // Signal range change when old list also had data
-            notifyItemRangeChanged(oldDataListSize - 1, updatedDataListSize - oldDataListSize)
-        }
+    /**
+     * Submits a new [list] to be diffed, and displayed.
+     *
+     * If a list is already being displayed, a difference will be computed on a background thread, which
+     * will dispatch `Adapter.notifyItem` events on the main thread.
+     */
+    fun submitList(list: List<T>?) {
+        differ.submitList(list)
     }
 
     /**
-     * Method to reset the Adapter [dataList] with the [newList] of data. Takes care of signaling complete
-     * change when reloaded.
+     * Retrieves the item at the specified [position] in the list, managed by [differ].
      */
-    fun resetData(newList: List<T>) {
-        // Clear all data on the Adapter
-        dataList.clear()
-        // Append the new data list
-        dataList.addAll(newList)
-        // Signal complete change after reload
-        notifyDataSetChanged()
-    }
+    protected fun getItem(position: Int): T = differ.currentList[position]
 
     /**
      * Interface to be implemented by the Host of this Adapter to receive callback events.

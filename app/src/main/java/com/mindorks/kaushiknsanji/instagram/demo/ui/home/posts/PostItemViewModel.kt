@@ -87,6 +87,9 @@ class PostItemViewModel @Inject constructor(
     // LiveData for Likes Count TextView Click event
     val actionLikesCountClick: MutableLiveData<Event<Post>> = MutableLiveData()
 
+    // LiveData for Like/Unlike action event
+    val actionLikeUnlike: MutableLiveData<Event<Post>> = MutableLiveData()
+
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
      */
@@ -95,7 +98,8 @@ class PostItemViewModel @Inject constructor(
     }
 
     /**
-     * Called when the "Heart" image on the Post is clicked, to like/unlike the Post.
+     * Called when the "Heart" image on the Post is clicked, to like/unlike the Post. Also, called when the
+     * user double-taps on the Post Photo.
      */
     fun onLikeClick() {
         // Making changes on the current Post
@@ -122,6 +126,8 @@ class PostItemViewModel @Inject constructor(
                                     // Ensure that the response is for the same post
                                     // and then update the ViewModel's data to reflect the user's like action
                                     updateItemData(responsePost)
+                                    // Trigger the Like/Unlike event with the updated Post data
+                                    actionLikeUnlike.postValue(Event(responsePost))
                                 }
                             },
                             // OnError

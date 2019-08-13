@@ -103,8 +103,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         // Register an observer on User's Posts LiveData to reload the adapter with the new List of Posts
         viewModel.userPosts.observeResource(this) { _, posts: List<Post>? ->
             posts?.run {
-                // Reset the Adapter data with the new data
-                profilePostsAdapter.resetData(this)
+                // Load the Adapter with new data
+                profilePostsAdapter.submitList(this)
             }
         }
 

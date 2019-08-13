@@ -232,6 +232,10 @@ class PostItemViewHolder(container: ViewGroup, listener: BaseAdapter.DefaultList
             (listener as? PostsAdapter.Listener)?.onLikesCountClick(post)
         }
 
+        // Register an observer for the User's Like/Unlike action on the Post
+        itemViewModel.actionLikeUnlike.observeEvent(this) { post: Post ->
+            (listener as? PostsAdapter.Listener)?.onLikeUnlikeSync(post)
+        }
     }
 
 }

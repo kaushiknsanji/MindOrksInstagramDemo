@@ -105,13 +105,6 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
     override fun setupObservers() {
         super.setupObservers()
 
-        // Register an observer on Paginated Posts LiveData to load the adapter with new list of Posts
-        viewModel.paginatedPosts.observeResource(this) { _, posts: List<Post>? ->
-            posts?.run {
-                postsAdapter.appendMore(this)
-            }
-        }
-
         // Register an observer on Posts download progress to show/hide the Progress horizontal
         viewModel.loadingProgress.observe(this, Observer { started: Boolean ->
             // Show the Progress horizontal when [started], else leave it hidden
@@ -128,8 +121,8 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
         // with the list of All Posts
         viewModel.reloadAllPosts.observeResource(this) { _, posts: List<Post>? ->
             posts?.run {
-                // Reset the Adapter data with the new data
-                postsAdapter.resetData(this)
+                // Load the Adapter with the new data
+                postsAdapter.submitList(this)
             }
         }
 
@@ -182,6 +175,16 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
     override fun onItemClick(itemData: Post) {
         // Delegate to the MainActivity via the Shared ViewModel
         mainSharedViewModel.onPostItemClick(itemData)
+    }
+
+    /**
+     * Callback Method of [PostsAdapter.Listener] invoked when the user likes/unlikes the Post.
+     *
+     * @param itemData The updated data of Adapter Item which is an instance of [Post].
+     */
+    override fun onLikeUnlikeSync(itemData: Post) {
+        // Delegate to the ViewModel to sync up the change
+        viewModel.onLikeUnlikeSync(itemData)
     }
 
     companion object {

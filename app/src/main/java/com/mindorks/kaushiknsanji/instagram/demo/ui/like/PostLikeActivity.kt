@@ -119,8 +119,8 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
         // Register an observer on the Post Likes LiveData to load the Adapter with the List of all Post Likes
         viewModel.postLikes.observe(this, Observer { likes: List<Post.User>? ->
             likes?.run {
-                // Reset the Adapter data with the new data (as the logged-in User can like/unlike on this screen)
-                postLikesAdapter.resetData(this)
+                // Load the Adapter with new data
+                postLikesAdapter.submitList(this)
             }
         })
 

@@ -35,10 +35,7 @@ class HomeViewModel(
     // LiveData for the data loading progress indication
     val loadingProgress: MutableLiveData<Boolean> = MutableLiveData()
 
-    // LiveData for the paginated List of Posts
-    val paginatedPosts: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
-
-    // LiveData for when the List of All Posts needs to be reloaded
+    // LiveData for the List of All Posts to be reloaded
     val reloadAllPosts: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
 
     // Scroll Event LiveData when the RecyclerView needs to be scrolled to the Top
@@ -49,6 +46,11 @@ class HomeViewModel(
 
     // Stores the List of All Posts retrieved till last request
     private val allPostList: MutableList<Post> = mutableListOf()
+
+    // Function reference that creates a copy of [allPostList] for publishing to [reloadAllPosts]
+    private val allPostListCopy: (MutableList<Post>) -> List<Post> = { posts: MutableList<Post> ->
+        posts.map { post: Post -> post.shallowCopy() }
+    }
 
     // Instance of PublishProcessor that supplies new List of Posts for multiple requests
     private val paginator: PublishProcessor<Pair<String?, String?>> = PublishProcessor.create()
@@ -91,8 +93,8 @@ class HomeViewModel(
                         lastPostId = allPostList.minBy { post: Post -> post.createdAt.time }?.id
                         // Stop the [loadingProgress] indication
                         loadingProgress.postValue(false)
-                        // Update the LiveData with the new page List of Posts retrieved
-                        paginatedPosts.postValue(Resource.success(paginatedPostList))
+                        // Trigger List of All Posts to be reloaded
+                        reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
                     },
                     // OnError
                     { throwable: Throwable? ->
@@ -113,7 +115,7 @@ class HomeViewModel(
         // Restore all Posts into the Adapter if we have already downloaded some posts
         if (allPostList.size > 0) {
             // Trigger List of All Posts to be reloaded
-            reloadAllPosts.postValue(Resource.success(allPostList.map { it }))
+            reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
         }
         // Load the following list of Posts
         loadMorePosts()
@@ -145,7 +147,7 @@ class HomeViewModel(
         // Update the new Post to the Top of All Posts
         allPostList.add(0, newPost)
         // Trigger New List of All Posts to be reloaded
-        reloadAllPosts.postValue(Resource.success(allPostList.map { it }))
+        reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
         // Trigger an Event to scroll to the Top of the list
         scrollToTop.postValue(Event(true))
         // Display post creation success message
@@ -191,7 +193,7 @@ class HomeViewModel(
                             }
 
                             // Trigger List of All Posts to be reloaded
-                            reloadAllPosts.postValue(Resource.success(allPostList.map { it }))
+                            reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
                         }
                     },
                     // OnError
@@ -222,7 +224,7 @@ class HomeViewModel(
             removeAll { post: Post -> post.id == postId }
         }?.run {
             // Trigger List of All Posts to be reloaded
-            reloadAllPosts.postValue(Resource.success(this.map { it }))
+            reloadAllPosts.postValue(Resource.success(allPostListCopy(this)))
         }
 
     /**
@@ -237,12 +239,12 @@ class HomeViewModel(
      * `true` if User has liked; `false` otherwise.
      */
     fun onPostLikeUpdated(postId: String, likeStatus: Boolean) {
-        allPostList.takeIf { it.isNotEmpty() }?.apply {
-            filter { post: Post ->
+        allPostList.takeIf { it.isNotEmpty() }?.takeIf { posts: MutableList<Post> ->
+            posts.firstOrNull { post: Post ->
                 // Filter for the Post with [postId] that has a different user liked status with the current one,
                 // which needs an update
                 post.id == postId && (post.likedBy?.any { likedBy: Post.User -> likedBy.id == user.id } != likeStatus)
-            }.takeIf { it.isNotEmpty() }?.first()?.likedBy?.apply {
+            }?.likedBy?.run {
                 // When we have a Post and its liked list needs an update
 
                 if (likeStatus) {
@@ -260,10 +262,24 @@ class HomeViewModel(
                     // then remove the entry from the liked list
                     removeAll { likedBy: Post.User -> likedBy.id == user.id }
                 }
-            }
+                // Returning true when the Liked list has been updated
+                true
+            } ?: false // Returning false when the Liked list needed no update
         }?.run {
             // Trigger List of All Posts to be reloaded
-            reloadAllPosts.postValue(Resource.success(this.map { it }))
+            reloadAllPosts.postValue(Resource.success(allPostListCopy(this)))
+        }
+    }
+
+    /**
+     * Called when the logged-in User likes/unlikes a Post. Loads the given [updatedPost] at its position
+     * in [allPostList] to reflect the change.
+     */
+    fun onLikeUnlikeSync(updatedPost: Post) {
+        // Find the position of the Post in the list
+        allPostList.indexOfFirst { post: Post -> post.id == updatedPost.id }.takeIf { it > -1 }?.let { index: Int ->
+            // Save the copy of the [updatedPost] at the [index]
+            allPostList[index] = updatedPost.shallowCopy()
         }
     }
 
