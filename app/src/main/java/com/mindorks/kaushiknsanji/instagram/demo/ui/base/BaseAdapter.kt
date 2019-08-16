@@ -1,8 +1,9 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.base
 
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.*
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerObservable
 
@@ -34,16 +35,19 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
 
     init {
         // Register an Observer on the parent's Lifecycle to keep the Adapter in-sync
-        parentLifecycle.addObserver(object : LifecycleObserver {
+        parentLifecycle.addObserver(object : DefaultLifecycleObserver {
 
             /**
-             * Called when the parent's Lifecycle is Started. This should update the Lifecycle
-             * of only the visible ViewHolders to Started state.
+             * Notifies that `ON_START` event occurred. This method will be called
+             * after the [LifecycleOwner]'s `onStart` method returns.
+             *
+             * This should update the ViewHolder Lifecycle of only the visible ViewHolders to Started state.
              *
              * This is also the place to register a [hostListener] if available.
+             *
+             * @param owner the component, whose state was changed
              */
-            @OnLifecycleEvent(Lifecycle.Event.ON_START)
-            fun onParentStart() {
+            override fun onStart(owner: LifecycleOwner) {
                 recyclerView?.run {
                     val layoutManager = layoutManager
                     if (layoutManager is LinearLayoutManager) {
@@ -64,13 +68,16 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
             }
 
             /**
-             * Called when the parent's Lifecycle is Stopped. This should update the Lifecycle
-             * of all the ViewHolders to Stopped state.
+             * Notifies that `ON_STOP` event occurred. This method will be called
+             * before the [LifecycleOwner]'s `onStop` method is called.
+             *
+             * This should update the ViewHolder Lifecycle of all the ViewHolders to Stopped state.
              *
              * This is also the place to unregister a previously registered [hostListener].
+             *
+             * @param owner the component, whose state was changed
              */
-            @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-            fun onParentStop() {
+            override fun onStop(owner: LifecycleOwner) {
                 recyclerView?.run {
                     (0 until childCount).forEach { childIndex ->
                         getChildAt(childIndex)?.let { childView ->
@@ -84,11 +91,14 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
             }
 
             /**
-             * Called when the parent's Lifecycle is Destroyed. This should update the Lifecycle
-             * of all the ViewHolders to Destroyed state.
+             * Notifies that `ON_DESTROY` event occurred. This method will be called
+             * before the [LifecycleOwner]'s `onDestroy` method is called.
+             *
+             * This should update the ViewHolder Lifecycle of all the ViewHolders to Destroyed state.
+             *
+             * @param owner the component, whose state was changed
              */
-            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun onParentDestroy() {
+            override fun onDestroy(owner: LifecycleOwner) {
                 recyclerView?.run {
                     (0 until childCount).forEach { childIndex ->
                         getChildAt(childIndex)?.let { childView ->
