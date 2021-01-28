@@ -44,57 +44,67 @@ class VerticalGridItemSpacingDecoration(
      * @param state   The current state of RecyclerView.
      */
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        // Get the Grid span from the layout manager
+        // Get the Grid Span count and Orientation from the layout manager
         var spanCount = 0
-        if (parent.layoutManager is GridLayoutManager) {
-            spanCount = (parent.layoutManager as GridLayoutManager).spanCount
-        } else if (parent.layoutManager is StaggeredGridLayoutManager) {
-            spanCount = (parent.layoutManager as StaggeredGridLayoutManager).spanCount
+        var orientation: Int = -1
+        (parent.layoutManager as? GridLayoutManager)?.apply {
+            spanCount = this.spanCount
+            orientation = this.orientation
+        } ?: (parent.layoutManager as? StaggeredGridLayoutManager)?.apply {
+            spanCount = this.spanCount
+            orientation = this.orientation
         }
 
-        // Ensure spanCount is at least 1 before proceeding
-        if (spanCount < 1) {
-            throw IllegalArgumentException("Span count should be at least 1. Determined is $spanCount")
-        }
+        if (orientation == RecyclerView.VERTICAL) {
+            // Proceed only when RecyclerView Orientation is Vertical
 
-        // Get the Child View position in the adapter
-        val position = parent.getChildAdapterPosition(view)
-        // Calculate the column index of the item position
-        val columnIndex = position % spanCount
+            // Ensure spanCount is at least 1 before proceeding
+            if (spanCount < 1) {
+                throw IllegalArgumentException("Span count should be at least 1. Determined is $spanCount")
+            }
 
-        // Evaluates to first column when the column index is 0
-        val isFirstColumn = columnIndex == 0
-        // Evaluates to last column when the column index is (spanCount - 1)
-        val isLastColumn = columnIndex + 1 == spanCount
-        // Evaluates to first row when the item position is less than the spanCount
-        val isFirstRow = position < spanCount
+            // Get the Child View position in the adapter
+            val position = parent.getChildAdapterPosition(view)
+            // Calculate the column index of the item position
+            val columnIndex = position % spanCount
 
-        if (isFirstColumn) {
-            // Set full spacing to left when it is the first column item
-            outRect.left = horizontalOffsetSize
+            // Evaluates to first column when the column index is 0
+            val isFirstColumn = columnIndex == 0
+            // Evaluates to last column when the column index is (spanCount - 1)
+            val isLastColumn = columnIndex + 1 == spanCount
+            // Evaluates to first row when the item position is less than the spanCount
+            val isFirstRow = position < spanCount
+
+            if (isFirstColumn) {
+                // Set full spacing to left when it is the first column item
+                outRect.left = horizontalOffsetSize
+            } else {
+                // Set half spacing to left when it is other than the first column item
+                outRect.left = horizontalOffsetSize / 2
+            }
+
+            if (isLastColumn) {
+                // Set full spacing to right when it is the last column item
+                outRect.right = horizontalOffsetSize
+            } else {
+                // Set half spacing to right when it is other than the last column item
+                outRect.right = horizontalOffsetSize / 2
+            }
+
+            if (isFirstRow) {
+                // Set full spacing to top when it is the item of the first row
+                outRect.top = verticalOffsetSize
+            } else {
+                // Set 0 spacing to top when it is the item of row other than the first row,
+                // since spacing will be taken care by defining the bottom
+                outRect.top = 0
+            }
+
+            // Set full spacing to bottom
+            outRect.bottom = verticalOffsetSize
         } else {
-            // Set half spacing to left when it is other than the first column item
-            outRect.left = horizontalOffsetSize / 2
+            // Call to super when RecyclerView Orientation is NOT Vertical
+            super.getItemOffsets(outRect, view, parent, state)
         }
-
-        if (isLastColumn) {
-            // Set full spacing to right when it is the last column item
-            outRect.right = horizontalOffsetSize
-        } else {
-            // Set half spacing to right when it is other than the last column item
-            outRect.right = horizontalOffsetSize / 2
-        }
-
-        if (isFirstRow) {
-            // Set full spacing to top when it is the item of the first row
-            outRect.top = verticalOffsetSize
-        } else {
-            // Set 0 spacing to top when it is the item of row other than the first row,
-            // since spacing will be taken care by defining the bottom
-            outRect.top = 0
-        }
-
-        // Set full spacing to bottom
-        outRect.bottom = verticalOffsetSize
     }
 }
