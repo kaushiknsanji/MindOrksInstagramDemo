@@ -173,24 +173,41 @@ class HomeViewModel(
                     // OnSuccess
                     { updatedUser: User? ->
                         updatedUser?.run {
-                            // When we have the Updated user information, filter and update only the user's posts loaded till now
-                            allPostList.takeIf { it.isNotEmpty() }?.forEachIndexed { index, post: Post ->
-                                if (post.creator.id == id) {
-                                    allPostList[index] = Post(
-                                        id = post.id,
-                                        imageUrl = post.imageUrl,
-                                        imageWidth = post.imageWidth,
-                                        imageHeight = post.imageHeight,
-                                        createdAt = post.createdAt,
-                                        likedBy = post.likedBy,
-                                        creator = Post.User(
-                                            id = post.creator.id,
+                            // When we have the Updated user information
+
+                            // Filter and update only the user's posts loaded till now
+                            allPostList
+                                .takeIf { it.isNotEmpty() }
+                                ?.withIndex()
+                                ?.filter { (_, post: Post) -> post.creator.id == id }
+                                ?.forEach { (index, post: Post) ->
+                                    allPostList[index] = post.copy(
+                                        creator = post.creator.copy(
                                             name = name,
                                             profilePicUrl = profilePicUrl
                                         )
                                     )
                                 }
-                            }
+
+                            // Filter and update only the user's likes on self and others' posts
+                            allPostList
+                                .takeIf { it.isNotEmpty() }
+                                ?.withIndex()
+                                ?.filter { (_, post: Post) -> post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == id } != null }
+                                ?.forEach { (index, post: Post) ->
+                                    allPostList[index] = post.copy(
+                                        likedBy = post.likedBy?.apply {
+                                            withIndex()
+                                                .filter { (_, likedByUser: Post.User) -> likedByUser.id == id }
+                                                .forEach { (index, likedByUser: Post.User) ->
+                                                    this[index] = likedByUser.copy(
+                                                        name = name,
+                                                        profilePicUrl = profilePicUrl
+                                                    )
+                                                }
+                                        }
+                                    )
+                                }
 
                             // Trigger List of All Posts to be reloaded
                             reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
