@@ -8,7 +8,19 @@ plugins {
     id 'kotlin-kapt'
 }
 
+// Load the API Properties
+def apiPropertiesFile = rootProject.file("instagram_api.properties")
+def apiProperties = new Properties()
+apiProperties.load(new FileInputStream(apiPropertiesFile))
+
 android {
+    // Constants defined for use with buildConfigField
+    def STRING = "String"
+    def BASE_URL = "BASE_URL"
+    def BASE_URL_VAL = '"' + apiProperties['BASE_URL_VAL'] + '"'
+    def API_KEY = "API_KEY"
+    def API_KEY_VAL = '"' + apiProperties['API_KEY_VAL'] + '"'
+
     compileSdkVersion rootProject.ext.compile_sdk_version
 
     defaultConfig {
@@ -23,14 +35,14 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://api.projects.bootcamp.mindorks.com/batch/blue/\"")
-            buildConfigField("String", "API_KEY", "\"BLUE19QVVAPP\"")
+            buildConfigField STRING, BASE_URL, BASE_URL_VAL
+            buildConfigField STRING, API_KEY, API_KEY_VAL
         }
         release {
             minifyEnabled true // to apply the proguard
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://api.projects.bootcamp.mindorks.com/batch/blue/\"")
-            buildConfigField("String", "API_KEY", "\"BLUE19QVVAPP\"")
+            buildConfigField STRING, BASE_URL, BASE_URL_VAL
+            buildConfigField STRING, API_KEY, API_KEY_VAL
         }
     }
 
