@@ -143,9 +143,7 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
 
         // Register an observer on the user like button action LiveData to change the "Heart" image accordingly
         itemViewModel.hasUserLiked.observe(this, Observer { hasLiked: Boolean ->
-            itemView.imgbtn_home_item_toggle_post_like.run {
-                isActivated = hasLiked
-            }
+            itemView.imgbtn_home_item_toggle_post_like.isActivated = hasLiked
         })
 
         // Register an observer on the Post Creator's Profile Picture LiveData to load the Image
