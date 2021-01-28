@@ -56,30 +56,6 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
     }
 
     /**
-     * Called to have the fragment instantiate its user interface view.
-     * This is optional, and non-graphical fragments can return null (which
-     * is the default implementation).  This will be called between
-     * [.onCreate] and [.onActivityCreated].
-     *
-     * If you return a View from here, you will later be called in
-     * [.onDestroyView] when the view is being released.
-     *
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
-     * @return Return the View for the fragment's UI, or null.
-     */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        provideLayoutId().takeIf { it != 0 }?.run {
-            inflater.inflate(this, container, false).apply { alertDialog.setView(this) }
-        }
-
-    /**
      * Override to build your own custom Dialog container.  This is typically
      * used to show an AlertDialog instead of a generic Dialog; when doing so,
      * [onCreateView] does not need to be implemented since the AlertDialog takes care of its own content.
@@ -106,6 +82,34 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
             setupDialog(this, savedInstanceState)
             // Save the instance created
             alertDialog = this
+        }
+
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * This is optional, and non-graphical fragments can return null (which
+     * is the default implementation).  This will be called between
+     * [.onCreate] and [.onActivityCreated].
+     *
+     * If you return a View from here, you will later be called in
+     * [.onDestroyView] when the view is being released.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        provideLayoutId().takeIf { it != 0 }?.run {
+            inflater.inflate(this, container, false).apply { alertDialog.setView(this) }
         }
 
     /**

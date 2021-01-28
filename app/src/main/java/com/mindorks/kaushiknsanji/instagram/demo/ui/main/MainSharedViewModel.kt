@@ -26,9 +26,6 @@ class MainSharedViewModel(
     networkHelper: NetworkHelper
 ) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
 
-    // LiveData triggered when the Post is created and uploaded
-    private val postPublished: MutableLiveData<Post> = MutableLiveData()
-
     // LiveData for redirecting to HomeFragment
     val redirectHome: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
@@ -41,18 +38,23 @@ class MainSharedViewModel(
     // LiveData for launching PostLikeActivity
     val launchPostLike: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
 
-    // LiveData triggered when the User Profile information is updated
-    private val userProfileInfoChanged: MutableLiveData<Boolean> = MutableLiveData()
+    // LiveData triggered when the Post is created and uploaded
+    private val postPublished: MutableLiveData<Post> = MutableLiveData()
 
     // Transform the [postPublished] to trigger an event with the new Post for [HomeFragment]
-    val postPublishUpdateToHome: LiveData<Event<Post>> = Transformations.map(postPublished) { newPost: Post ->
-        Event(newPost)
-    }
+    val postPublishUpdateToHome: LiveData<Event<Post>> =
+        Transformations.map(postPublished) { newPost: Post ->
+            Event(newPost)
+        }
 
     // Transform the [postPublished] to trigger an event with the new Post for [ProfileFragment]
-    val postPublishUpdateToProfile: LiveData<Event<Post>> = Transformations.map(postPublished) { newPost: Post ->
-        Event(newPost)
-    }
+    val postPublishUpdateToProfile: LiveData<Event<Post>> =
+        Transformations.map(postPublished) { newPost: Post ->
+            Event(newPost)
+        }
+
+    // LiveData triggered when the User Profile information is updated
+    private val userProfileInfoChanged: MutableLiveData<Boolean> = MutableLiveData()
 
     // Transform the [userProfileInfoChanged] to trigger the profile info update event for [HomeFragment]
     val userProfileInfoUpdateToHome: LiveData<Event<Boolean>> =
