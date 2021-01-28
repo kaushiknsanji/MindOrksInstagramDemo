@@ -53,7 +53,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun provideLayoutId(): Int = R.layout.activity_main
 
     /**
-     * Initializes the Layout of the Activity.a
+     * Initializes the Layout of the Activity.
      */
     override fun setupView(savedInstanceState: Bundle?) {
 
@@ -99,7 +99,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         // Restore the last active fragment instance if any, from the FragmentManager to prevent possible overlap
         if (activeFragment == null) {
             activeFragment = supportFragmentManager.fragments.takeIf { it.size > 0 }?.find { fragment: Fragment ->
-                // Fragment to restore will be our container fragment that is added, not yet hidden and not yet visible
+                // Fragment to restore will be our container fragment that is added, not yet hidden but is not visible
                 fragment.id == R.id.container_main_nav_fragment && fragment.isAdded && !fragment.isVisible && !fragment.isHidden
             }
         }

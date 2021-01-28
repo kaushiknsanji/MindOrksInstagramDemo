@@ -199,7 +199,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
 
         // Register an observer for EditProfileActivity launch events
         viewModel.launchEditProfile.observeEvent(this) {
-            // Delegate to the MainSharedViewModel to handle
+            // Delegate to the MainActivity via the Shared ViewModel
             mainSharedViewModel.onEditProfileRequest()
         }
 

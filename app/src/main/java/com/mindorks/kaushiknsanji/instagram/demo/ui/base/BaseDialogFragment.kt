@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 /**
  * An abstract base [DialogFragment] for all DialogFragments in the app, that facilitates
- * setup and abstraction to common tasks.
+ * setup and provides abstraction to common tasks.
  *
  * @param VM The type of [BaseDialogViewModel] which will be the Primary ViewModel of the DialogFragment.
  *
@@ -60,7 +60,7 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
      * used to show an AlertDialog instead of a generic Dialog; when doing so,
      * [onCreateView] does not need to be implemented since the AlertDialog takes care of its own content.
      *
-     * This method will be called after [onCreate] and before [onCreateView].  The
+     * This method will be called after [onCreate] and before [onCreateView]. The
      * default implementation simply instantiates and returns a [Dialog]
      * class.
      *

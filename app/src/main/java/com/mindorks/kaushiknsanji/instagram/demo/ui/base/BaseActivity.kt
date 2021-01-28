@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 /**
  * An abstract base [AppCompatActivity] for all the Activities in the app, that facilitates
- * setup and abstraction to common tasks.
+ * setup and provides abstraction to common tasks.
  *
  * @param VM The type of [BaseViewModel] which will be the Primary ViewModel of the Activity.
  *

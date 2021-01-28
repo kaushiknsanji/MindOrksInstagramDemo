@@ -9,7 +9,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerO
 
 /**
  * An abstract base class for [RecyclerView.Adapter] that registers as a [LifecycleObserver]
- * on the [Lifecycle] of a LifecycleOwner to be Lifecycle aware. Provides abstraction for common tasks and setup.
+ * on the [Lifecycle] of a LifecycleOwner to be Lifecycle aware. Facilitates setup and provides abstraction to common tasks.
  *
  * @param T The type of ItemView's data.
  * @param L The type of Listeners that extends [BaseAdapter.DefaultListener].

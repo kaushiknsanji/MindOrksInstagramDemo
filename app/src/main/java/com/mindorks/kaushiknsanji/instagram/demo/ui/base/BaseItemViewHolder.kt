@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 /**
  * An abstract Base class for the [RecyclerView.ViewHolder] that implements [LifecycleOwner]
- * to be Lifecycle aware. Provides abstraction for common tasks and setup.
+ * to be Lifecycle aware. Facilitates setup and provides abstraction to common tasks.
  *
  * @param T The type of ItemView's data.
  * @param L The type of Listeners that extends [BaseAdapter.DefaultListener].

@@ -283,7 +283,7 @@ class HomeViewModel(
                 true
             } ?: false // Returning false when the Liked list needed no update
         }?.run {
-            // Trigger List of All Posts to be reloaded
+            // Trigger List of All Posts to be reloaded when the Liked list has been updated
             reloadAllPosts.postValue(Resource.success(allPostListCopy(this)))
         }
     }
