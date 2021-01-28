@@ -2,6 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.utils.widget
 
 import android.graphics.Rect
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * @property verticalOffsetSize The top and bottom spacing in Pixels to be applied between the items in the List
  * @property horizontalOffsetSize The left and right spacing in Pixels to be applied between the items and its parent
- * in the List
+ * in the List. Defaulted to 0.
  * @property bottomOffsetSize The Spacing in Pixels to be applied at the bottom of the List, i.e., after the last item.
  * Defaulted to 0. The spacing applied will be twice the value provided.
  *
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
  */
 class VerticalListItemSpacingDecoration(
     private val verticalOffsetSize: Int,
-    private val horizontalOffsetSize: Int,
+    private val horizontalOffsetSize: Int = 0,
     private val bottomOffsetSize: Int = 0
 ) : RecyclerView.ItemDecoration() {
 
@@ -46,32 +47,39 @@ class VerticalListItemSpacingDecoration(
      * @param state   The current state of RecyclerView.
      */
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        // Get the Child View position in the adapter
-        val position = parent.getChildAdapterPosition(view)
+        if ((parent.layoutManager as? LinearLayoutManager)?.orientation == RecyclerView.VERTICAL) {
+            // Proceed only when RecyclerView Orientation is Vertical
 
-        // Evaluates to first item when position is 0
-        val isFirstItem = position == 0
+            // Get the Child View position in the adapter
+            val position = parent.getChildAdapterPosition(view)
 
-        // Evaluates to last item when position equals the adapter size
-        val isLastItem = position == parent.adapter?.itemCount?.minus(1) ?: false
+            // Evaluates to first item when position is 0
+            val isFirstItem = position == 0
 
-        // Set full spacing to the top when the Item is the First Item in the list
-        if (isFirstItem) {
-            outRect.top = verticalOffsetSize
-        }
+            // Evaluates to last item when position equals the adapter size
+            val isLastItem = position == parent.adapter?.itemCount?.minus(1) ?: false
 
-        // Set full spacing to bottom
-        outRect.bottom = verticalOffsetSize
-        // Set full spacing to left
-        outRect.left = horizontalOffsetSize
-        // Set full spacing to right
-        outRect.right = horizontalOffsetSize
+            // Set full spacing to the top when the Item is the First Item in the list
+            if (isFirstItem) {
+                outRect.top = verticalOffsetSize
+            }
 
-        if (isLastItem && bottomOffsetSize > 0) {
-            // When it is the last item and we have the bottom offset
+            // Set full spacing to bottom
+            outRect.bottom = verticalOffsetSize
+            // Set full spacing to left
+            outRect.left = horizontalOffsetSize
+            // Set full spacing to right
+            outRect.right = horizontalOffsetSize
 
-            // Apply twice the additional offset to the bottom
-            outRect.bottom += (2 * bottomOffsetSize)
+            if (isLastItem && bottomOffsetSize > 0) {
+                // When it is the last item and we have the bottom offset
+
+                // Apply twice the additional offset to the bottom
+                outRect.bottom += (2 * bottomOffsetSize)
+            }
+        } else {
+            // Call to super when RecyclerView Orientation is NOT Vertical
+            super.getItemOffsets(outRect, view, parent, state)
         }
     }
 

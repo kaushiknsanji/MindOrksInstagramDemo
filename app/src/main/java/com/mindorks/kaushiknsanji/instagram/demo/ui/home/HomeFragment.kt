@@ -66,8 +66,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
             // Add List Spacing Decoration
             addItemDecoration(
                 VerticalListItemSpacingDecoration(
-                    resources.getDimensionPixelSize(R.dimen.home_item_list_spacing),
-                    0
+                    resources.getDimensionPixelSize(R.dimen.home_item_list_spacing)
                 )
             )
             // Register OnScrollListener to load more data when the user scrolls to the bottom of the list
