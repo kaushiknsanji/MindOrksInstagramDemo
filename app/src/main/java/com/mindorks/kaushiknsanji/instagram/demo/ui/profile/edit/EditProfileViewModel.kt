@@ -78,8 +78,10 @@ class EditProfileViewModel(
 
     // LiveData for the Validations of the Field values
     private val validationsList: MutableLiveData<List<Validation>> = MutableLiveData()
+
     // LiveData for Name validation results
-    val nameValidation: LiveData<Resource<Int>> = filterValidation(Validation.Field.NAME)
+    val nameValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.NAME)
 
     // LiveData that saves the chosen Profile Image File which will be uploaded on save
     val chosenProfileImageFile: MutableLiveData<File> = MutableLiveData()
@@ -108,16 +110,6 @@ class EditProfileViewModel(
     val finishWithNoAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
     // LiveData for just finishing the Activity
     val closeAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
-
-    /**
-     * Transforms list of [Validation]s to the [Resource] data of the required [field] validated.
-     */
-    private fun filterValidation(field: Validation.Field) =
-        Transformations.map(validationsList) { validations ->
-            validations.find { validation -> validation.field == field }
-                ?.run { this.resource }
-                ?: Resource.unknown()
-        }
 
     init {
         // When this ViewModel is first initialized..

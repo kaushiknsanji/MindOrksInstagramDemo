@@ -1,6 +1,8 @@
 package com.mindorks.kaushiknsanji.instagram.demo.utils.common
 
 import androidx.core.util.PatternsCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Validation.Field
 
@@ -147,3 +149,15 @@ data class Validation(val field: Field, val resource: Resource<Int>) {
     }
 
 }
+
+/**
+ * Extension function on [LiveData] of [List] of [Validation]s that transforms
+ * the [List] of [Validation]s to a [LiveData] of [Resource] for the
+ * required [field] being validated.
+ */
+fun LiveData<List<Validation>>.filterValidation(field: Field): LiveData<Resource<Int>> =
+    Transformations.map(this) { validations ->
+        validations.find { validation -> validation.field == field }
+            ?.resource
+            ?: Resource.unknown()
+    }

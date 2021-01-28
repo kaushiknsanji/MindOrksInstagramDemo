@@ -2,7 +2,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
@@ -34,25 +33,19 @@ class LoginViewModel(
 
     // LiveData for the Validations of the Field values
     private val validationsList: MutableLiveData<List<Validation>> = MutableLiveData()
+
     // LiveData for Email validation results
-    val emailValidation: LiveData<Resource<Int>> = filterValidation(Validation.Field.EMAIL)
+    val emailValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.EMAIL)
+
     // LiveData for Password validation results
-    val passwordValidation: LiveData<Resource<Int>> = filterValidation(Validation.Field.PASSWORD)
+    val passwordValidation: LiveData<Resource<Int>> =
+        validationsList.filterValidation(Validation.Field.PASSWORD)
 
     // LiveData for launching MainActivity
     val launchMain: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
     // LiveData for launching SignUpActivity
     val launchSignUp: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
-
-    /**
-     * Transforms list of [Validation]s to the [Resource] data of the required [field] validated.
-     */
-    private fun filterValidation(field: Validation.Field) =
-        Transformations.map(validationsList) { validations ->
-            validations.find { validation -> validation.field == field }
-                ?.run { this.resource }
-                ?: Resource.unknown()
-        }
 
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
