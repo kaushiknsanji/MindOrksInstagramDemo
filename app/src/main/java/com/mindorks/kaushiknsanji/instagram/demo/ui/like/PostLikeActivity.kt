@@ -69,7 +69,7 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
             setNavigationOnClickListener { viewModel.onClose() }
 
             // Inflate the Toolbar menu
-            inflateMenu(R.menu.menu_post_like)
+            inflateMenu(R.menu.toolbar_menu_post_like)
             // Set click listener on Menu items
             setOnMenuItemClickListener { menuItem: MenuItem ->
                 when (menuItem.itemId) {

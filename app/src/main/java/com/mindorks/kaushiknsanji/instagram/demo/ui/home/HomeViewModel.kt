@@ -260,7 +260,7 @@ class HomeViewModel(
             posts.firstOrNull { post: Post ->
                 // Filter for the Post with [postId] that has a different user liked status with the current one,
                 // which needs an update
-                post.id == postId && (post.likedBy?.any { likedBy: Post.User -> likedBy.id == user.id } != likeStatus)
+                post.id == postId && (post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id } != likeStatus)
             }?.likedBy?.run {
                 // When we have a Post and its liked list needs an update
 

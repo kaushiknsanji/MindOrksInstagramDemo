@@ -77,7 +77,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
             setNavigationOnClickListener { viewModel.onClose() }
 
             // Inflate the Toolbar menu
-            inflateMenu(R.menu.menu_edit_profile)
+            inflateMenu(R.menu.toolbar_menu_edit_profile)
             // Set click listener on Menu items
             setOnMenuItemClickListener { menuItem: MenuItem ->
                 when (menuItem.itemId) {

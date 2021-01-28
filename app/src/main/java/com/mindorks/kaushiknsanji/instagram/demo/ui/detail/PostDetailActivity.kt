@@ -84,7 +84,7 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
             setNavigationOnClickListener { viewModel.onNavigateUp() }
 
             // Inflate the Toolbar menu
-            inflateMenu(R.menu.menu_post_detail)
+            inflateMenu(R.menu.toolbar_menu_post_detail)
             // Set click listener on Menu items
             setOnMenuItemClickListener { menuItem: MenuItem ->
                 when (menuItem.itemId) {

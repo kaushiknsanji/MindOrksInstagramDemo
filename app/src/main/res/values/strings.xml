@@ -6,14 +6,14 @@
     <!-- ============================ -->
     <!-- NETWORK CONNECTIVITY STRINGS -->
     <!-- ============================ -->
-    <string name="network_connection_error">Internet connection lost, please retry again</string>
-    <string name="network_default_error">Something wrong happened, please retry again</string>
-    <string name="network_internal_error">Our systems got an error, please retry again</string>
-    <string name="network_server_not_available">
+    <string name="error_network_connection_issue">Internet connection lost, please retry again</string>
+    <string name="error_network_default_issue">Something wrong happened, please retry again</string>
+    <string name="error_network_internal_issue">Our systems got an error, please retry again</string>
+    <string name="error_network_server_not_available_issue">
         Our services are under maintenance, please retry after some time
     </string>
-    <string name="server_connection_error">Not able to connect, please retry again</string>
-    <string name="network_login_unauthorized_error">Please verify your credentials and try again</string>
+    <string name="error_network_server_connection_issue">Not able to connect, please retry again</string>
+    <string name="error_network_login_unauthorized_issue">Please verify your credentials and try again</string>
 
     <!-- ============== -->
     <!-- COMMON STRINGS -->
@@ -131,6 +131,7 @@
     <string name="title_condensed_action_post_detail_like">Like/Unlike the Post</string>
     <string name="title_condensed_action_post_detail_delete">Delete the Post</string>
     <string name="cd_image_post_detail_photo_launch">Launch Photo</string>
+    <string name="title_dialog_confirm_delete_post">Delete Post?</string>
 
     <!-- ================================== -->
     <!-- STRINGS USED IN POST LIKE ACTIVITY -->
@@ -156,10 +157,8 @@
     <!-- ============================================== -->
     <!-- STRINGS USED IN CONFIRM OPTION DIALOG FRAGMENT -->
     <!-- ============================================== -->
-    <string name="dialog_confirm_title_default">Confirm</string>
-    <string name="dialog_confirm_positive_button_default">YES</string>
-    <string name="dialog_confirm_negative_button_default">NO</string>
-    <string name="dialog_confirm_title_delete_post">Delete Post?</string>
-
+    <string name="title_dialog_confirm_default">Confirm</string>
+    <string name="dialog_confirm_button_positive_default">YES</string>
+    <string name="dialog_confirm_button_negative_default">NO</string>
 
 </resources>

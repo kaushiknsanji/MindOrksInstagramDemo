@@ -30,16 +30,16 @@ class ConfirmOptionDialogFragment() : BaseDialogFragment<SharedConfirmOptionDial
         super.constructDialog(dialogBuilder, savedInstanceState)
 
         // Set the Default Title
-        dialogBuilder.setTitle(R.string.dialog_confirm_title_default)
+        dialogBuilder.setTitle(R.string.title_dialog_confirm_default)
 
         // Set the Default Positive Button Name and its Listener
-        dialogBuilder.setPositiveButton(R.string.dialog_confirm_positive_button_default) { _, _ ->
+        dialogBuilder.setPositiveButton(R.string.dialog_confirm_button_positive_default) { _, _ ->
             // Delegate to the ViewModel to trigger an event
             viewModel.onDialogPositiveButtonClicked()
         }
 
         // Set the Default Negative Button Name and its Listener
-        dialogBuilder.setNegativeButton(R.string.dialog_confirm_negative_button_default) { _, _ ->
+        dialogBuilder.setNegativeButton(R.string.dialog_confirm_button_negative_default) { _, _ ->
             // Delegate to the ViewModel to trigger an event
             viewModel.onDialogNegativeButtonClicked()
         }

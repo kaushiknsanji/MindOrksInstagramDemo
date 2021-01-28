@@ -59,7 +59,7 @@ class PostItemViewModel @Inject constructor(
     val likesCount: LiveData<Int> = Transformations.map(itemData) { post -> post.likedBy?.size ?: 0 }
     // Transform the [itemData] to find if the logged-in user had liked the Post
     val hasUserLiked: LiveData<Boolean> = Transformations.map(itemData) { post ->
-        post.likedBy?.any { postUser: Post.User -> postUser.id == user.id }
+        post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id }
     }
     // Transform the [itemData] to get the [Image] model of the Post Creator's Profile Picture
     val profileImage: LiveData<Image> = Transformations.map(itemData) { post ->

@@ -147,9 +147,9 @@ class LoginViewModelTest {
         loginViewModel.onLogin()
 
         // Assert that Network Error is set on the Resource messages LiveData
-        assert(loginViewModel.messageStringId.value == Resource.error(R.string.network_connection_error))
+        assert(loginViewModel.messageStringId.value == Resource.error(R.string.error_network_connection_issue))
         // Verify that the Resource messages LiveData Observer received the Error message
-        verify(messageStringIdObserver).onChanged(Resource.error(R.string.network_connection_error))
+        verify(messageStringIdObserver).onChanged(Resource.error(R.string.error_network_connection_issue))
     }
 
     @After

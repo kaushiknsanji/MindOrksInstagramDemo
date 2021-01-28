@@ -74,7 +74,7 @@ class PostDetailViewModel(
     val postHasLikes: LiveData<Boolean> = Transformations.map(likesCount) { countOfLikes: Int -> countOfLikes > 0 }
     // Transform the [postData] to find if the logged-in user had liked the Post
     val hasUserLiked: LiveData<Boolean> = Transformations.map(postData) { post ->
-        post.likedBy?.any { postUser: Post.User -> postUser.id == user.id }
+        post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id }
     }
     // Transform the [postData] to get the list of Likes on the Post
     val postLikes: LiveData<List<Post.User>?> = Transformations.map(postData) { post -> post.getLikesCopy() }
@@ -202,7 +202,7 @@ class PostDetailViewModel(
      */
     fun onDeleteRequest() {
         // Trigger the event and pass the title of the dialog to be shown
-        launchDeletePostConfirm.postValue(Resource.success(R.string.dialog_confirm_title_delete_post))
+        launchDeletePostConfirm.postValue(Resource.success(R.string.title_dialog_confirm_delete_post))
     }
 
     /**

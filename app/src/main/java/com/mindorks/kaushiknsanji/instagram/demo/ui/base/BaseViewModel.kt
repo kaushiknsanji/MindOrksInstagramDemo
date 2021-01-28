@@ -42,7 +42,7 @@ abstract class BaseViewModel(
             true
         } else {
             // Post an error message when not connected
-            messageStringId.postValue(Resource.error(R.string.network_connection_error))
+            messageStringId.postValue(Resource.error(R.string.error_network_connection_issue))
             false
         }
 
@@ -55,17 +55,21 @@ abstract class BaseViewModel(
             networkHelper.castToNetworkError(err).run {
                 when (status) {
                     // For default error
-                    -1 -> messageStringId.postValue(Resource.error(R.string.network_default_error))
+                    -1 -> messageStringId.postValue(Resource.error(R.string.error_network_default_issue))
                     // For Connect exceptions
-                    0 -> messageStringId.postValue(Resource.error(R.string.server_connection_error))
+                    0 -> messageStringId.postValue(Resource.error(R.string.error_network_server_connection_issue))
                     // For HTTP 401 error
-                    HttpsURLConnection.HTTP_UNAUTHORIZED -> messageStringId.postValue(Resource.error(R.string.network_login_unauthorized_error))
+                    HttpsURLConnection.HTTP_UNAUTHORIZED -> messageStringId.postValue(
+                        Resource.error(
+                            R.string.error_network_login_unauthorized_issue
+                        )
+                    )
                     // For HTTP 500 error
                     HttpsURLConnection.HTTP_INTERNAL_ERROR ->
-                        messageStringId.postValue(Resource.error(R.string.network_internal_error))
+                        messageStringId.postValue(Resource.error(R.string.error_network_internal_issue))
                     // For HTTP 503 error
                     HttpsURLConnection.HTTP_UNAVAILABLE ->
-                        messageStringId.postValue(Resource.error(R.string.network_server_not_available))
+                        messageStringId.postValue(Resource.error(R.string.error_network_server_not_available_issue))
                     // For other errors
                     else -> messageString.postValue(Resource.error(message))
                 }
