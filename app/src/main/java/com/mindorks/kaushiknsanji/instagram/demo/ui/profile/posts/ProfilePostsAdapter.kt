@@ -13,14 +13,14 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts.ProfilePostsAd
  *
  * @param parentLifecycle [Lifecycle] of [com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileFragment]
  * @param hostListener The Host of this Adapter that wishes to auto register/unregister as [Listener]
- * for Navigation events. The Host should implement the [Listener] for this to work.
+ * for Navigation events. The Host should implement the [Listener] for this to work. Defaulted to `null`.
  * @constructor Instance of [ProfilePostsAdapter] created and provided by Dagger.
  *
  * @author Kaushik N Sanji
  */
 class ProfilePostsAdapter(
     parentLifecycle: Lifecycle,
-    hostListener: Listener?
+    hostListener: Listener? = null
 ) : BaseAdapter<Post, Listener, ProfilePostItemViewHolder>(parentLifecycle, hostListener) {
 
     /**

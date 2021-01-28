@@ -12,7 +12,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
-import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
@@ -24,12 +23,16 @@ import kotlinx.android.synthetic.main.item_home_post.view.*
  * in [PostsAdapter].
  *
  * @param container [ViewGroup] that contains the ItemViews.
- * @param listener Instance of [BaseAdapter.DefaultListener] to receive Navigation events.
+ * @param listener Instance of [PostsAdapter.Listener] to receive Navigation events. Defaulted to `null`.
  *
  * @author Kaushik N Sanji
  */
-class PostItemViewHolder(container: ViewGroup, listener: BaseAdapter.DefaultListener<Post>?) :
-    BaseItemViewHolder<Post, PostItemViewModel>(R.layout.item_home_post, container, listener) {
+class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? = null) :
+    BaseItemViewHolder<Post, PostsAdapter.Listener, PostItemViewModel>(
+        R.layout.item_home_post,
+        container,
+        listener
+    ) {
 
     /**
      * Injects dependencies exposed by [ViewHolderComponent] into [androidx.recyclerview.widget.RecyclerView.ViewHolder].
@@ -229,12 +232,12 @@ class PostItemViewHolder(container: ViewGroup, listener: BaseAdapter.DefaultList
 
         // Register an observer for the User's Click action on Post Likes Count
         itemViewModel.actionLikesCountClick.observeEvent(this) { post: Post ->
-            (listener as? PostsAdapter.Listener)?.onLikesCountClick(post)
+            listener?.onLikesCountClick(post)
         }
 
         // Register an observer for the User's Like/Unlike action on the Post
         itemViewModel.actionLikeUnlike.observeEvent(this) { post: Post ->
-            (listener as? PostsAdapter.Listener)?.onLikeUnlikeSync(post)
+            listener?.onLikeUnlikeSync(post)
         }
     }
 

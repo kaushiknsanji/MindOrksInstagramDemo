@@ -12,7 +12,7 @@ import dagger.Provides
  * @author Kaushik N Sanji
  */
 @Module
-class ViewHolderModule(private val viewHolder: BaseItemViewHolder<*, *>) {
+class ViewHolderModule(private val viewHolder: BaseItemViewHolder<*, *, *>) {
 
     @ViewHolderScope
     @Provides

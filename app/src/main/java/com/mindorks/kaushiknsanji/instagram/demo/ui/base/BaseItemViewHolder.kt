@@ -22,18 +22,21 @@ import javax.inject.Inject
  * to be Lifecycle aware. Provides abstraction for common tasks and setup.
  *
  * @param T The type of ItemView's data.
+ * @param L The type of Listeners that extends [BaseAdapter.DefaultListener].
  * @param VM The type of ItemView's ViewModel that extends [BaseItemViewModel]
  * @param itemLayoutId [Int] value of the layout resource Id of the ItemView.
  * @param container [ViewGroup] that contains the ItemViews.
- * @property listener Instance of [BaseAdapter.DefaultListener] to receive Navigation events.
+ * @property listener Instance of listeners of type [L] to receive Navigation events. Defaulted to `null`.
  *
  * @author Kaushik N Sanji
  */
-abstract class BaseItemViewHolder<T : Any, VM : BaseItemViewModel<T>>(
+abstract class BaseItemViewHolder<T : Any, L : BaseAdapter.DefaultListener<T>, VM : BaseItemViewModel<T>>(
     @LayoutRes itemLayoutId: Int,
     container: ViewGroup,
-    protected val listener: BaseAdapter.DefaultListener<T>?
-) : RecyclerView.ViewHolder(LayoutInflater.from(container.context).inflate(itemLayoutId, container, false)),
+    protected val listener: L? = null
+) : RecyclerView.ViewHolder(
+    LayoutInflater.from(container.context).inflate(itemLayoutId, container, false)
+),
     LifecycleOwner {
 
     init {

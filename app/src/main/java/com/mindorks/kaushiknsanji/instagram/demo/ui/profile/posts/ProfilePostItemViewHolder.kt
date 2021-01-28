@@ -10,7 +10,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
-import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
@@ -22,13 +21,17 @@ import kotlinx.android.synthetic.main.item_profile_post.view.*
  * in [ProfilePostsAdapter].
  *
  * @property container [ViewGroup] that contains the ItemViews.
- * @param listener Instance of [BaseAdapter.DefaultListener] to receive Navigation events.
+ * @param listener Instance of [ProfilePostsAdapter.Listener] to receive Navigation events. Defaulted to `null`.
  *
  * @author Kaushik N Sanji
  */
 class ProfilePostItemViewHolder(
-    private val container: ViewGroup, listener: BaseAdapter.DefaultListener<Post>?
-) : BaseItemViewHolder<Post, ProfilePostItemViewModel>(R.layout.item_profile_post, container, listener) {
+    private val container: ViewGroup, listener: ProfilePostsAdapter.Listener? = null
+) : BaseItemViewHolder<Post, ProfilePostsAdapter.Listener, ProfilePostItemViewModel>(
+    R.layout.item_profile_post,
+    container,
+    listener
+) {
 
     /**
      * Injects dependencies exposed by [ViewHolderComponent] into [androidx.recyclerview.widget.RecyclerView.ViewHolder].

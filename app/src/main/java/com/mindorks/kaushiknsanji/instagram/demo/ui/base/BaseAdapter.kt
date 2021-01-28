@@ -16,14 +16,14 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerO
  * @param VH The type of ItemView's ViewHolder that extends [BaseItemViewHolder].
  * @param parentLifecycle The [Lifecycle] of a LifecycleOwner to observe on.
  * @param hostListener The Host of this Adapter that wishes to auto register/unregister as Listener of type [L]
- * for Navigation events. The Host should implement the listener of type [L] for this to work. Can be `null` if not required.
+ * for Navigation events. The Host should implement the listener of type [L] for this to work. Defaulted to `null`.
  * @property listenerObservable Instance of [BaseListenerObservable] that dispatches callback events to registered Listeners.
  *
  * @author Kaushik N Sanji
  */
-abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : BaseItemViewHolder<T, out BaseItemViewModel<T>>>(
+abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : BaseItemViewHolder<T, L, out BaseItemViewModel<T>>>(
     parentLifecycle: Lifecycle,
-    hostListener: L?,
+    hostListener: L? = null,
     protected val listenerObservable: BaseListenerObservable<L> = BaseListenerObservable()
 ) : RecyclerView.Adapter<VH>() {
 
@@ -57,7 +57,7 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
                         // Updating the visible ViewHolders in the range to Started state
                         (firstVisibleItemPosition..lastVisibleItemPosition).forEach { adapterPosition ->
                             findViewHolderForAdapterPosition(adapterPosition)?.let { viewHolder ->
-                                (viewHolder as BaseItemViewHolder<*, *>).onStart()
+                                (viewHolder as BaseItemViewHolder<*, *, *>).onStart()
                             }
                         }
                     }
@@ -81,7 +81,7 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
                 recyclerView?.run {
                     (0 until childCount).forEach { childIndex ->
                         getChildAt(childIndex)?.let { childView ->
-                            (getChildViewHolder(childView) as BaseItemViewHolder<*, *>).onStop()
+                            (getChildViewHolder(childView) as BaseItemViewHolder<*, *, *>).onStop()
                         }
                     }
                 }
@@ -102,7 +102,7 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
                 recyclerView?.run {
                     (0 until childCount).forEach { childIndex ->
                         getChildAt(childIndex)?.let { childView ->
-                            (getChildViewHolder(childView) as BaseItemViewHolder<*, *>).onDestroy()
+                            (getChildViewHolder(childView) as BaseItemViewHolder<*, *, *>).onDestroy()
                         }
                     }
                 }
@@ -213,7 +213,7 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
         this.recyclerView?.run {
             (0 until childCount).forEach { childIndex ->
                 getChildAt(childIndex)?.let { childView ->
-                    (getChildViewHolder(childView) as BaseItemViewHolder<*, *>).onDestroy()
+                    (getChildViewHolder(childView) as BaseItemViewHolder<*, *, *>).onDestroy()
                 }
             }
         }

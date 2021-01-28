@@ -14,14 +14,14 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapte
  *
  * @param parentLifecycle [Lifecycle] of the Activity using this Adapter.
  * @param hostListener The Host of this Adapter that wishes to auto register/unregister as [Listener]
- * for Navigation events. The Host should implement the [Listener] for this to work.
+ * for Navigation events. The Host should implement the [Listener] for this to work. Defaulted to `null`.
  * @constructor Instance of [PostLikesAdapter] created and provided by Dagger.
  *
  * @author Kaushik N Sanji
  */
 class PostLikesAdapter(
     parentLifecycle: Lifecycle,
-    hostListener: Listener?
+    hostListener: Listener? = null
 ) : BaseAdapter<Post.User, Listener, PostLikeItemViewHolder>(parentLifecycle, hostListener) {
 
     /**
