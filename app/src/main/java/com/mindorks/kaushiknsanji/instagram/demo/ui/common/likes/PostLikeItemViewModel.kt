@@ -11,6 +11,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -43,7 +44,7 @@ class PostLikeItemViewModel @Inject constructor(
     // Transform the [userName] to create a dummy user handle based on the user name
     val userHandle: LiveData<String> = Transformations.map(userName) { name: String ->
         // Convert all to lowercase and remove whitespaces if any
-        name.toLowerCase().replace("\\s".toRegex(), "")
+        name.toLowerCase(Locale.getDefault()).replace("\\s".toRegex(), "")
     }
     // Transform the [itemData] to get the [Image] model of the Profile Picture, of the User who liked the Post
     val userImage: LiveData<Image> = Transformations.map(itemData) { user ->

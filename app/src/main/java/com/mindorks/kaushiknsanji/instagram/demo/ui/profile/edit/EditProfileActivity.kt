@@ -453,7 +453,8 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
 
         // Intent Extra constant for passing the Response message of the Successful edit operation
         @JvmField
-        val EXTRA_RESULT_EDIT_SUCCESS = EditProfileActivity::class.java.`package`.toString() + "extra.EDIT_SUCCESS"
+        val EXTRA_RESULT_EDIT_SUCCESS =
+            EditProfileActivity::class.java.`package`?.toString() + "extra.EDIT_SUCCESS"
 
     }
 

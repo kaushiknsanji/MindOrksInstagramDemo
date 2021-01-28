@@ -225,7 +225,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         // If there was another Fragment previously shown in the container, then hide this Fragment
         // to load the same, the next time when needed
         if (activeFragment != null) {
-            fragmentTransaction.hide(activeFragment as Fragment)
+            fragmentTransaction.hide(activeFragment!!)
         }
 
         // Commit the Fragment Transactions
@@ -286,13 +286,14 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         when (resultCode) {
                             // For the Successful Delete
                             PostDetailActivity.RESULT_DELETE_POST_SUCCESS -> {
-                                intent!!.extras.apply {
+                                intent!!.extras?.apply {
                                     // When we have Intent extras of the result
 
                                     // Delegate to the MainSharedViewModel, to trigger profile updates in HomeFragment
                                     // and ProfileFragment
                                     getString(PostDetailActivity.EXTRA_RESULT_DELETED_POST_ID)
-                                        ?.takeUnless { it.isBlank() }?.let { mainSharedViewModel.onPostItemDeleted(it) }
+                                        ?.takeUnless { it.isBlank() }
+                                        ?.let { mainSharedViewModel.onPostItemDeleted(it) }
                                     // Display the success message if available
                                     getString(PostDetailActivity.EXTRA_RESULT_DELETE_POST_SUCCESS)
                                         ?.takeUnless { it.isBlank() }?.let {
@@ -303,7 +304,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
                             // For Post Like Updates
                             PostDetailActivity.RESULT_LIKE_POST -> {
-                                intent!!.extras.apply {
+                                intent!!.extras?.apply {
                                     // When we have Intent extras of the result
 
                                     // Delegate to the MainSharedViewModel, to trigger the item update in HomeFragment
@@ -325,7 +326,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
                         when (resultCode) {
                             // For Post Like Updates
                             PostLikeActivity.RESULT_LIKE_POST -> {
-                                intent!!.extras.apply {
+                                intent!!.extras?.apply {
                                     // When we have Intent extras of the result
 
                                     // Delegate to the MainSharedViewModel, to trigger the item update in HomeFragment

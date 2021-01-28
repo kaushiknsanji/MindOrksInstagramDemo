@@ -368,7 +368,7 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
     companion object {
         // Intent Extra constant for the Id of the Post whose details are to be loaded
         @JvmField
-        val EXTRA_POST_ID = PostDetailActivity::class.java.`package`.toString() + "extra.POST_ID"
+        val EXTRA_POST_ID = PostDetailActivity::class.java.`package`?.toString() + "extra.POST_ID"
 
         // Request code used by the activity that calls this activity for result
         const val REQUEST_POST_DETAIL = 300 // 301, 302 are reserved for the result of this request
@@ -382,19 +382,22 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Intent Extra constant for passing the Response message of the Successful Delete operation
         @JvmField
         val EXTRA_RESULT_DELETE_POST_SUCCESS =
-            PostDetailActivity::class.java.`package`.toString() + "extra.DELETE_SUCCESS"
+            PostDetailActivity::class.java.`package`?.toString() + "extra.DELETE_SUCCESS"
 
         // Intent Extra constant for passing the Id of Deleted Post on Successful Delete operation
         @JvmField
-        val EXTRA_RESULT_DELETED_POST_ID = PostDetailActivity::class.java.`package`.toString() + "extra.DELETED_POST_ID"
+        val EXTRA_RESULT_DELETED_POST_ID =
+            PostDetailActivity::class.java.`package`?.toString() + "extra.DELETED_POST_ID"
 
         // Intent Extra constant for passing the Id of the Post Liked/Unliked
         @JvmField
-        val EXTRA_RESULT_LIKE_POST_ID = PostDetailActivity::class.java.`package`.toString() + "extra.LIKE_POST_ID"
+        val EXTRA_RESULT_LIKE_POST_ID =
+            PostDetailActivity::class.java.`package`?.toString() + "extra.LIKE_POST_ID"
 
         // Intent Extra constant for passing the Like status of the Post
         @JvmField
-        val EXTRA_RESULT_LIKE_POST_STATE = PostDetailActivity::class.java.`package`.toString() + "extra.LIKE_POST_STATE"
+        val EXTRA_RESULT_LIKE_POST_STATE =
+            PostDetailActivity::class.java.`package`?.toString() + "extra.LIKE_POST_STATE"
     }
 
 }

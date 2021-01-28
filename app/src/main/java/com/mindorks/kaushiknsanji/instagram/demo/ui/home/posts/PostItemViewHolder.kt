@@ -1,5 +1,6 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts
 
+import android.annotation.SuppressLint
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -44,6 +45,7 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
     /**
      * Initializes the Layout of the [itemView].
      */
+    @SuppressLint("ClickableViewAccessibility")
     override fun setupView(itemView: View) {
         // Register a Click Listener on the "Heart" ImageButton, to enable like/unlike Post
         itemView.imgbtn_home_item_toggle_post_like.setOnClickListener { itemViewModel.onLikeClick() }

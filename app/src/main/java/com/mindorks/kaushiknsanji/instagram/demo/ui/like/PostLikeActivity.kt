@@ -183,7 +183,7 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
     companion object {
         // Intent Extra constant for the Id of the Post whose details are to be loaded
         @JvmField
-        val EXTRA_POST_ID = PostLikeActivity::class.java.`package`.toString() + "extra.POST_ID"
+        val EXTRA_POST_ID = PostLikeActivity::class.java.`package`?.toString() + "extra.POST_ID"
 
         // Request code used by the activity that calls this activity for result
         const val REQUEST_POST_LIKE = 400 // 401 is reserved for the result of this request
@@ -193,11 +193,13 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
 
         // Intent Extra constant for passing the Id of the Post Liked/Unliked
         @JvmField
-        val EXTRA_RESULT_LIKE_POST_ID = PostLikeActivity::class.java.`package`.toString() + "extra.LIKE_POST_ID"
+        val EXTRA_RESULT_LIKE_POST_ID =
+            PostLikeActivity::class.java.`package`?.toString() + "extra.LIKE_POST_ID"
 
         // Intent Extra constant for passing the Like status of the Post
         @JvmField
-        val EXTRA_RESULT_LIKE_POST_STATE = PostLikeActivity::class.java.`package`.toString() + "extra.LIKE_POST_STATE"
+        val EXTRA_RESULT_LIKE_POST_STATE =
+            PostLikeActivity::class.java.`package`?.toString() + "extra.LIKE_POST_STATE"
     }
 
 }

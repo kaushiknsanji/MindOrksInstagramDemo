@@ -42,13 +42,6 @@ class ProgressTextDialogFragment() : BaseDialogFragment<SharedProgressTextViewMo
     }
 
     /**
-     * Initializes the Layout of the DialogFragment.
-     */
-    override fun setupView(view: View, savedInstanceState: Bundle?) {
-        super.setupView(view, savedInstanceState)
-    }
-
-    /**
      * Method that initializes the [androidx.lifecycle.LiveData] observers.
      * Can be overridden by subclasses to initialize other [androidx.lifecycle.LiveData] observers.
      */
