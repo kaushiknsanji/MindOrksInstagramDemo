@@ -91,7 +91,7 @@ class LoginViewModel(
             // Start the Login Progress indication
             loginProgress.postValue(true)
 
-            compositeDisposable.addAll(
+            compositeDisposable.add(
                 // Make the Login API Call and save the resulting disposable
                 userRepository.doUserLogin(emailValue, passwordValue)
                     .subscribeOn(schedulerProvider.io()) // Operate on IO Thread

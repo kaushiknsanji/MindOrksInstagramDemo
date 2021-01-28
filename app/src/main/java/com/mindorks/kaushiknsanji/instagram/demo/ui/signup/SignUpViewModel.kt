@@ -103,7 +103,7 @@ class SignUpViewModel(
             // Start the Sign-Up Progress indication
             signUpProgress.postValue(true)
 
-            compositeDisposable.addAll(
+            compositeDisposable.add(
                 // Make the SignUp API Call and save the resulting disposable
                 userRepository.doUserSignUp(emailValue, passwordValue, nameValue)
                     .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
