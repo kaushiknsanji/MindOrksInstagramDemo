@@ -162,6 +162,7 @@
     <!-- FOR IMMERSIVE PHOTO ACTIVITY -->
     <!-- ============================ -->
     <dimen name="image_immersive_photo_close_size">48dp</dimen>
+    <dimen name="image_immersive_photo_close_padding">4dp</dimen>
     <dimen name="image_immersive_photo_close_corner_margin">16dp</dimen>
 
 </resources>
