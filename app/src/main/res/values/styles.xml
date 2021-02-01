@@ -102,8 +102,6 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="AppTheme.Tab" parent="TextAppearance.MaterialComponents.Tab" />
-
     <style name="AppTheme.Chip" parent="TextAppearance.MaterialComponents.Chip" />
 
     <!-- Style for Custom App Bar -->

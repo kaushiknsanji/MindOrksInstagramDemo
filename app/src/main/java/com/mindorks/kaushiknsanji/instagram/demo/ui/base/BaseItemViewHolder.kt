@@ -65,8 +65,8 @@ abstract class BaseItemViewHolder<T : Any, L : BaseAdapter.DefaultListener<T>, V
         // Inject the required dependencies first
         injectDependencies(buildViewHolderComponent())
         // Move the Lifecycle state to Initialized and Created
-        lifecycleRegistry.markState(Lifecycle.State.INITIALIZED)
-        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+        lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
+        lifecycleRegistry.currentState = Lifecycle.State.CREATED
         // Setup any LiveData observers
         setupObservers()
         // Setup the ItemView Layout
@@ -78,8 +78,8 @@ abstract class BaseItemViewHolder<T : Any, L : BaseAdapter.DefaultListener<T>, V
      * Moves the Lifecycle State to Started and Resumed.
      */
     fun onStart() {
-        lifecycleRegistry.markState(Lifecycle.State.STARTED)
-        lifecycleRegistry.markState(Lifecycle.State.RESUMED)
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
     }
 
     /**
@@ -87,8 +87,8 @@ abstract class BaseItemViewHolder<T : Any, L : BaseAdapter.DefaultListener<T>, V
      * Moves the Lifecycle State from Resumed to Started and Created.
      */
     fun onStop() {
-        lifecycleRegistry.markState(Lifecycle.State.STARTED)
-        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        lifecycleRegistry.currentState = Lifecycle.State.CREATED
     }
 
     /**
@@ -96,7 +96,7 @@ abstract class BaseItemViewHolder<T : Any, L : BaseAdapter.DefaultListener<T>, V
      * Moves the Lifecycle State to Destroyed, and does the cleanup required.
      */
     fun onDestroy() {
-        lifecycleRegistry.markState(Lifecycle.State.DESTROYED)
+        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
         // Do the cleanup of the Item's ViewModel
         itemViewModel.onManualCleared()
     }

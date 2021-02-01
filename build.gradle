@@ -1,15 +1,89 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.31'
+    // Map of plugin and dependency versions
+    ext.versions = [:]
+
+    // Plugin versions
+    versions.kotlin_plugin = '1.4.21'
+    versions.gradle_plugin = '3.6.4'
+
+    // Sdk and Tools
+    versions.min_sdk = 21
+    versions.target_sdk = 29
+    versions.compile_sdk = 29
+
+    // Core
+    versions.appcompat = '1.2.0'
+
+    // Material
+    versions.material = '1.2.1'
+
+    // ConstraintLayout
+    versions.constraintlayout = '2.0.4'
+
+    // RecyclerView
+    versions.recyclerview = '1.1.0'
+
+    // CardView
+    versions.cardview = '1.0.0'
+
+    // Multidex
+    versions.multidex = '2.0.1'
+
+    // Lifecycle
+    versions.lifecycle = '2.2.0'
+
+    // ReactiveX
+    versions.rxjava = '2.2.3'
+    versions.rxandroid = '2.1.1'
+
+    // Image
+    versions.glide = '4.11.0'
+
+    // ParaCamera for capturing Images
+    versions.paracamera = '0.2.2'
+
+    // PhotoView for viewing Photos
+    versions.photoview = '2.0.0'
+
+    // JSON de/serializer using Gson
+    versions.gson = '2.8.6'
+
+    // Logger
+    versions.timber = '4.7.1'
+
+    // Database
+    versions.room = '2.2.6'
+
+    // Database Debugging
+    versions.debug_db = '1.0.6'
+
+    // Networking
+    versions.retrofit = '2.9.0'
+    versions.okhttp = '4.9.0'
+    versions.retrofit_rxjava_adapter = '1.0.0'
+
+    // Dagger
+    versions.dagger = '2.31.2'
+
+    // Testing
+    versions.junit = '4.13.1'
+    versions.espresso = '3.3.0'
+    versions.mockito = '2.19.0'
+    versions.core_testing = '1.1.1'
+    versions.test_runner = '1.3.0'
+    versions.test_ext_runner = '1.1.2'
+    versions.hamcrest = '2.2'
+
     repositories {
         google()
         jcenter()
-        
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.android.tools.build:gradle:$versions.gradle_plugin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin_plugin"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -25,66 +99,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-
-    // Sdk and Tools
-    min_sdk_version = 21
-    target_sdk_version = 28
-    compile_sdk_version = 28
-
-    // Core
-    app_compat_version = '1.0.2'
-    support_library_version = '1.0.0'
-    constraint_version = '1.1.3'
-
-    // Multidex
-    multidex_version = '2.0.1'
-
-    // Lifecycle
-    lifecycle_version = '2.0.0'
-
-    // ReactiveX
-    rxjava_version = '2.2.3'
-    rxandroid_version = '2.1.1'
-
-    // Image
-    glide_version = '4.8.0'
-
-    // ParaCamera for capturing Images
-    paracamera_version = '0.2.2'
-
-    // PhotoView for viewing Photos
-    photoview_version = '2.0.0'
-
-    // JSON de/serializer using Gson
-    gson_version = '2.8.5'
-
-    // Logger
-    timber_version = '4.7.1'
-
-    // Database
-    room_version = '2.1.0'
-
-    // Database Debugging
-    debug_db_version = '1.0.6'
-
-    // Networking
-    retrofit_version = '2.4.0'
-    okhttp_version = '3.11.0'
-    retrofit_rxjava_adapter_version = '1.0.0'
-
-    // Dagger
-    dagger_version = '2.21'
-
-    // Testing
-    junit_version = '4.12'
-    espresso_version = '3.1.0'
-    mockito_version = '2.7.1'
-    core_testing_version = '1.1.1'
-    test_runner_version = '1.1.1'
-    test_ext_runner_version = '1.1.0'
-    hamcrest_version = '2.1'
-
 }

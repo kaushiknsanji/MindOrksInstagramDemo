@@ -89,8 +89,10 @@ class HomeViewModel(
                         // Save new page List of Posts retrieved in the List of All Posts
                         allPostList.addAll(paginatedPostList)
                         // Refresh the Pagination Ids
-                        firstPostId = allPostList.maxBy { post: Post -> post.createdAt.time }?.id
-                        lastPostId = allPostList.minBy { post: Post -> post.createdAt.time }?.id
+                        firstPostId =
+                            allPostList.maxByOrNull { post: Post -> post.createdAt.time }?.id
+                        lastPostId =
+                            allPostList.minByOrNull { post: Post -> post.createdAt.time }?.id
                         // Stop the [loadingProgress] indication
                         loadingProgress.postValue(false)
                         // Trigger List of All Posts to be reloaded

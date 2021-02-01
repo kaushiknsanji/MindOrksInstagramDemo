@@ -1,7 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.di.module
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
@@ -37,7 +37,7 @@ class DialogFragmentModule(private val fragment: BaseDialogFragment<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedProgressTextViewModel = ViewModelProviders.of(fragment.requireActivity(),
+    ): SharedProgressTextViewModel = ViewModelProvider(fragment.requireActivity(),
         ViewModelProviderFactory(SharedProgressTextViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
             SharedProgressTextViewModel(
@@ -45,7 +45,7 @@ class DialogFragmentModule(private val fragment: BaseDialogFragment<*>) {
                 compositeDisposable,
                 networkHelper
             )
-        }).get(SharedProgressTextViewModel::class.java)
+        })[SharedProgressTextViewModel::class.java]
 
     /**
      * Provides instance of [SharedPhotoOptionsViewModel]
@@ -55,7 +55,7 @@ class DialogFragmentModule(private val fragment: BaseDialogFragment<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedPhotoOptionsViewModel = ViewModelProviders.of(fragment.requireActivity(),
+    ): SharedPhotoOptionsViewModel = ViewModelProvider(fragment.requireActivity(),
         ViewModelProviderFactory(SharedPhotoOptionsViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
             SharedPhotoOptionsViewModel(
@@ -63,7 +63,7 @@ class DialogFragmentModule(private val fragment: BaseDialogFragment<*>) {
                 compositeDisposable,
                 networkHelper
             )
-        }).get(SharedPhotoOptionsViewModel::class.java)
+        })[SharedPhotoOptionsViewModel::class.java]
 
     /**
      * Provides instance of [SharedConfirmOptionDialogViewModel]
@@ -73,7 +73,7 @@ class DialogFragmentModule(private val fragment: BaseDialogFragment<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedConfirmOptionDialogViewModel = ViewModelProviders.of(fragment.requireActivity(),
+    ): SharedConfirmOptionDialogViewModel = ViewModelProvider(fragment.requireActivity(),
         ViewModelProviderFactory(SharedConfirmOptionDialogViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
             SharedConfirmOptionDialogViewModel(
@@ -81,6 +81,6 @@ class DialogFragmentModule(private val fragment: BaseDialogFragment<*>) {
                 compositeDisposable,
                 networkHelper
             )
-        }).get(SharedConfirmOptionDialogViewModel::class.java)
+        })[SharedConfirmOptionDialogViewModel::class.java]
 
 }

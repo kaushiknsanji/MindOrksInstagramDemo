@@ -1,7 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.di.module
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PhotoRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
@@ -71,10 +71,11 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper,
         userRepository: UserRepository
-    ): SplashViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(SplashViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        SplashViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository)
-    }).get(SplashViewModel::class.java)
+    ): SplashViewModel =
+        ViewModelProvider(activity, ViewModelProviderFactory(SplashViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            SplashViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository)
+        })[SplashViewModel::class.java]
 
 
     /**
@@ -86,10 +87,11 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper,
         userRepository: UserRepository
-    ): LoginViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(LoginViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        LoginViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository)
-    }).get(LoginViewModel::class.java)
+    ): LoginViewModel =
+        ViewModelProvider(activity, ViewModelProviderFactory(LoginViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            LoginViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository)
+        })[LoginViewModel::class.java]
 
     /**
      * Provides instance of [SignUpViewModel]
@@ -100,10 +102,11 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper,
         userRepository: UserRepository
-    ): SignUpViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(SignUpViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        SignUpViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository)
-    }).get(SignUpViewModel::class.java)
+    ): SignUpViewModel =
+        ViewModelProvider(activity, ViewModelProviderFactory(SignUpViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            SignUpViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository)
+        })[SignUpViewModel::class.java]
 
     /**
      * Provides instance of [MainViewModel]
@@ -113,10 +116,10 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): MainViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(MainViewModel::class) {
+    ): MainViewModel = ViewModelProvider(activity, ViewModelProviderFactory(MainViewModel::class) {
         // [creator] lambda that creates and returns the ViewModel instance
         MainViewModel(schedulerProvider, compositeDisposable, networkHelper)
-    }).get(MainViewModel::class.java)
+    })[MainViewModel::class.java]
 
     /**
      * Provides instance of [MainSharedViewModel]
@@ -126,10 +129,11 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): MainSharedViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(MainSharedViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        MainSharedViewModel(schedulerProvider, compositeDisposable, networkHelper)
-    }).get(MainSharedViewModel::class.java)
+    ): MainSharedViewModel =
+        ViewModelProvider(activity, ViewModelProviderFactory(MainSharedViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            MainSharedViewModel(schedulerProvider, compositeDisposable, networkHelper)
+        })[MainSharedViewModel::class.java]
 
     /**
      * Provides instance of [EditProfileViewModel]
@@ -142,17 +146,18 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         @TempDirectory tempDirectory: File,
         userRepository: UserRepository,
         photoRepository: PhotoRepository
-    ): EditProfileViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(EditProfileViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        EditProfileViewModel(
-            schedulerProvider,
-            compositeDisposable,
-            networkHelper,
-            tempDirectory,
-            userRepository,
-            photoRepository
-        )
-    }).get(EditProfileViewModel::class.java)
+    ): EditProfileViewModel =
+        ViewModelProvider(activity, ViewModelProviderFactory(EditProfileViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            EditProfileViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper,
+                tempDirectory,
+                userRepository,
+                photoRepository
+            )
+        })[EditProfileViewModel::class.java]
 
     /**
      * Provides instance of [SharedProgressTextViewModel]
@@ -162,7 +167,7 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedProgressTextViewModel = ViewModelProviders.of(activity,
+    ): SharedProgressTextViewModel = ViewModelProvider(activity,
         ViewModelProviderFactory(SharedProgressTextViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
             SharedProgressTextViewModel(
@@ -170,7 +175,7 @@ class ActivityModule(private val activity: BaseActivity<*>) {
                 compositeDisposable,
                 networkHelper
             )
-        }).get(SharedProgressTextViewModel::class.java)
+        })[SharedProgressTextViewModel::class.java]
 
     /**
      * Provides instance of [SharedPhotoOptionsViewModel]
@@ -180,7 +185,7 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedPhotoOptionsViewModel = ViewModelProviders.of(activity,
+    ): SharedPhotoOptionsViewModel = ViewModelProvider(activity,
         ViewModelProviderFactory(SharedPhotoOptionsViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
             SharedPhotoOptionsViewModel(
@@ -188,7 +193,7 @@ class ActivityModule(private val activity: BaseActivity<*>) {
                 compositeDisposable,
                 networkHelper
             )
-        }).get(SharedPhotoOptionsViewModel::class.java)
+        })[SharedPhotoOptionsViewModel::class.java]
 
     /**
      * Provides instance of [Camera] for taking a photo
@@ -220,16 +225,17 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         networkHelper: NetworkHelper,
         userRepository: UserRepository,
         postRepository: PostRepository
-    ): PostLikeViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(PostLikeViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        PostLikeViewModel(
-            schedulerProvider,
-            compositeDisposable,
-            networkHelper,
-            userRepository,
-            postRepository
-        )
-    }).get(PostLikeViewModel::class.java)
+    ): PostLikeViewModel =
+        ViewModelProvider(activity, ViewModelProviderFactory(PostLikeViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            PostLikeViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper,
+                userRepository,
+                postRepository
+            )
+        })[PostLikeViewModel::class.java]
 
     /**
      * Provides instance of [PostDetailViewModel]
@@ -241,16 +247,17 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         networkHelper: NetworkHelper,
         userRepository: UserRepository,
         postRepository: PostRepository
-    ): PostDetailViewModel = ViewModelProviders.of(activity, ViewModelProviderFactory(PostDetailViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        PostDetailViewModel(
-            schedulerProvider,
-            compositeDisposable,
-            networkHelper,
-            userRepository,
-            postRepository
-        )
-    }).get(PostDetailViewModel::class.java)
+    ): PostDetailViewModel =
+        ViewModelProvider(activity, ViewModelProviderFactory(PostDetailViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            PostDetailViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper,
+                userRepository,
+                postRepository
+            )
+        })[PostDetailViewModel::class.java]
 
     /**
      * Provides instance of [ImmersivePhotoViewModel]
@@ -262,7 +269,7 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         networkHelper: NetworkHelper,
         userRepository: UserRepository
     ): ImmersivePhotoViewModel =
-        ViewModelProviders.of(activity, ViewModelProviderFactory(ImmersivePhotoViewModel::class) {
+        ViewModelProvider(activity, ViewModelProviderFactory(ImmersivePhotoViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
             ImmersivePhotoViewModel(
                 schedulerProvider,
@@ -270,7 +277,7 @@ class ActivityModule(private val activity: BaseActivity<*>) {
                 networkHelper,
                 userRepository
             )
-        }).get(ImmersivePhotoViewModel::class.java)
+        })[ImmersivePhotoViewModel::class.java]
 
     /**
      * Provides instance of [SharedConfirmOptionDialogViewModel]
@@ -280,7 +287,7 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedConfirmOptionDialogViewModel = ViewModelProviders.of(activity,
+    ): SharedConfirmOptionDialogViewModel = ViewModelProvider(activity,
         ViewModelProviderFactory(SharedConfirmOptionDialogViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
             SharedConfirmOptionDialogViewModel(
@@ -288,5 +295,5 @@ class ActivityModule(private val activity: BaseActivity<*>) {
                 compositeDisposable,
                 networkHelper
             )
-        }).get(SharedConfirmOptionDialogViewModel::class.java)
+        })[SharedConfirmOptionDialogViewModel::class.java]
 }

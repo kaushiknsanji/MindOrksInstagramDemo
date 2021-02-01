@@ -1,7 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.di.module
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -78,7 +78,7 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
         networkHelper: NetworkHelper,
         userRepository: UserRepository,
         postRepository: PostRepository
-    ): HomeViewModel = ViewModelProviders.of(fragment, ViewModelProviderFactory(HomeViewModel::class) {
+    ): HomeViewModel = ViewModelProvider(fragment, ViewModelProviderFactory(HomeViewModel::class) {
         // [creator] lambda that creates and returns the ViewModel instance
         HomeViewModel(
             schedulerProvider,
@@ -87,7 +87,7 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
             userRepository,
             postRepository
         )
-    }).get(HomeViewModel::class.java)
+    })[HomeViewModel::class.java]
 
     /**
      * Provides instance of [PhotoViewModel]
@@ -101,18 +101,19 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
         userRepository: UserRepository,
         postRepository: PostRepository,
         photoRepository: PhotoRepository
-    ): PhotoViewModel = ViewModelProviders.of(fragment, ViewModelProviderFactory(PhotoViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        PhotoViewModel(
-            schedulerProvider,
-            compositeDisposable,
-            networkHelper,
-            tempDirectory,
-            userRepository,
-            postRepository,
-            photoRepository
-        )
-    }).get(PhotoViewModel::class.java)
+    ): PhotoViewModel =
+        ViewModelProvider(fragment, ViewModelProviderFactory(PhotoViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            PhotoViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper,
+                tempDirectory,
+                userRepository,
+                postRepository,
+                photoRepository
+            )
+        })[PhotoViewModel::class.java]
 
     /**
      * Provides instance of [ProfileViewModel]
@@ -124,10 +125,17 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
         networkHelper: NetworkHelper,
         userRepository: UserRepository,
         postRepository: PostRepository
-    ): ProfileViewModel = ViewModelProviders.of(fragment, ViewModelProviderFactory(ProfileViewModel::class) {
-        // [creator] lambda that creates and returns the ViewModel instance
-        ProfileViewModel(schedulerProvider, compositeDisposable, networkHelper, userRepository, postRepository)
-    }).get(ProfileViewModel::class.java)
+    ): ProfileViewModel =
+        ViewModelProvider(fragment, ViewModelProviderFactory(ProfileViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            ProfileViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper,
+                userRepository,
+                postRepository
+            )
+        })[ProfileViewModel::class.java]
 
     /**
      * Provides instance of [PostsAdapter]
@@ -158,10 +166,12 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
     ): MainSharedViewModel =
-        ViewModelProviders.of(fragment.requireActivity(), ViewModelProviderFactory(MainSharedViewModel::class) {
-            // [creator] lambda that creates and returns the ViewModel instance
-            MainSharedViewModel(schedulerProvider, compositeDisposable, networkHelper)
-        }).get(MainSharedViewModel::class.java)
+        ViewModelProvider(
+            fragment.requireActivity(),
+            ViewModelProviderFactory(MainSharedViewModel::class) {
+                // [creator] lambda that creates and returns the ViewModel instance
+                MainSharedViewModel(schedulerProvider, compositeDisposable, networkHelper)
+            })[MainSharedViewModel::class.java]
 
     /**
      * Provides instance of [ProfilePostsAdapter]
@@ -178,7 +188,7 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedProgressTextViewModel = ViewModelProviders.of(fragment.requireActivity(),
+    ): SharedProgressTextViewModel = ViewModelProvider(fragment.requireActivity(),
         ViewModelProviderFactory(SharedProgressTextViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
             SharedProgressTextViewModel(
@@ -186,6 +196,6 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
                 compositeDisposable,
                 networkHelper
             )
-        }).get(SharedProgressTextViewModel::class.java)
+        })[SharedProgressTextViewModel::class.java]
 
 }

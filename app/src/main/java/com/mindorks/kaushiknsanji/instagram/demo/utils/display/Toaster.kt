@@ -1,10 +1,11 @@
 package com.mindorks.kaushiknsanji.instagram.demo.utils.display
 
 import android.content.Context
-import android.graphics.PorterDuff
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import com.mindorks.kaushiknsanji.instagram.demo.R
 
 /**
@@ -22,9 +23,10 @@ object Toaster {
         //Create a Toast with the text message passed
         val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
         //Set the Background Color to White
-        toast.view.background.setColorFilter(
-            ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN
-        )
+        toast.view.background.colorFilter =
+            BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                ContextCompat.getColor(context, R.color.white), BlendModeCompat.SRC_IN
+            )
         //Get the TextView of Toast
         val textView = toast.view.findViewById(android.R.id.message) as TextView
         //Set the Text Color to Black

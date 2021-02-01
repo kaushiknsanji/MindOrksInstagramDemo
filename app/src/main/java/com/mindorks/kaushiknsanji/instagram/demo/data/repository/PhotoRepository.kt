@@ -5,9 +5,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.ImageUploadResponse
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.TYPE_IMAGE
 import io.reactivex.Single
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -37,10 +37,10 @@ class PhotoRepository @Inject constructor(
         MultipartBody.Part.createFormData( // Creating Multipart Form Data for Image Upload
             "image", // Key for the JSON String in Form Data
             imageFile.name, // Filename of the [imageFile]
-            RequestBody.create( // Constructing RequestBody
-                MediaType.parse(TYPE_IMAGE), // Media type for Images
-                imageFile                          // Image File
-            )
+            imageFile                          // Image File
+                .asRequestBody( // Constructing RequestBody
+                    TYPE_IMAGE.toMediaTypeOrNull() // Media type for Images
+                )
         ).run {
             // Calling the Remote API to Upload the Image, with the constructed Multipart
             networkService.doImageUploadCall(

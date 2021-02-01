@@ -2,6 +2,11 @@ package com.mindorks.kaushiknsanji.instagram.demo.utils.network
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.os.Build
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
@@ -24,13 +29,131 @@ class NetworkHelper(private val context: Context) {
         private const val TAG = "NetworkHelper"
     }
 
+    // Get the System Connectivity Manager instance
+    private val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    // LiveData that maintains the current connectivity status
+    // (Starts with the initial connectivity status)
+    private val _connectedLiveStatus: MutableLiveData<Boolean> =
+        MutableLiveData(getInitialConnectivityStatus())
+
+    // Callback for receiving events when any network's connectivity changes
+    private val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
+        // Maintain a list of active networks
+        private val activeNetworks: MutableList<Network> = mutableListOf()
+
+        /**
+         * Called when the framework has a hard loss of the network or when the
+         * graceful failure ends.
+         *
+         * @param network The [Network] lost.
+         */
+        override fun onLost(network: Network) {
+            super.onLost(network)
+            // On Loss of a network, remove the corresponding network if any from the
+            // managed list of active networks
+            activeNetworks.removeAll { activeNetwork -> activeNetwork == network }
+            // Update the connectivity status based on available active networks
+            updateConnectivityStatus(activeNetworks.isNotEmpty())
+        }
+
+        /**
+         * Called when the framework connects and has declared a new network ready for use.
+         * This callback may be called more than once if the [Network] that is
+         * satisfying the request changes. This will always immediately be followed by a
+         * call to [.onCapabilitiesChanged] then by a
+         * call to [.onLinkPropertiesChanged], and a call to
+         * [.onBlockedStatusChanged].
+         *
+         * @param network The [Network] of the satisfying network.
+         */
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            // When a network is available, add to the managed list of active networks
+            // if not previously added
+            if (activeNetworks.none { activeNetwork -> activeNetwork == network }) {
+                activeNetworks.add(network)
+            }
+            // Update the connectivity status based on available active networks
+            updateConnectivityStatus(activeNetworks.isNotEmpty())
+        }
+    }
+
     /**
-     * Returns `true` if the Network is established; `false` otherwise
+     * Updates the [_connectedLiveStatus] that saves the current state of any active Network connection
+     *
+     * @param status If `true` then there are some active networks available; `false` otherwise
      */
-    fun isNetworkConnected(): Boolean {
-        // Get the System Connectivity Manager instance
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        // Get the current active default data network
+    private fun updateConnectivityStatus(status: Boolean) {
+        _connectedLiveStatus.postValue(status)
+    }
+
+    init {
+        // Try unregistering any previously registered callbacks
+        try {
+            connectivityManager.unregisterNetworkCallback(connectivityCallback)
+        } catch (e: Exception) {
+            Logger.w(
+                TAG,
+                "NetworkCallback for networking was not registered or already unregistered"
+            )
+        }
+        // Register a new callback on application start for all networks
+        connectivityManager.registerNetworkCallback(
+            NetworkRequest.Builder().build(),
+            connectivityCallback
+        )
+    }
+
+    /**
+     * Checks for Network connectivity.
+     *
+     * @return `true` if the Network is established; `false` otherwise.
+     */
+    fun isNetworkConnected(): Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        // For version M and above
+
+        // Read status from the callback registered
+        _connectedLiveStatus.value ?: false
+    } else {
+        // For version below M
+
+        // Read the status from activeNetworkInfo
+        getConnectivityStatusTheOldWay()
+    }
+
+    /**
+     * Method used to get the Network connectivity status on launch. This is required since the
+     * registered Network callback updates respond later (not immediately).
+     *
+     * @return `true` if the Network is established; `false` otherwise.
+     */
+    private fun getInitialConnectivityStatus(): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // For version M and above
+
+            // Establish if the current active network has capability for network connection
+            connectivityManager.activeNetwork?.let { activeNetwork ->
+                connectivityManager.getNetworkCapabilities(activeNetwork)
+                    ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) ?: false
+            } ?: false
+
+        } else {
+            // For version below M
+
+            // Read the status from activeNetworkInfo
+            getConnectivityStatusTheOldWay()
+        }
+
+    /**
+     * Checks Network connectivity the old way using [ConnectivityManager.getActiveNetworkInfo].
+     *
+     * @return `true` if the Network is established; `false` otherwise.
+     */
+    @Suppress("DEPRECATION")
+    private fun getConnectivityStatusTheOldWay(): Boolean {
+        // Get the current active default data network in old style
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         // Check the connectivity status and return its state
         return activeNetworkInfo?.isConnected ?: false
