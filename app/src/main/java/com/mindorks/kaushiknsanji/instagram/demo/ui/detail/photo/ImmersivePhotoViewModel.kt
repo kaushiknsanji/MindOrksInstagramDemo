@@ -55,20 +55,16 @@ class ImmersivePhotoViewModel(
     }
 
     /**
-     * Called by the activity when we have the Image Url and its placeholder dimensions, of the Post Photo to be shown.
+     * Called by the activity when we have the Image Url of the Post Photo to be shown.
      * Triggers the corresponding LiveData with the [Image] details of the Photo to be downloaded and shown.
      *
      * @param imageUrl [String] containing the URL of the Post Photo to be downloaded.
-     * @param placeHolderWidth [Int] value of the Image Placeholder width.
-     * @param placeHolderHeight [Int] value of the Image Placeholder height.
      */
-    fun onLoadImage(imageUrl: String, placeHolderWidth: Int, placeHolderHeight: Int) {
+    fun onLoadImage(imageUrl: String) {
         postImage.postValue(
             Image(
                 url = imageUrl,
-                headers = headers,
-                placeHolderWidth = placeHolderWidth,
-                placeHolderHeight = placeHolderHeight
+                headers = headers
             )
         )
     }

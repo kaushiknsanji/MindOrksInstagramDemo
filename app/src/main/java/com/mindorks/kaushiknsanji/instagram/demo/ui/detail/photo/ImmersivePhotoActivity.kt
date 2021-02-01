@@ -2,7 +2,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
@@ -39,14 +38,10 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
      * Initializes the Layout of the Activity.
      */
     override fun setupView(savedInstanceState: Bundle?) {
-        // Ensure the activity is started with the required information on the Post Photo to be shown,
+        // Ensure the activity is started with the required URL of the Post Photo to be shown,
         // and then load the Post Photo
-        intent.extras!!.run {
-            viewModel.onLoadImage(
-                getString(EXTRA_IMAGE_URL)!!,
-                getInt(EXTRA_IMAGE_PLACEHOLDER_WIDTH),
-                getInt(EXTRA_IMAGE_PLACEHOLDER_HEIGHT)
-            )
+        intent.getStringExtra(EXTRA_IMAGE_URL)!!.let { imageUrl: String ->
+            viewModel.onLoadImage(imageUrl)
         }
 
         // Dispatch the current Immersive Mode state to ViewModel
@@ -71,30 +66,17 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
         viewModel.postImage.observe(this, Observer { image: Image? ->
             image?.run {
                 // Configuring Glide with Image URL and other relevant customizations
-                val glideRequest = GlideApp
+                GlideApp
                     .with(this@ImmersivePhotoActivity) // Loading with Activity's context
-                    .load(GlideHelper.getProtectedUrl(image.url, image.headers)) // Loading the GlideUrl with Headers
+                    .load(
+                        // Loading GlideUrl with Headers
+                        GlideHelper.getProtectedUrl(
+                            image.url,
+                            image.headers
+                        )
+                    )
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_photo)) // Loading with PlaceHolder Image
-
-                if (placeHolderWidth > 0 && placeHolderHeight > 0) {
-                    // If we have the placeholder dimensions from the [image], then scale the ImageView
-                    // to match these dimensions
-
-                    // Scaling the ImageView dimensions to fit the placeholder dimensions
-                    view_immersive_photo.run {
-                        val params = layoutParams as ViewGroup.LayoutParams
-                        params.width = placeHolderWidth
-                        params.height = placeHolderHeight
-                        layoutParams = params
-                    }
-
-                    // Override the dimensions of the Image (downloaded) to placeholder dimensions
-                    glideRequest
-                        .apply(RequestOptions.overrideOf(placeHolderWidth, placeHolderHeight))
-                }
-
-                // Start the download and load into the corresponding ImageView
-                glideRequest.into(view_immersive_photo)
+                    .into(view_immersive_photo) // Start the download and load into the corresponding ImageView
             }
         })
 
@@ -148,19 +130,10 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
     }
 
     companion object {
-        // Intent extra constant for the URL of the Image to shown
+        // Intent extra constant for the URL of the Image to be shown
         @JvmField
-        val EXTRA_IMAGE_URL = ImmersivePhotoActivity::class.java.`package`.toString() + "extra.IMAGE_URL"
-
-        // Intent extra constant for the computed Placeholder Width of the Image to be shown
-        @JvmField
-        val EXTRA_IMAGE_PLACEHOLDER_WIDTH =
-            ImmersivePhotoActivity::class.java.`package`.toString() + "extra.IMAGE_PLACEHOLDER_WIDTH"
-
-        // Intent extra constant for the computed Placeholder Height of the Image to be shown
-        @JvmField
-        val EXTRA_IMAGE_PLACEHOLDER_HEIGHT =
-            ImmersivePhotoActivity::class.java.`package`.toString() + "extra.IMAGE_PLACEHOLDER_HEIGHT"
+        val EXTRA_IMAGE_URL =
+            ImmersivePhotoActivity::class.java.`package`?.toString() + "extra.IMAGE_URL"
     }
 
 }

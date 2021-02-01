@@ -260,18 +260,16 @@ class PostDetailViewModel(
      * Called when the user clicks on the Post's Photo.
      *
      * Triggers an event to launch the [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo.ImmersivePhotoActivity]
-     * with the Photo metadata, to allow the user to view the complete Photo.
+     * with Photo URL, to allow the user to view complete Photo.
      */
     fun onLaunchPhoto() {
         // When the Post's Photo is available
         postImage.value?.let { image: Image ->
-            // Launch the Activity passing in the Photo's metadata, which will be loaded as its Intent Extras
+            // Launch the Activity passing in the Photo's URL, which will be loaded as its Intent Extras
             launchImmersivePhoto.postValue(
                 Event(ArrayMap<String, Serializable>().apply {
-                    // Load the Image URL and placeholder dimensions computed
+                    // Load the Image URL
                     put(ImmersivePhotoActivity.EXTRA_IMAGE_URL, image.url)
-                    put(ImmersivePhotoActivity.EXTRA_IMAGE_PLACEHOLDER_WIDTH, image.placeHolderWidth)
-                    put(ImmersivePhotoActivity.EXTRA_IMAGE_PLACEHOLDER_HEIGHT, image.placeHolderHeight)
                 })
             )
         }
