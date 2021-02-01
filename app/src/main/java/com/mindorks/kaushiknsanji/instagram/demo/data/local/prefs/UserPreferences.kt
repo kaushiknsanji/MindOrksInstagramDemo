@@ -19,6 +19,7 @@ class UserPreferences @Inject constructor(private val prefs: SharedPreferences) 
         const val KEY_USER_NAME = "PREF_KEY_USER_NAME"
         const val KEY_USER_EMAIL = "PREF_KEY_USER_EMAIL"
         const val KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
+        const val KEY_REFRESH_TOKEN = "PREF_KEY_REFRESH_TOKEN"
         const val KEY_PROFILE_PIC_URL = "PREF_KEY_PROFILE_PIC_URL"
         const val KEY_TAGLINE = "PREF_KEY_TAGLINE"
     }
@@ -84,16 +85,34 @@ class UserPreferences @Inject constructor(private val prefs: SharedPreferences) 
         prefs.getString(KEY_ACCESS_TOKEN, null)
 
     /**
+     * Getter for [KEY_REFRESH_TOKEN]
+     */
+    fun getRefreshToken(): String? =
+        prefs.getString(KEY_REFRESH_TOKEN, null)
+
+    /**
      * Saves [token] in [KEY_ACCESS_TOKEN]
      */
     fun setAccessToken(token: String) =
         prefs.edit().putString(KEY_ACCESS_TOKEN, token).apply()
 
     /**
+     * Saves [refreshToken] in [KEY_REFRESH_TOKEN]
+     */
+    fun setRefreshToken(refreshToken: String) =
+        prefs.edit().putString(KEY_REFRESH_TOKEN, refreshToken).apply()
+
+    /**
      * Deletes [KEY_ACCESS_TOKEN]
      */
     fun removeAccessToken() =
         prefs.edit().remove(KEY_ACCESS_TOKEN).apply()
+
+    /**
+     * Deletes [KEY_REFRESH_TOKEN]
+     */
+    fun removeRefreshToken() =
+        prefs.edit().remove(KEY_REFRESH_TOKEN).apply()
 
     /**
      * Getter for [KEY_PROFILE_PIC_URL]

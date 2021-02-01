@@ -32,17 +32,6 @@ interface NetworkService {
     ): Single<LoginResponse>
 
     /**
-     * API method to Refresh the User Access Token when it expires.
-     */
-    @POST(Endpoints.TOKEN_REFRESH)
-    fun doTokenRefreshCall(
-        @Body requestBody: TokenRefreshRequest,
-        @Header(Networking.HEADER_USER_ID) userId: String,
-        @Header(Networking.HEADER_ACCESS_TOKEN) accessToken: String,
-        @Header(Networking.HEADER_API_KEY) apiKey: String = Networking.API_KEY
-    ): Single<TokenRefreshResponse>
-
-    /**
      * API method to Logout the User.
      */
     @DELETE(Endpoints.LOGOUT)

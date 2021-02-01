@@ -9,6 +9,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.TokenService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.auth.AccessTokenAuthenticator
 import com.mindorks.kaushiknsanji.instagram.demo.di.ApplicationContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.DIRECTORY_TEMP
@@ -52,12 +54,27 @@ class ApplicationModule(private val application: InstagramApplication) {
 
     @Singleton
     @Provides
-    fun provideNetworkService(): NetworkService =
-        Networking.create(
+    fun provideNetworkService(
+        authenticator: AccessTokenAuthenticator
+    ): NetworkService =
+        Networking.createService(
             BuildConfig.API_KEY,
             BuildConfig.BASE_URL,
             application.cacheDir,
-            10 * 1024 * 1024 // 10MB Cache Size
+            10 * 1024 * 1024, // 10MB Cache Size
+            NetworkService::class.java,
+            authenticator
+        )
+
+    @Singleton
+    @Provides
+    fun provideTokenService(): TokenService =
+        Networking.createService(
+            BuildConfig.API_KEY,
+            BuildConfig.BASE_URL,
+            application.cacheDir,
+            10 * 1024 * 1024, // 10MB Cache Size
+            TokenService::class.java
         )
 
     @Singleton

@@ -98,7 +98,8 @@ class LoginViewModelTest {
             id = "id",
             name = "test",
             email = email,
-            accessToken = "accessToken"
+            accessToken = "accessToken",
+            refreshToken = "refreshToken"
         )
 
         // Set the values for the Field LiveData

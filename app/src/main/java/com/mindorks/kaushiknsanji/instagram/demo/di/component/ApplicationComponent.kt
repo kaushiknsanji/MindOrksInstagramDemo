@@ -5,8 +5,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.TokenService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.auth.AccessTokenAuthenticator
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.auth.AccessTokenProvider
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PhotoRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
+import com.mindorks.kaushiknsanji.instagram.demo.data.repository.TokenRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ApplicationContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
@@ -88,5 +92,25 @@ interface ApplicationComponent {
      */
     @TempDirectory
     fun getTempDirectory(): File
+
+    /**
+     * Exposes [TokenService] instance
+     */
+    fun getTokenService(): TokenService
+
+    /**
+     * Exposes [TokenRepository] instance created using constructor injection
+     */
+    fun getTokenRepository(): TokenRepository
+
+    /**
+     * Exposes [AccessTokenProvider] instance created using constructor injection
+     */
+    fun getAccessTokenProvider(): AccessTokenProvider
+
+    /**
+     * Exposes [AccessTokenAuthenticator] instance created using constructor injection
+     */
+    fun getAccessTokenAuthenticator(): AccessTokenAuthenticator
 
 }

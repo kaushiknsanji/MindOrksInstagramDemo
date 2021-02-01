@@ -42,6 +42,7 @@ class UserRepository @Inject constructor(
         userPreferences.setUserName(user.name)
         userPreferences.setUserEmail(user.email)
         userPreferences.setAccessToken(user.accessToken)
+        userPreferences.setRefreshToken(user.refreshToken)
         userPreferences.setProfilePicUrl(user.profilePicUrl)
         userPreferences.setTagline(user.tagline)
     }
@@ -49,17 +50,18 @@ class UserRepository @Inject constructor(
     /**
      * Removes logged-in user information from [userPreferences]
      */
-    fun removeCurrentUser() {
+    private fun removeCurrentUser() {
         userPreferences.removeUserId()
         userPreferences.removeUserName()
         userPreferences.removeUserEmail()
         userPreferences.removeAccessToken()
+        userPreferences.removeRefreshToken()
         userPreferences.removeProfilePicUrl()
         userPreferences.removeTagline()
     }
 
     /**
-     * Retrieves the logged-in user information from [userPreferences] if present.
+     * Retrieves logged-in user information from [userPreferences] if present.
      */
     fun getCurrentUser(): User? {
         // Reading from userPreferences
@@ -67,14 +69,18 @@ class UserRepository @Inject constructor(
         val userName = userPreferences.getUserName()
         val userEmail = userPreferences.getUserEmail()
         val accessToken = userPreferences.getAccessToken()
+        val refreshToken = userPreferences.getRefreshToken()
 
         // Returning user information if present, else null
-        return if (userId !== null && userName != null && userEmail != null && accessToken != null)
+        return if (userId !== null && userName != null && userEmail != null
+            && accessToken != null && refreshToken != null
+        )
             User(
                 id = userId,
                 name = userName,
                 email = userEmail,
                 accessToken = accessToken,
+                refreshToken = refreshToken,
                 profilePicUrl = userPreferences.getProfilePicUrl(),
                 tagline = userPreferences.getTagline()
             ) // ( profilePicUrl and tagline can be null, need not necessarily be present at the time of reading )
@@ -97,7 +103,8 @@ class UserRepository @Inject constructor(
                     id = response.userId,
                     name = response.userName,
                     email = response.userEmail,
-                    accessToken = response.accessToken
+                    accessToken = response.accessToken,
+                    refreshToken = response.refreshToken
                 )
             }
 
@@ -117,7 +124,8 @@ class UserRepository @Inject constructor(
                     id = response.userId,
                     name = response.userName,
                     email = response.userEmail,
-                    accessToken = response.accessToken
+                    accessToken = response.accessToken,
+                    refreshToken = response.refreshToken
                 )
             }
 
