@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.layout_photo_options.*
  *
  * @author Kaushik N Sanji
  */
-class PhotoOptionsDialogFragment() : BaseDialogFragment<SharedPhotoOptionsViewModel>() {
+class PhotoOptionsDialogFragment : BaseDialogFragment<SharedPhotoOptionsViewModel>() {
 
     /**
      * Injects dependencies exposed by [DialogFragmentComponent] into DialogFragment.

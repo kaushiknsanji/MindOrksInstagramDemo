@@ -14,7 +14,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
  *
  * @author Kaushik N Sanji
  */
-class ConfirmOptionDialogFragment() : BaseDialogFragment<SharedConfirmOptionDialogViewModel>() {
+class ConfirmOptionDialogFragment : BaseDialogFragment<SharedConfirmOptionDialogViewModel>() {
 
     /**
      * Injects dependencies exposed by [DialogFragmentComponent] into DialogFragment.
@@ -29,19 +29,21 @@ class ConfirmOptionDialogFragment() : BaseDialogFragment<SharedConfirmOptionDial
     override fun constructDialog(dialogBuilder: AlertDialog.Builder, savedInstanceState: Bundle?) {
         super.constructDialog(dialogBuilder, savedInstanceState)
 
-        // Set the Default Title
-        dialogBuilder.setTitle(R.string.title_dialog_confirm_default)
+        dialogBuilder.apply {
+            // Set the Default Title
+            setTitle(R.string.title_dialog_confirm_default)
 
-        // Set the Default Positive Button Name and its Listener
-        dialogBuilder.setPositiveButton(R.string.dialog_confirm_button_positive_default) { _, _ ->
-            // Delegate to the ViewModel to trigger an event
-            viewModel.onDialogPositiveButtonClicked()
-        }
+            // Set the Default Positive Button Name and its Listener
+            setPositiveButton(R.string.dialog_confirm_button_positive_default) { _, _ ->
+                // Delegate to the ViewModel to trigger an event
+                viewModel.onDialogPositiveButtonClicked()
+            }
 
-        // Set the Default Negative Button Name and its Listener
-        dialogBuilder.setNegativeButton(R.string.dialog_confirm_button_negative_default) { _, _ ->
-            // Delegate to the ViewModel to trigger an event
-            viewModel.onDialogNegativeButtonClicked()
+            // Set the Default Negative Button Name and its Listener
+            setNegativeButton(R.string.dialog_confirm_button_negative_default) { _, _ ->
+                // Delegate to the ViewModel to trigger an event
+                viewModel.onDialogNegativeButtonClicked()
+            }
         }
 
     }

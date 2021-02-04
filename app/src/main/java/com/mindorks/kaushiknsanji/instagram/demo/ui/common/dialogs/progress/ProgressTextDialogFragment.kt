@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.dialog_progress_text.*
  *
  * @author Kaushik N Sanji
  */
-class ProgressTextDialogFragment() : BaseDialogFragment<SharedProgressTextViewModel>() {
+class ProgressTextDialogFragment : BaseDialogFragment<SharedProgressTextViewModel>() {
 
     /**
      * Injects dependencies exposed by [DialogFragmentComponent] into DialogFragment.
