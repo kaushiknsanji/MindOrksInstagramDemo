@@ -202,7 +202,7 @@ class PostDetailViewModel(
      */
     fun onDeleteRequest() {
         // Trigger the event and pass the title of the dialog to be shown
-        launchDeletePostConfirm.postValue(Resource.success(R.string.title_dialog_confirm_delete_post))
+        launchDeletePostConfirm.postValue(Resource.Success(R.string.title_dialog_confirm_post_detail_delete_post))
     }
 
     /**

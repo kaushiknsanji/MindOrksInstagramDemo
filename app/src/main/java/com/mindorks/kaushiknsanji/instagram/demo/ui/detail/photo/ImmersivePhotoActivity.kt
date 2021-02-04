@@ -2,7 +2,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
@@ -11,6 +10,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeNonNull
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import kotlinx.android.synthetic.main.activity_immersive_photo.*
 
 /**
@@ -109,7 +110,7 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
         }
 
         // Register an observer for close action events, to close this Activity
-        viewModel.closeAction.observeEvent(this) { close: Boolean ->
+        viewModel.actionClose.observeEvent(this) { close: Boolean ->
             if (close) {
                 // Terminate the Activity on [close]
                 finish()

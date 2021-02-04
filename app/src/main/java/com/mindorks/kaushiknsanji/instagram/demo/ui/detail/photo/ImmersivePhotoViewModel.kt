@@ -45,7 +45,7 @@ class ImmersivePhotoViewModel(
     val immersiveModeState: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     // LiveData for closing the Activity
-    val closeAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val actionClose: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
@@ -81,7 +81,7 @@ class ImmersivePhotoViewModel(
      * Called when the User clicks on the "Close" Image.
      * Triggers an event to finish the Activity.
      */
-    fun onClose() = closeAction.postValue(Event(true))
+    fun onClose() = actionClose.postValue(Event(true))
 
     /**
      * Called by the activity when there is a change in the Sticky Immersive Mode of the System UI Visibility flags.

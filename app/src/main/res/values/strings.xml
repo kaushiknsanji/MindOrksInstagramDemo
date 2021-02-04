@@ -131,7 +131,7 @@
     <string name="title_condensed_action_post_detail_like">Like/Unlike the Post</string>
     <string name="title_condensed_action_post_detail_delete">Delete the Post</string>
     <string name="cd_image_post_detail_photo_launch">Launch Photo</string>
-    <string name="title_dialog_confirm_delete_post">Delete Post?</string>
+    <string name="title_dialog_confirm_post_detail_delete_post">Delete Post?</string>
 
     <!-- ================================== -->
     <!-- STRINGS USED IN POST LIKE ACTIVITY -->

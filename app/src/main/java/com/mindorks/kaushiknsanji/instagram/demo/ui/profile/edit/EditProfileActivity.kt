@@ -247,18 +247,11 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         // the user to reset using the menu button
         viewModel.hasAnyInfoChanged.observe(this, Observer { hasChanged: Boolean ->
             // Lookup the Menu item for reset
-            toolbar_edit_profile.menu.findItem(R.id.action_edit_profile_reset)?.let { menuItem: MenuItem ->
-                if (hasChanged) {
-                    // If changes are detected, then make the Menu Item visible and enabled
-                    menuItem.isVisible = true
-                    menuItem.isEnabled = true
-                } else {
-                    // If no changes yet, then hide the Menu Item and make it disabled
-                    menuItem.isVisible = false
-                    menuItem.isEnabled = false
+            toolbar_edit_profile.menu.findItem(R.id.action_edit_profile_reset)
+                ?.let { menuItem: MenuItem ->
+                    menuItem.showAndEnableWhen(hasChanged)
                 }
-            }
-        })
+        }
 
         // Register an observer on the User's Profile Picture LiveData to load the Image
         // into the corresponding ImageView
@@ -280,7 +273,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         }
 
         // Register an observer for close action events, to close this Activity
-        viewModel.closeAction.observeEvent(this) { close: Boolean ->
+        viewModel.actionClose.observeEvent(this) { close: Boolean ->
             if (close) {
                 // Terminate the Activity on [close]
                 finish()

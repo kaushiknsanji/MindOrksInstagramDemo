@@ -177,7 +177,7 @@ class EditProfileViewModel(
     val finishWithNoAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     // LiveData for just finishing the Activity
-    val closeAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val actionClose: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     init {
         // When this ViewModel is first initialized..
@@ -340,7 +340,7 @@ class EditProfileViewModel(
      * Called when the close button in the toolbar is clicked.
      * Triggers an event to finish the Activity.
      */
-    fun onClose() = closeAction.postValue(Event(true))
+    fun onClose() = actionClose.postValue(Event(true))
 
     /**
      * Called when the tick/save button in the toolbar is clicked.
