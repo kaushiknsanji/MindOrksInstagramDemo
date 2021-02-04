@@ -38,7 +38,13 @@ class EditProfileViewModel(
 ) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
 
     companion object {
+        // Constant used for logs
         const val TAG = "EditProfileViewModel"
+
+        // Constant used as keys for tracking changes in editable fields
+        const val KEY_NAME_FIELD = "Name"
+        const val KEY_BIO_FIELD = "Bio"
+        const val KEY_PROFILE_PIC_FIELD = "ProfilePic"
     }
 
     // LiveData for loading, upload and save progress indication
@@ -97,17 +103,79 @@ class EditProfileViewModel(
         Transformations.map(chosenProfileImageFile) { imageFile: File? -> imageFile?.exists() ?: false }
     // MediatorLiveData to see if any data has been changed to update to the remote
     val hasAnyInfoChanged: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        addSource(hasNameChanged) { newValue -> postValue(newValue) }
-        addSource(hasBioChanged) { newValue -> postValue(newValue) }
-        addSource(hasProfilePictureChanged) { newValue -> postValue(newValue) }
+        // Mutable List for tracking fields that have been changed
+        val changeTrackingList = mutableListOf<String>()
+        // Add sources for the tracked fields
+        addSource(hasNameChanged) { newValue ->
+            postValue(
+                trackAndReportFieldChange(
+                    KEY_NAME_FIELD,
+                    newValue,
+                    changeTrackingList
+                )
+            )
+        }
+        addSource(hasBioChanged) { newValue ->
+            postValue(
+                trackAndReportFieldChange(
+                    KEY_BIO_FIELD,
+                    newValue,
+                    changeTrackingList
+                )
+            )
+        }
+        addSource(hasProfilePictureChanged) { newValue ->
+            postValue(
+                trackAndReportFieldChange(
+                    KEY_PROFILE_PIC_FIELD,
+                    newValue,
+                    changeTrackingList
+                )
+            )
+        }
+    }
+
+    /**
+     * Tracks changes in the [field][newKey] and updates the same to the [changeTracker]
+     * when [newKey] is not present in [changeTracker] and [newValue] is `true` indicating that
+     * there was a change in this [field][newKey].
+     *
+     * When [newValue] is `false`, i.e., when there is no modification, any tracked entry
+     * for the [field][newKey] is removed from [changeTracker].
+     *
+     * @param changeTracker [MutableList] for tracking fields that have been changed.
+     *
+     * @return `true` when there are some fields currently having modifications; `false` otherwise.
+     */
+    private fun trackAndReportFieldChange(
+        newKey: String,
+        newValue: Boolean,
+        changeTracker: MutableList<String>
+    ): Boolean {
+        if (newValue) {
+            // When there is a modification
+            if (changeTracker.none { key -> key == newKey }) {
+                // Add the field to be tracked for changes when not previously tracked
+                changeTracker.add(newKey)
+            }
+        } else {
+            // When there is no modification, remove the field from tracking if tracked previously
+            changeTracker.removeAll { key -> key == newKey }
+        }
+
+        // Return true if any field is currently having modifications
+        return changeTracker.isNotEmpty()
     }
 
     // LiveData for launching PhotoOptionsDialogFragment
     val launchPhotoOptions: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
     // LiveData for finishing the Activity with a Success Update Result to the Calling Activity
     val finishWithSuccess: MutableLiveData<Event<String>> = MutableLiveData()
+
     // LiveData for finishing the Activity with No Action Result to the Calling Activity
     val finishWithNoAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
     // LiveData for just finishing the Activity
     val closeAction: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
