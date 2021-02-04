@@ -21,8 +21,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.TextAppearanceUtils
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalGridItemSpacingDecoration
-import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
@@ -96,8 +96,8 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         // Register an observer on Posts download and logout progress LiveData to show/hide the Progress horizontal
         viewModel.liveProgress.observe(this) { started: Boolean ->
             // Show the Progress horizontal when [started], else leave it hidden
-            progress_horizontal_profile.setVisibility(started)
-        })
+            progress_horizontal_profile.showWhen(started)
+        }
 
         // Register an observer on User's Posts LiveData to reload the adapter with the new List of Posts
         viewModel.userPosts.observeResource(this) { _, posts: List<Post>? ->
@@ -115,14 +115,13 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         // Register an observer on the Tagline LiveData to set its value on the corresponding TextView
         viewModel.userTagline.observe(this) { tagline: String ->
             text_profile_user_bio.apply {
-                if (tagline.isBlank()) {
-                    // When blank, hide the View
-                    visibility = View.GONE
-                } else {
-                    // When we have some value, show the View and set its Text
-                    visibility = View.VISIBLE
-                    text = tagline
-                }
+                // When we have some value, show the View
+                showWhen(tagline.isNotBlank().also { isTaglineNotBlank ->
+                    if (isTaglineNotBlank) {
+                        // Also, when we have some value, set its Text
+                        text = tagline
+                    }
+                })
             }
         }
 
@@ -189,17 +188,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         }
 
         // Register an observer on the User's Posts Presence LiveData to set the visibility of views accordingly
-        viewModel.userPostsEmpty.observe(this, Observer { empty: Boolean ->
-            if (empty) {
-                // When there are NO Posts, show the Empty View and hide the RecyclerView
-                group_profile_no_posts.visibility = View.VISIBLE
-                rv_profile_my_posts.visibility = View.GONE
-            } else {
-                // When there are Posts, show the RecyclerView and hide the Empty View
-                group_profile_no_posts.visibility = View.GONE
-                rv_profile_my_posts.visibility = View.VISIBLE
-            }
-        })
+        viewModel.userPostsEmpty.observe(this) { empty: Boolean ->
+            // When there are Posts, show the RecyclerView
+            rv_profile_my_posts.showWhen(!empty)
+            // When there are NO Posts, show the Empty View
+            group_profile_no_posts.showWhen(empty)
+        }
 
         // Register an observer for EditProfileActivity launch events
         viewModel.launchEditProfile.observeEvent(this) {

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
@@ -22,8 +21,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.Shar
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo.ImmersivePhotoActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.*
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showAndEnableWhen
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
-import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.activity_post_detail.*
 import kotlinx.android.synthetic.main.layout_no_likes.*
 import java.io.Serializable
@@ -136,8 +136,8 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Register an observer on Post data loading progress to show/hide the Progress Circle
         viewModel.loadingProgress.observe(this) { started: Boolean ->
             // Show the Progress Circle when [started], else leave it hidden
-            progress_post_detail.setVisibility(started)
-        })
+            progress_post_detail.showWhen(started)
+        }
 
         // Register an observer on Delete progress LiveData to show/hide the Delete Progress Dialog
         viewModel.deleteProgress.observe(this) { resourceWrapper ->
@@ -274,34 +274,22 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         }
 
         // Register an observer on the Post Likes' Presence LiveData to set the visibility of views accordingly
-        viewModel.postHasLikes.observe(this, Observer { hasLikes: Boolean ->
-            if (hasLikes) {
-                // When there are Likes, show the RecyclerView and hide the Empty view
-                rv_post_detail_likes.visibility = View.VISIBLE
-                include_post_detail_no_likes.visibility = View.GONE
-            } else {
-                // When there are NO Likes, show the Empty view and hide the RecyclerView
-                rv_post_detail_likes.visibility = View.GONE
-                include_post_detail_no_likes.visibility = View.VISIBLE
-            }
-        })
+        viewModel.postHasLikes.observe(this) { hasLikes: Boolean ->
+            // When there are Likes, show the RecyclerView
+            rv_post_detail_likes.showWhen(hasLikes)
+            // When there are NO Likes, show the Empty view
+            include_post_detail_no_likes.showWhen(!hasLikes)
+        }
 
         // Register an observer on the LiveData that determines whether the Post was created by the logged-in User,
         // in order to enable/disable the "Delete" menu button accordingly
         viewModel.postByUser.observe(this) { isUserPost: Boolean ->
             // Lookup for the Delete Menu item
-            toolbar_post_detail.menu.findItem(R.id.action_post_detail_delete)?.let { menuItem: MenuItem ->
-                if (isUserPost) {
-                    // If this is User's Post, then make the Menu Item visible and enabled
-                    menuItem.isVisible = true
-                    menuItem.isEnabled = true
-                } else {
-                    // If this is Not User's Post, then hide the Menu Item and make it disabled
-                    menuItem.isVisible = false
-                    menuItem.isEnabled = false
+            toolbar_post_detail.menu.findItem(R.id.action_post_detail_delete)
+                ?.let { menuItem: MenuItem ->
+                    menuItem.showAndEnableWhen(isUserPost)
                 }
-            }
-        })
+        }
 
         // Register an observer on the User Like Menu button LiveData to change the "Heart" Image accordingly
         viewModel.hasUserLiked.observe(this) { hasLiked: Boolean ->

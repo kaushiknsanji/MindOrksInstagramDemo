@@ -100,13 +100,8 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
 
         // Register an observer on Immersive Mode state change events to show/hide other views accordingly
         viewModel.immersiveModeState.observeEvent(this) { immersiveModeOn: Boolean ->
-            if (immersiveModeOn) {
-                // When Immersive Mode is On, hide the required views
-                image_immersive_photo_close.visibility = View.GONE
-            } else {
-                // When Immersive Mode is Off, show the required views
-                image_immersive_photo_close.visibility = View.VISIBLE
-            }
+            // When Immersive Mode is On, hide the Photo Close ImageView
+            image_immersive_photo_close.showWhen(!immersiveModeOn)
         }
 
         // Register an observer for close action events, to close this Activity

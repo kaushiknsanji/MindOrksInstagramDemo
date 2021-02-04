@@ -11,9 +11,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setTextOnChange
-import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 /**
@@ -120,8 +120,8 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
         // Register an observer on Sign-Up request progress to show/hide the Progress Circle
         viewModel.signUpProgress.observe(this) { started: Boolean ->
             // Show the Progress Circle when [started], else leave it hidden
-            progress_sign_up.setVisibility(started)
-        })
+            progress_sign_up.showWhen(started)
+        }
 
         // Register an observer for MainActivity launch events
         viewModel.launchMain.observeEvent(this) {

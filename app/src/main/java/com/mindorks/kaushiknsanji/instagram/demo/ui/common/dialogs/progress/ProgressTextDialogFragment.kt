@@ -2,12 +2,13 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.View
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.hide
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.show
 import kotlinx.android.synthetic.main.dialog_progress_text.*
 
 /**
@@ -56,17 +57,17 @@ class ProgressTextDialogFragment : BaseDialogFragment<SharedProgressTextViewMode
                     // When Loading, initialize and show the Status TextView if available
                     text_progress_circle_status.run {
                         data?.let { statusResourceId: Int ->
-                            visibility = View.VISIBLE
+                            show()
                             text = getString(statusResourceId)
                         } ?: run {
                             // When there is no Status Text, hide the Status TextView
-                            visibility = View.GONE
+                            hide()
                         }
                     }
                 }
                 else -> {
                     // When NOT Loading, hide the Status TextView
-                    text_progress_circle_status.visibility = View.GONE
+                    text_progress_circle_status.hide()
                 }
             }
         }

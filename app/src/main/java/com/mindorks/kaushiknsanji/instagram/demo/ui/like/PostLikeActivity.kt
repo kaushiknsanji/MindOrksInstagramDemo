@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mindorks.kaushiknsanji.instagram.demo.R
@@ -16,8 +15,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeNonNull
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.putExtrasFromMap
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ThemeUtils
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
-import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setVisibility
 import kotlinx.android.synthetic.main.activity_post_like.*
 import kotlinx.android.synthetic.main.layout_no_likes.*
 import java.io.Serializable
@@ -113,8 +112,8 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
         // Register an observer on Post data loading progress to show/hide the Progress Circle
         viewModel.loadingProgress.observe(this) { started: Boolean ->
             // Show the Progress Circle when [started], else leave it hidden
-            progress_post_like.setVisibility(started)
-        })
+            progress_post_like.showWhen(started)
+        }
 
         // Register an observer on the Post Likes LiveData to load the Adapter with the List of all Post Likes
         viewModel.postLikes.observeNonNull(this) { likes: List<Post.User> ->
@@ -123,19 +122,13 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
         }
 
         // Register an observer on the Post Likes' Presence LiveData to set the visibility of views accordingly
-        viewModel.postHasLikes.observe(this, Observer { hasLikes: Boolean ->
-            if (hasLikes) {
-                // When there are Likes, show the RecyclerView and the Bottom App Bar, and hide the Empty view
-                rv_post_likes.visibility = View.VISIBLE
-                include_post_like_empty.visibility = View.GONE
-                bottom_app_bar_post_like.visibility = View.VISIBLE
-            } else {
-                // When there are NO Likes, show the Empty view, and hide the RecyclerView and the Bottom App Bar
-                rv_post_likes.visibility = View.GONE
-                include_post_like_empty.visibility = View.VISIBLE
-                bottom_app_bar_post_like.visibility = View.GONE
-            }
-        })
+        viewModel.postHasLikes.observe(this) { hasLikes: Boolean ->
+            // When there are Likes, show the RecyclerView and the Bottom App Bar
+            rv_post_likes.showWhen(hasLikes)
+            bottom_app_bar_post_like.showWhen(hasLikes)
+            // When there are NO Likes, show the Empty view
+            include_post_like_empty.showWhen(!hasLikes)
+        }
 
         // Register an observer on the "Likes count of the Post" - LiveData to set its value
         // on the corresponding textView

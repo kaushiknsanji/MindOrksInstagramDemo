@@ -18,6 +18,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.Share
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.*
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showAndEnableWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setTextOnChange
 import com.mindorks.paracamera.Camera
