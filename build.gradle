@@ -13,8 +13,11 @@ buildscript {
     versions.target_sdk = 29
     versions.compile_sdk = 29
 
-    // Core
+    // AppCompat
     versions.appcompat = '1.2.0'
+
+    // Core
+    versions.core = '1.3.2'
 
     // Material
     versions.material = '1.2.1'

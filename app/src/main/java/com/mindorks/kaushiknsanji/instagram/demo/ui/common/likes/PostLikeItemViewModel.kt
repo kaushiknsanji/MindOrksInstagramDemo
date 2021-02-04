@@ -1,7 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
@@ -39,15 +39,17 @@ class PostLikeItemViewModel @Inject constructor(
         Networking.HEADER_ACCESS_TOKEN to user.accessToken
     )
 
-    // Transform the [itemData] to get the Name of the User who liked the Post
-    val userName: LiveData<String> = Transformations.map(itemData) { user -> user.name }
-    // Transform the [userName] to create a dummy user handle based on the user name
-    val userHandle: LiveData<String> = Transformations.map(userName) { name: String ->
+    // Transforms [itemData] to get the Name of the User who liked the Post
+    val userName: LiveData<String> = itemData.map { user -> user.name }
+
+    // Transforms [userName] to create a dummy user handle based on the user name
+    val userHandle: LiveData<String> = userName.map { name: String ->
         // Convert all to lowercase and remove whitespaces if any
         name.toLowerCase(Locale.getDefault()).replace("\\s".toRegex(), "")
     }
-    // Transform the [itemData] to get the [Image] model of the Profile Picture, of the User who liked the Post
-    val userImage: LiveData<Image> = Transformations.map(itemData) { user ->
+
+    // Transforms [itemData] to get the [Image] model of the Profile Picture, of the User who liked the Post
+    val userImage: LiveData<Image?> = itemData.map { user ->
         user.profilePicUrl?.run { Image(url = this, headers = headers) }
     }
 

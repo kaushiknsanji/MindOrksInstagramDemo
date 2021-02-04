@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
@@ -14,6 +13,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeNonNull
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.putExtrasFromMap
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ThemeUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
@@ -111,18 +111,16 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
         super.setupObservers()
 
         // Register an observer on Post data loading progress to show/hide the Progress Circle
-        viewModel.loadingProgress.observe(this, Observer { started: Boolean ->
+        viewModel.loadingProgress.observe(this) { started: Boolean ->
             // Show the Progress Circle when [started], else leave it hidden
             progress_post_like.setVisibility(started)
         })
 
         // Register an observer on the Post Likes LiveData to load the Adapter with the List of all Post Likes
-        viewModel.postLikes.observe(this, Observer { likes: List<Post.User>? ->
-            likes?.run {
-                // Load the Adapter with new data
-                postLikesAdapter.submitList(this)
-            }
-        })
+        viewModel.postLikes.observeNonNull(this) { likes: List<Post.User> ->
+            // Load the Adapter with new data
+            postLikesAdapter.submitList(likes)
+        }
 
         // Register an observer on the Post Likes' Presence LiveData to set the visibility of views accordingly
         viewModel.postHasLikes.observe(this, Observer { hasLikes: Boolean ->
@@ -141,12 +139,12 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
 
         // Register an observer on the "Likes count of the Post" - LiveData to set its value
         // on the corresponding textView
-        viewModel.likesCount.observe(this, Observer { likesCount ->
+        viewModel.likesCount.observe(this) { likesCount ->
             text_post_like_count.text = likesCount.toString()
-        })
+        }
 
         // Register an observer on the User Like Menu button LiveData to change the "Heart" Image accordingly
-        viewModel.hasUserLiked.observe(this, Observer { hasLiked: Boolean ->
+        viewModel.hasUserLiked.observe(this) { hasLiked: Boolean ->
             // Lookup for the Heart Menu item
             toolbar_post_like.menu.findItem(R.id.action_post_like)?.let { menuItem: MenuItem ->
                 // Change the Heart Icon based on whether User had liked the post or not
@@ -156,7 +154,7 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
                     menuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_heart_unselected)
                 }
             }
-        })
+        }
 
         // Register an observer for close action events, to close this Activity and update the Calling Activity
         // with the status of User's Like on the Post

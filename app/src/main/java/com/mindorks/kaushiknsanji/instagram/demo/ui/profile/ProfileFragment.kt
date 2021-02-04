@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
@@ -95,7 +94,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         super.setupObservers()
 
         // Register an observer on Posts download and logout progress LiveData to show/hide the Progress horizontal
-        viewModel.liveProgress.observe(this, Observer { started: Boolean ->
+        viewModel.liveProgress.observe(this) { started: Boolean ->
             // Show the Progress horizontal when [started], else leave it hidden
             progress_horizontal_profile.setVisibility(started)
         })
@@ -109,12 +108,12 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         }
 
         // Register an observer on the Name LiveData to set its value on the corresponding TextView
-        viewModel.userName.observe(this, Observer { userName: String ->
+        viewModel.userName.observe(this) { userName: String ->
             text_profile_user_name.text = userName
-        })
+        }
 
         // Register an observer on the Tagline LiveData to set its value on the corresponding TextView
-        viewModel.userTagline.observe(this, Observer { tagline: String ->
+        viewModel.userTagline.observe(this) { tagline: String ->
             text_profile_user_bio.apply {
                 if (tagline.isBlank()) {
                     // When blank, hide the View
@@ -125,16 +124,21 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
                     text = tagline
                 }
             }
-        })
+        }
 
         // Register an observer on the User's Profile Picture LiveData to load the Image
         // into the corresponding ImageView
-        viewModel.userImage.observe(this, Observer { image: Image? ->
+        viewModel.userImage.observe(this) { image: Image? ->
             image?.run {
                 // Configuring Glide with Image URL and other relevant customizations
                 val glideRequest = GlideApp
                     .with(this@ProfileFragment) // Loading with Fragment reference
-                    .load(GlideHelper.getProtectedUrl(image.url, image.headers)) // Loading the GlideUrl with Headers
+                    .load(
+                        GlideHelper.getProtectedUrl(
+                            image.url,
+                            image.headers
+                        )
+                    ) // Loading the GlideUrl with Headers
                     .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_profile)) // Loading with PlaceHolder Image
 
@@ -172,17 +176,17 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
                     .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
                     .into(image_profile_user) // Load into the corresponding ImageView
             }
-        })
+        }
 
         // Register an observer on the User's Post Count LiveData to set its value on the corresponding TextView
-        viewModel.userPostsCount.observe(this, Observer { postsCount: Int ->
+        viewModel.userPostsCount.observe(this) { postsCount: Int ->
             TextAppearanceUtils.setHtmlText(
                 text_profile_post_count,
                 resources.getString(
                     R.string.label_profile_post_count, postsCount
                 )
             )
-        })
+        }
 
         // Register an observer on the User's Posts Presence LiveData to set the visibility of views accordingly
         viewModel.userPostsEmpty.observe(this, Observer { empty: Boolean ->

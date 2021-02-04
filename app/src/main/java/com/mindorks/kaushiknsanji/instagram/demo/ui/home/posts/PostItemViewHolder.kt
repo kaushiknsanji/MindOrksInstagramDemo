@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.GestureDetectorCompat
-import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
@@ -123,37 +122,42 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
         super.setupObservers()
 
         // Register an observer on the Name LiveData to set its value on the corresponding textView
-        itemViewModel.postCreatorName.observe(this, Observer { name ->
+        itemViewModel.postCreatorName.observe(this) { name ->
             itemView.text_home_item_post_creator_name.text = name
-        })
+        }
 
         // Register an observer on the Post Creation Time LiveData to set its value on the corresponding textView
-        itemViewModel.postCreationTime.observe(this, Observer { creationTime ->
+        itemViewModel.postCreationTime.observe(this) { creationTime ->
             itemView.text_home_item_post_time.text = creationTime
-        })
+        }
 
         // Register an observer on the "Likes count of the Post" - LiveData to set its value
         // on the corresponding textView
-        itemViewModel.likesCount.observe(this, Observer { likesCount ->
+        itemViewModel.likesCount.observe(this) { likesCount ->
             itemView.text_home_item_post_like_count.text = itemView.context.getString(
                 R.string.label_home_item_post_like_count,
                 likesCount
             )
-        })
+        }
 
         // Register an observer on the user like button action LiveData to change the "Heart" image accordingly
-        itemViewModel.hasUserLiked.observe(this, Observer { hasLiked: Boolean ->
+        itemViewModel.hasUserLiked.observe(this) { hasLiked: Boolean ->
             itemView.imgbtn_home_item_toggle_post_like.isActivated = hasLiked
-        })
+        }
 
         // Register an observer on the Post Creator's Profile Picture LiveData to load the Image
         // into the corresponding ImageView
-        itemViewModel.profileImage.observe(this, Observer { image: Image? ->
+        itemViewModel.profileImage.observe(this) { image: Image? ->
             image?.run {
                 // Configuring Glide with Image URL and other relevant customizations
                 val glideRequest = GlideApp
                     .with(itemView.context) // Loading with ItemView's context
-                    .load(GlideHelper.getProtectedUrl(image.url, image.headers)) // Loading the GlideUrl with Headers
+                    .load(
+                        GlideHelper.getProtectedUrl(
+                            image.url,
+                            image.headers
+                        )
+                    ) // Loading the GlideUrl with Headers
                     .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_profile)) // Loading with PlaceHolder Image
 
@@ -191,16 +195,21 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
                     .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
                     .into(itemView.image_home_item_post_creator_profile) // Load into the corresponding ImageView
             }
-        })
+        }
 
         // Register an observer on the Post Creator's Photo LiveData to load the Image
         // into the corresponding ImageView
-        itemViewModel.postImage.observe(this, Observer { image: Image? ->
-            image?.run {
+        itemViewModel.postImage.observe(this) { image: Image ->
+            image.run {
                 // Configuring Glide with Image URL and other relevant customizations
                 val glideRequest = GlideApp
                     .with(itemView.context) // Loading with ItemView's context
-                    .load(GlideHelper.getProtectedUrl(image.url, image.headers)) // Loading the GlideUrl with Headers
+                    .load(
+                        GlideHelper.getProtectedUrl(
+                            image.url,
+                            image.headers
+                        )
+                    ) // Loading the GlideUrl with Headers
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_photo)) // Loading with PlaceHolder Image
 
                 if (placeHolderWidth > 0 && placeHolderHeight > 0) {
@@ -223,7 +232,7 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
                 // Start the download and load into the corresponding ImageView
                 glideRequest.into(itemView.image_home_item_post_photo)
             }
-        })
+        }
 
         // Register an observer for the User's Click action on Post Item
         itemViewModel.actionItemClick.observeEvent(this) { post: Post ->

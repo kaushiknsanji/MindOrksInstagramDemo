@@ -3,7 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.like
 import android.util.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
@@ -40,16 +40,19 @@ class PostLikeViewModel(
     // LiveData for the Post Details of the Post requested
     private val postData: MutableLiveData<Post> = MutableLiveData()
 
-    // Transform the [postData] to get the number of Likes on the Post
-    val likesCount: LiveData<Int> = Transformations.map(postData) { post -> post.likedBy?.size ?: 0 }
-    // Transform the [likesCount] to find if any user has liked the Post
-    val postHasLikes: LiveData<Boolean> = Transformations.map(likesCount) { countOfLikes: Int -> countOfLikes > 0 }
-    // Transform the [postData] to find if the logged-in user had liked the Post
-    val hasUserLiked: LiveData<Boolean> = Transformations.map(postData) { post ->
-        post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id }
+    // Transforms [postData] to get the number of Likes on the Post
+    val likesCount: LiveData<Int> = postData.map { post -> post.likedBy?.size ?: 0 }
+
+    // Transforms [likesCount] to find if any user has liked the Post
+    val postHasLikes: LiveData<Boolean> = likesCount.map { countOfLikes: Int -> countOfLikes > 0 }
+
+    // Transforms [postData] to find if the logged-in user had liked the Post
+    val hasUserLiked: LiveData<Boolean> = postData.map { post ->
+        post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id } ?: false
     }
-    // Transform the [postData] to get the list of Likes on the Post
-    val postLikes: LiveData<List<Post.User>?> = Transformations.map(postData) { post -> post.getLikesCopy() }
+
+    // Transforms [postData] to get the list of Likes on the Post
+    val postLikes: LiveData<List<Post.User>?> = postData.map { post -> post.getLikesCopy() }
 
     // LiveData for closing the Activity with the status of logged-in User's Like on the Post
     val closeWithLikeStatus: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()

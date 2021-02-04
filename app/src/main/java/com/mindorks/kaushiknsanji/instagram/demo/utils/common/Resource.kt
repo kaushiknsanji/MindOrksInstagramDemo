@@ -1,7 +1,9 @@
 package com.mindorks.kaushiknsanji.instagram.demo.utils.common
 
 /**
- * Class with a [status] metadata on the content wrapped in [dataEvent].
+ * Sealed Class used as Statuses with content wrapped in [dataEvent].
+ * The content that is wrapped in [dataEvent], can also at times reference to Android/App Resource Ids.
+ * In certain cases, hardcoded Strings can also be passed. Hence the name [Resource].
  *
  * @param T the type of content wrapped in the [dataEvent] of this [Resource]
  * @property status [Status] metadata information
@@ -10,42 +12,46 @@ package com.mindorks.kaushiknsanji.instagram.demo.utils.common
  *
  * @author Kaushik N Sanji
  */
-data class Resource<out T> private constructor(val status: Status, val dataEvent: Event<T>?) {
+sealed class Resource<out T>(val status: Status, val dataEvent: Event<T>?) {
 
-    companion object {
+    /**
+     * Data Class for [Status.SUCCESS] Status
+     *
+     * @property data The content to be wrapped in the [dataEvent] of the [Resource]
+     * @constructor Creates a factory constructor for [Status.SUCCESS] Status
+     */
+    data class Success<out T>(private val data: T? = null) :
+        Resource<T>(Status.SUCCESS, data?.let { Event(it) })
 
-        /**
-         * Factory method for [Resource] with status [Status.SUCCESS].
-         *
-         * @param data The content to be wrapped in the [dataEvent] of the [Resource]
-         */
-        fun <T> success(data: T? = null): Resource<T> = Resource(Status.SUCCESS, data?.let { Event(it) })
+    /**
+     * Data Class for [Status.ERROR] Status
+     *
+     * @property data The content to be wrapped in the [dataEvent] of the [Resource]
+     * @constructor Creates a factory constructor for [Status.ERROR] Status
+     */
+    data class Error<out T>(private val data: T? = null) :
+        Resource<T>(Status.ERROR, data?.let { Event(it) })
 
-        /**
-         * Factory method for [Resource] with status [Status.ERROR].
-         *
-         * @param data The content to be wrapped in the [dataEvent] of the [Resource]
-         */
-        fun <T> error(data: T? = null): Resource<T> = Resource(Status.ERROR, data?.let { Event(it) })
+    /**
+     * Data Class for [Status.LOADING] Status
+     *
+     * @property data The content to be wrapped in the [dataEvent] of the [Resource]
+     * @constructor Creates a factory constructor for [Status.LOADING] Status
+     */
+    data class Loading<out T>(private val data: T? = null) :
+        Resource<T>(Status.LOADING, data?.let { Event(it) })
 
-        /**
-         * Factory method for [Resource] with status [Status.LOADING].
-         *
-         * @param data The content to be wrapped in the [dataEvent] of the [Resource]
-         */
-        fun <T> loading(data: T? = null): Resource<T> = Resource(Status.LOADING, data?.let { Event(it) })
-
-        /**
-         * Factory method for [Resource] with status [Status.UNKNOWN].
-         *
-         * @param data The content to be wrapped in the [dataEvent] of the [Resource]
-         */
-        fun <T> unknown(data: T? = null): Resource<T> = Resource(Status.UNKNOWN, data?.let { Event(it) })
-    }
+    /**
+     * Data Class for [Status.UNKNOWN] Status
+     *
+     * @property data The content to be wrapped in the [dataEvent] of the [Resource]
+     * @constructor Creates a factory constructor for [Status.UNKNOWN] Status
+     */
+    data class Unknown<out T>(private val data: T? = null) :
+        Resource<T>(Status.UNKNOWN, data?.let { Event(it) })
 
     /**
      * Reads and returns the content wrapped in [dataEvent]. Can be `null` if content [T] was `null`.
      */
-    fun getData(): T? = dataEvent?.peekContent()
-
+    fun peekData(): T? = dataEvent?.peekContent()
 }

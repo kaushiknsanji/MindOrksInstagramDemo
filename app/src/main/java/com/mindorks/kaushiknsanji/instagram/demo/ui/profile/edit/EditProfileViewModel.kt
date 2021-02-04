@@ -3,7 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
@@ -63,14 +63,17 @@ class EditProfileViewModel(
         Networking.HEADER_ACCESS_TOKEN to user.accessToken
     )
 
-    // Transform the [userInfo] to get the Name of the logged-in User
-    private val userName: LiveData<String> = Transformations.map(userInfo) { user -> user.name }
-    // Transform the [userInfo] to get the Tag-line of the logged-in User
-    private val userTagline: LiveData<String> = Transformations.map(userInfo) { user -> user.tagline ?: "" }
-    // Transform the [userInfo] to get the Email of the logged-in User
-    val userEmail: LiveData<String> = Transformations.map(userInfo) { user -> user.email }
-    // Transform the [userInfo] to get the [Image] model of the logged-in User's Profile Picture
-    val userImage: LiveData<Image> = Transformations.map(userInfo) { user ->
+    // Transforms [userInfo] to get the Name of the logged-in User
+    private val userName: LiveData<String> = userInfo.map { user -> user.name }
+
+    // Transforms [userInfo] to get the Tag-line of the logged-in User
+    private val userTagline: LiveData<String> = userInfo.map { user -> user.tagline ?: "" }
+
+    // Transforms [userInfo] to get the Email of the logged-in User
+    val userEmail: LiveData<String> = userInfo.map { user -> user.email }
+
+    // Transforms [userInfo] to get the [Image] model of the logged-in User's Profile Picture
+    val userImage: LiveData<Image?> = userInfo.map { user ->
         user.profilePicUrl?.run { Image(url = this, headers = headers) }
     }
 
@@ -92,15 +95,18 @@ class EditProfileViewModel(
     // LiveData that saves the chosen Profile Image File which will be uploaded on save
     val chosenProfileImageFile: MutableLiveData<File> = MutableLiveData()
 
-    // Transform the [nameField] to see if the value is different from its original
+    // Transforms [nameField] to see if the value is different from its original
     private val hasNameChanged: LiveData<Boolean> =
-        Transformations.map(nameField) { newName -> newName != userName.value }
-    // Transform the [bioField] to see if the value is different from its original
+        nameField.map { newName -> newName != userName.value }
+
+    // Transforms [bioField] to see if the value is different from its original
     private val hasBioChanged: LiveData<Boolean> =
-        Transformations.map(bioField) { newBio -> newBio != userTagline.value }
-    // Transform the [chosenProfileImageFile] to see if the user had changed the Profile Picture
+        bioField.map { newBio -> newBio != userTagline.value }
+
+    // Transforms [chosenProfileImageFile] to see if the user had changed the Profile Picture
     private val hasProfilePictureChanged: LiveData<Boolean> =
-        Transformations.map(chosenProfileImageFile) { imageFile: File? -> imageFile?.exists() ?: false }
+        chosenProfileImageFile.map { imageFile: File? -> imageFile?.exists() ?: false }
+
     // MediatorLiveData to see if any data has been changed to update to the remote
     val hasAnyInfoChanged: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
         // Mutable List for tracking fields that have been changed
@@ -250,7 +256,7 @@ class EditProfileViewModel(
      */
     fun onGalleryImageSelected(inputStream: InputStream) {
         // Start the [liveProgress] indication
-        liveProgress.postValue(Resource.loading(R.string.progress_edit_profile_loading_image))
+        liveProgress.postValue(Resource.Loading(R.string.progress_edit_profile_loading_image))
         // Construct a SingleSource for saving the [inputStream] to an Image File, and save its resulting disposable
         compositeDisposable.add(
             // Create a SingleSource to save the [inputStream] to an Image File, so that the operation can be
@@ -270,18 +276,18 @@ class EditProfileViewModel(
                         imageFile?.run {
                             // When we have the resulting Image File, update the LiveData for the File chosen
                             chosenProfileImageFile.postValue(imageFile)
-                            liveProgress.postValue(Resource.success()) // Stop the [liveProgress] indication
+                            liveProgress.postValue(Resource.Success()) // Stop the [liveProgress] indication
                         } ?: run {
                             // When we do not have the resulting Image File, display an error to the user requesting to retry
-                            liveProgress.postValue(Resource.success()) // Stop the [liveProgress] indication
-                            messageStringId.postValue(Resource.error(R.string.error_retry))
+                            liveProgress.postValue(Resource.Success()) // Stop the [liveProgress] indication
+                            messageStringId.postValue(Resource.Error(R.string.error_retry))
                         }
                     },
                     // OnError
                     {
                         // When the Image save process failed, display an error to the user requesting to retry
-                        liveProgress.postValue(Resource.success()) // Stop the [liveProgress] indication
-                        messageStringId.postValue(Resource.error(R.string.error_retry))
+                        liveProgress.postValue(Resource.Success()) // Stop the [liveProgress] indication
+                        messageStringId.postValue(Resource.Error(R.string.error_retry))
                     }
                 )
         )
@@ -294,7 +300,7 @@ class EditProfileViewModel(
      */
     fun onPhotoSnapped(cameraImageProcessor: () -> String) {
         // Start the [liveProgress] indication
-        liveProgress.postValue(Resource.loading(R.string.progress_edit_profile_loading_image))
+        liveProgress.postValue(Resource.Loading(R.string.progress_edit_profile_loading_image))
         // Construct a SingleSource for the lambda, and save its resulting disposable
         compositeDisposable.add(
             // Create a SingleSource to the lambda [cameraImageProcessor], so that the operation can be
@@ -310,12 +316,12 @@ class EditProfileViewModel(
                             // Test for its bounds, and then update the LiveData for the File chosen
                             FileUtils.getImageSize(this)?.let {
                                 chosenProfileImageFile.postValue(this)
-                                liveProgress.postValue(Resource.success()) // Stop the [liveProgress] indication
+                                liveProgress.postValue(Resource.Success()) // Stop the [liveProgress] indication
                             } ?: run {
                                 // When decoding of the Image Bounds failed, display an error to the user
                                 // requesting to retry
-                                liveProgress.postValue(Resource.success()) // Stop the [liveProgress] indication
-                                messageStringId.postValue(Resource.error(R.string.error_retry))
+                                liveProgress.postValue(Resource.Success()) // Stop the [liveProgress] indication
+                                messageStringId.postValue(Resource.Error(R.string.error_retry))
                             }
                         }
                     },
@@ -323,8 +329,8 @@ class EditProfileViewModel(
                     {
                         // When the lambda [cameraImageProcessor] process failed, display an error to the user
                         // requesting to retry
-                        liveProgress.postValue(Resource.success()) // Stop the [liveProgress] indication
-                        messageStringId.postValue(Resource.error(R.string.error_retry))
+                        liveProgress.postValue(Resource.Success()) // Stop the [liveProgress] indication
+                        messageStringId.postValue(Resource.Error(R.string.error_retry))
                     }
                 )
         )
@@ -372,7 +378,7 @@ class EditProfileViewModel(
                         // When the Profile Picture has changed
 
                         // Start the [liveProgress] indication for Image Upload
-                        liveProgress.postValue(Resource.loading(R.string.progress_edit_profile_uploading_image))
+                        liveProgress.postValue(Resource.Loading(R.string.progress_edit_profile_uploading_image))
                         // Upload and Get the URL to the Profile Picture
                         photoRepository.uploadPhoto(it, user)
                     } ?: Single.fromCallable {
@@ -392,7 +398,7 @@ class EditProfileViewModel(
                 compositeDisposable.add(
                     api.flatMap { profilePicUrl: String ->
                         // Start the [liveProgress] indication for User Info Update
-                        liveProgress.postValue(Resource.loading(R.string.progress_edit_profile_save))
+                        liveProgress.postValue(Resource.Loading(R.string.progress_edit_profile_save))
                         // Update the User Information to the Remote
                         userRepository.doUpdateUserInfo(
                             user.copy(
@@ -407,12 +413,12 @@ class EditProfileViewModel(
                             // OnSuccess
                             { resource: Resource<String> ->
                                 // Stop the [liveProgress] indication
-                                liveProgress.postValue(Resource.success())
+                                liveProgress.postValue(Resource.Success())
                                 if (resource.status == Status.SUCCESS) {
                                     // When Resource status is Success, we have updated the user info
                                     // to the remote successfully.
                                     // Hence trigger an event to close the Activity with Success Result of response
-                                    finishWithSuccess.postValue(Event(resource.getData() ?: ""))
+                                    finishWithSuccess.postValue(Event(resource.peekData() ?: ""))
                                 } else {
                                     // When Resource status is other than Success, user info did not update successfully
                                     // Hence display the Resource message and do not close the activity
@@ -422,7 +428,7 @@ class EditProfileViewModel(
                             // OnError
                             { throwable: Throwable? ->
                                 // Stop the [liveProgress] indication
-                                liveProgress.postValue(Resource.success())
+                                liveProgress.postValue(Resource.Success())
                                 // Handle and display the appropriate error
                                 handleNetworkError(throwable)
                             }

@@ -4,12 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
+import androidx.core.widget.doOnTextChanged
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
@@ -97,94 +95,16 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         }
 
         // Register text change listener on Name field for validations
-        edit_profile_name.addTextChangedListener(object : TextWatcher {
-            /**
-             * This method is called to notify you that, somewhere within
-             * [s], the text has been changed.
-             * It is legitimate to make further changes to [s] from
-             * this callback, but be careful not to get yourself into an infinite
-             * loop, because any changes you make will cause this method to be
-             * called again recursively.
-             * (You are not told where the change took place because other
-             * afterTextChanged() methods may already have made other changes
-             * and invalidated the offsets.  But if you need to know here,
-             * you can use [android.text.Spannable.setSpan] in [onTextChanged]
-             * to mark your place and then look up from here where the span
-             * ended up.
-             */
-            override fun afterTextChanged(s: Editable?) {
-                //No-op
-            }
-
-            /**
-             * This method is called to notify you that, within [s],
-             * the [count] characters beginning at [start]
-             * are about to be replaced by new text with length [after].
-             * It is an error to attempt to make changes to [s] from
-             * this callback.
-             */
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                //No-op
-            }
-
-            /**
-             * This method is called to notify you that, within [s],
-             * the [count] characters beginning at [start]
-             * have just replaced old text that had length [before].
-             * It is an error to attempt to make changes to [s] from
-             * this callback.
-             */
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // When the Name text changes, delegate to the EditProfileViewModel
-                viewModel.onNameChange(s.toString())
-            }
-
-        })
+        edit_profile_name.doOnTextChanged { text, _, _, _ ->
+            // When Name text changes, delegate to the EditProfileViewModel
+            viewModel.onNameChange(text.toString())
+        }
 
         // Register text change listener on Bio field for validations
-        edit_profile_bio.addTextChangedListener(object : TextWatcher {
-            /**
-             * This method is called to notify you that, somewhere within
-             * [s], the text has been changed.
-             * It is legitimate to make further changes to [s] from
-             * this callback, but be careful not to get yourself into an infinite
-             * loop, because any changes you make will cause this method to be
-             * called again recursively.
-             * (You are not told where the change took place because other
-             * afterTextChanged() methods may already have made other changes
-             * and invalidated the offsets.  But if you need to know here,
-             * you can use [android.text.Spannable.setSpan] in [onTextChanged]
-             * to mark your place and then look up from here where the span
-             * ended up.
-             */
-            override fun afterTextChanged(s: Editable?) {
-                //No-op
-            }
-
-            /**
-             * This method is called to notify you that, within [s],
-             * the [count] characters beginning at [start]
-             * are about to be replaced by new text with length [after].
-             * It is an error to attempt to make changes to [s] from
-             * this callback.
-             */
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                //No-op
-            }
-
-            /**
-             * This method is called to notify you that, within [s],
-             * the [count] characters beginning at [start]
-             * have just replaced old text that had length [before].
-             * It is an error to attempt to make changes to [s] from
-             * this callback.
-             */
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // When the Bio text changes, delegate to the EditProfileViewModel
-                viewModel.onBioChange(s.toString())
-            }
-
-        })
+        edit_profile_bio.doOnTextChanged { text, _, _, _ ->
+            // When Bio text changes, delegate to the EditProfileViewModel
+            viewModel.onBioChange(text.toString())
+        }
 
         // Register click listener on "Change Photo" Button
         text_button_edit_profile_change_pic.setOnClickListener { viewModel.onChangePhoto() }
@@ -201,7 +121,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         super.setupObservers()
 
         // Register an observer on loading/upload/save progress LiveData to show/hide the Progress Dialog
-        viewModel.liveProgress.observe(this, Observer { resourceWrapper ->
+        viewModel.liveProgress.observe(this) { resourceWrapper ->
             // Show/hide the Progress Dialog based on the Resource Status
             when (resourceWrapper.status) {
                 Status.LOADING -> {
@@ -218,22 +138,22 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
                     dialogManager.dismissActiveDialog()
                 }
             }
-        })
+        }
 
         // Register an observer on Name field LiveData to set the new value on change
-        viewModel.nameField.observe(this, Observer { nameValue ->
+        viewModel.nameField.observe(this) { nameValue ->
             edit_profile_name.setTextOnChange(nameValue)
-        })
+        }
 
         // Register an observer on Bio field LiveData to set the new value on change
-        viewModel.bioField.observe(this, Observer { bioValue ->
+        viewModel.bioField.observe(this) { bioValue ->
             edit_profile_bio.setTextOnChange(bioValue)
-        })
+        }
 
         // Register an observer on Email field LiveData to set its value
-        viewModel.userEmail.observe(this, Observer { emailValue ->
+        viewModel.userEmail.observe(this) { emailValue ->
             edit_profile_email.setText(emailValue)
-        })
+        }
 
         // Register an observer on Name field validation result to show the error if any
         viewModel.nameValidation.observeResource(this) { status: Status, messageResId: Int? ->
@@ -245,7 +165,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
 
         // Register an observer on the LiveData that detects changes to user information in order to allow
         // the user to reset using the menu button
-        viewModel.hasAnyInfoChanged.observe(this, Observer { hasChanged: Boolean ->
+        viewModel.hasAnyInfoChanged.observe(this) { hasChanged: Boolean ->
             // Lookup the Menu item for reset
             toolbar_edit_profile.menu.findItem(R.id.action_edit_profile_reset)
                 ?.let { menuItem: MenuItem ->
@@ -255,13 +175,15 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
 
         // Register an observer on the User's Profile Picture LiveData to load the Image
         // into the corresponding ImageView
-        viewModel.userImage.observe(this, Observer { image: Image? -> loadProfileImage(imageData = image) })
+        viewModel.userImage.observe(this) { image: Image? ->
+            loadProfileImage(imageData = image)
+        }
 
         // Register an observer on the chosen Profile Picture LiveData to load the Image
         // into the corresponding ImageView
-        viewModel.chosenProfileImageFile.observe(this, Observer { input: File? ->
+        viewModel.chosenProfileImageFile.observe(this) { input: File? ->
             loadProfileImage(imageFile = input)
-        })
+        }
 
         // Register an observer for PhotoOptionsDialogFragment launch events
         viewModel.launchPhotoOptions.observeEvent(this) {

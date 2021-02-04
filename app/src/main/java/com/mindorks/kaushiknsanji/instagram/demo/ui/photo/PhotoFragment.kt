@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.FragmentComponent
@@ -100,7 +99,7 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
         super.setupObservers()
 
         // Register an observer on the photo and post creation loading progress to show/hide the Progress Dialog
-        viewModel.loadingProgress.observe(this, Observer { resourceWrapper ->
+        viewModel.loadingProgress.observe(this) { resourceWrapper ->
             // Show/hide the Progress Dialog based on the Resource Status
             when (resourceWrapper.status) {
                 Status.LOADING -> {
@@ -117,7 +116,7 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
                     dialogManager.dismissActiveDialog()
                 }
             }
-        })
+        }
 
         // Register an observer on the Post creation LiveData to pass the new Post Details
         // to the Shared ViewModel to handle

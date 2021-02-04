@@ -165,10 +165,10 @@ class UserRepository @Inject constructor(
                         // Clear the current user from the preferences
                         removeCurrentUser()
                         // Return the message with Success status
-                        Resource.success(response.message)
+                        Resource.Success(response.message)
                     }
                     // else, return the message with Unknown status
-                    else -> Resource.unknown(response.message)
+                    else -> Resource.Unknown(response.message)
                 }
             }
 
@@ -195,10 +195,10 @@ class UserRepository @Inject constructor(
                     // Save the updated user information to preferences
                     saveCurrentUser(user)
                     // Return the message with Success status
-                    Resource.success(response.message)
+                    Resource.Success(response.message)
                 }
                 // else, return the message with Unknown status
-                else -> Resource.unknown(response.message)
+                else -> Resource.Unknown(response.message)
             }
         }
 }

@@ -29,8 +29,8 @@ class ValidatorTest {
         assertThat(
             validations,
             Matchers.contains(
-                Validation(Validation.Field.EMAIL, Resource.success()),
-                Validation(Validation.Field.PASSWORD, Resource.success())
+                Validation(Validation.Field.EMAIL, Resource.Success()),
+                Validation(Validation.Field.PASSWORD, Resource.Success())
             )
         )
     }
@@ -52,8 +52,11 @@ class ValidatorTest {
         assertThat(
             validations,
             Matchers.contains(
-                Validation(Validation.Field.EMAIL, Resource.error(R.string.error_login_sign_up_email_field_invalid)),
-                Validation(Validation.Field.PASSWORD, Resource.success())
+                Validation(
+                    Validation.Field.EMAIL,
+                    Resource.Error(R.string.error_login_sign_up_email_field_invalid)
+                ),
+                Validation(Validation.Field.PASSWORD, Resource.Success())
             )
         )
     }
@@ -75,10 +78,10 @@ class ValidatorTest {
         assertThat(
             validations,
             Matchers.contains(
-                Validation(Validation.Field.EMAIL, Resource.success()),
+                Validation(Validation.Field.EMAIL, Resource.Success()),
                 Validation(
                     Validation.Field.PASSWORD,
-                    Resource.error(R.string.error_login_sign_up_password_field_small_length)
+                    Resource.Error(R.string.error_login_sign_up_password_field_small_length)
                 )
             )
         )
@@ -101,8 +104,11 @@ class ValidatorTest {
         assertThat(
             validations,
             Matchers.contains(
-                Validation(Validation.Field.EMAIL, Resource.error(R.string.error_login_sign_up_email_field_empty)),
-                Validation(Validation.Field.PASSWORD, Resource.success())
+                Validation(
+                    Validation.Field.EMAIL,
+                    Resource.Error(R.string.error_login_sign_up_email_field_empty)
+                ),
+                Validation(Validation.Field.PASSWORD, Resource.Success())
             )
         )
     }
@@ -124,8 +130,11 @@ class ValidatorTest {
         assertThat(
             validations,
             Matchers.contains(
-                Validation(Validation.Field.EMAIL, Resource.success()),
-                Validation(Validation.Field.PASSWORD, Resource.error(R.string.error_login_sign_up_password_field_empty))
+                Validation(Validation.Field.EMAIL, Resource.Success()),
+                Validation(
+                    Validation.Field.PASSWORD,
+                    Resource.Error(R.string.error_login_sign_up_password_field_empty)
+                )
             )
         )
     }

@@ -2,7 +2,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
@@ -57,12 +56,17 @@ class ProfilePostItemViewHolder(
 
         // Register an Observer on User's Post Photo LiveData to load the Image
         // into the corresponding ImageView
-        itemViewModel.postImage.observe(this, Observer { image: Image? ->
-            image?.run {
+        itemViewModel.postImage.observe(this) { image: Image ->
+            image.run {
                 // Configuring Glide with Image URL and other relevant customizations
                 val glideRequest = GlideApp
                     .with(itemView.context) // Loading with ItemView's context
-                    .load(GlideHelper.getProtectedUrl(image.url, image.headers)) // Loading the GlideUrl with Headers
+                    .load(
+                        GlideHelper.getProtectedUrl(
+                            image.url,
+                            image.headers
+                        )
+                    ) // Loading the GlideUrl with Headers
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_photo)) // Loading with PlaceHolder Image
 
                 // Get the Span Count of GridLayoutManager from [container]
@@ -92,7 +96,7 @@ class ProfilePostItemViewHolder(
                 // Start the download and load into the corresponding ImageView
                 glideRequest.into(itemView.image_profile_item_post_photo)
             }
-        })
+        }
 
         // Register an observer for the User's Click action on Post Item
         itemViewModel.actionItemClick.observeEvent(this) { post: Post ->

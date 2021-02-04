@@ -42,7 +42,7 @@ abstract class BaseViewModel(
             true
         } else {
             // Post an error message when not connected
-            messageStringId.postValue(Resource.error(R.string.error_network_connection_issue))
+            messageStringId.postValue(Resource.Error(R.string.error_network_connection_issue))
             false
         }
 
@@ -55,23 +55,23 @@ abstract class BaseViewModel(
             networkHelper.castToNetworkError(err).run {
                 when (status) {
                     // For default error
-                    -1 -> messageStringId.postValue(Resource.error(R.string.error_network_default_issue))
+                    -1 -> messageStringId.postValue(Resource.Error(R.string.error_network_default_issue))
                     // For Connect exceptions
-                    0 -> messageStringId.postValue(Resource.error(R.string.error_network_server_connection_issue))
+                    0 -> messageStringId.postValue(Resource.Error(R.string.error_network_server_connection_issue))
                     // For HTTP 401 error
                     HttpsURLConnection.HTTP_UNAUTHORIZED -> messageStringId.postValue(
-                        Resource.error(
+                        Resource.Error(
                             R.string.error_network_login_unauthorized_issue
                         )
                     )
                     // For HTTP 500 error
                     HttpsURLConnection.HTTP_INTERNAL_ERROR ->
-                        messageStringId.postValue(Resource.error(R.string.error_network_internal_issue))
+                        messageStringId.postValue(Resource.Error(R.string.error_network_internal_issue))
                     // For HTTP 503 error
                     HttpsURLConnection.HTTP_UNAVAILABLE ->
-                        messageStringId.postValue(Resource.error(R.string.error_network_server_not_available_issue))
+                        messageStringId.postValue(Resource.Error(R.string.error_network_server_not_available_issue))
                     // For other errors
-                    else -> messageString.postValue(Resource.error(message))
+                    else -> messageString.postValue(Resource.Error(message))
                 }
             }
         }

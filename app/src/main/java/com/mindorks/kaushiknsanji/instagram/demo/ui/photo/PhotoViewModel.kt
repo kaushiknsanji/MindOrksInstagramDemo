@@ -61,7 +61,7 @@ class PhotoViewModel(
      */
     fun onGalleryImageSelected(inputStream: InputStream) {
         // Start the [loadingProgress] indication
-        loadingProgress.postValue(Resource.loading(R.string.progress_photo_uploading_image))
+        loadingProgress.postValue(Resource.Loading(R.string.progress_photo_uploading_image))
         // Construct a SingleSource for saving the [inputStream] to an Image File, and save its resulting disposable
         compositeDisposable.add(
             // Create a SingleSource to save the [inputStream] to an Image File, so that the operation can be
@@ -84,21 +84,21 @@ class PhotoViewModel(
                                 uploadPhotoAndCreatePost(this, imageBounds)
                             } ?: run {
                                 // When decoding of the Image Bounds failed, display an error to the user requesting to retry
-                                loadingProgress.postValue(Resource.success()) // Stop the [loadingProgress] indication
-                                messageStringId.postValue(Resource.error(R.string.error_retry))
+                                loadingProgress.postValue(Resource.Success()) // Stop the [loadingProgress] indication
+                                messageStringId.postValue(Resource.Error(R.string.error_retry))
                             }
                         } ?: run {
                             // When we do not have the resulting Image File, display an error to the user requesting to retry
-                            loadingProgress.postValue(Resource.success()) // Stop the [loadingProgress] indication
-                            messageStringId.postValue(Resource.error(R.string.error_retry))
+                            loadingProgress.postValue(Resource.Success()) // Stop the [loadingProgress] indication
+                            messageStringId.postValue(Resource.Error(R.string.error_retry))
                         }
 
                     },
                     // OnError
                     {
                         // When the Image save process failed, display an error to the user requesting to retry
-                        loadingProgress.postValue(Resource.success()) // Stop the [loadingProgress] indication
-                        messageStringId.postValue(Resource.error(R.string.error_retry))
+                        loadingProgress.postValue(Resource.Success()) // Stop the [loadingProgress] indication
+                        messageStringId.postValue(Resource.Error(R.string.error_retry))
                     }
                 )
         )
@@ -112,7 +112,7 @@ class PhotoViewModel(
      */
     fun onPhotoSnapped(cameraImageProcessor: () -> String) {
         // Start the [loadingProgress] indication
-        loadingProgress.postValue(Resource.loading(R.string.progress_photo_uploading_image))
+        loadingProgress.postValue(Resource.Loading(R.string.progress_photo_uploading_image))
         // Construct a SingleSource for the lambda, and save its resulting disposable
         compositeDisposable.add(
             // Create a SingleSource to the lambda [cameraImageProcessor], so that the operation can be
@@ -131,8 +131,8 @@ class PhotoViewModel(
                             } ?: run {
                                 // When decoding of the Image Bounds failed, display an error to the user
                                 // requesting to retry
-                                loadingProgress.postValue(Resource.success()) // Stop the [loadingProgress] indication
-                                messageStringId.postValue(Resource.error(R.string.error_retry))
+                                loadingProgress.postValue(Resource.Success()) // Stop the [loadingProgress] indication
+                                messageStringId.postValue(Resource.Error(R.string.error_retry))
                             }
                         }
                     },
@@ -140,8 +140,8 @@ class PhotoViewModel(
                     {
                         // When the lambda [cameraImageProcessor] process failed, display an error to the user
                         // requesting to retry
-                        loadingProgress.postValue(Resource.success()) // Stop the [loadingProgress] indication
-                        messageStringId.postValue(Resource.error(R.string.error_retry))
+                        loadingProgress.postValue(Resource.Success()) // Stop the [loadingProgress] indication
+                        messageStringId.postValue(Resource.Error(R.string.error_retry))
                     }
                 )
         )
@@ -169,12 +169,12 @@ class PhotoViewModel(
                         // Publish the newly created Post
                         postPublished.postValue(Event(newPost))
                         // Stop the [loadingProgress] indication
-                        loadingProgress.postValue(Resource.success())
+                        loadingProgress.postValue(Resource.Success())
                     },
                     // OnError
                     { throwable: Throwable? ->
                         // Stop the [loadingProgress] indication
-                        loadingProgress.postValue(Resource.success())
+                        loadingProgress.postValue(Resource.Success())
                         // Handle and display the appropriate error
                         handleNetworkError(throwable)
                     }

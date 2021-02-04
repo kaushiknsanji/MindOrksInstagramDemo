@@ -2,7 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.utils.common
 
 import androidx.core.util.PatternsCompat
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Validation.Field
 
@@ -69,18 +69,23 @@ object Validator {
         when {
             // When email is empty or blank, build a Validation with an appropriate error message
             email.isNullOrBlank() ->
-                add(Validation(Field.EMAIL, Resource.error(R.string.error_login_sign_up_email_field_empty)))
+                add(
+                    Validation(
+                        Field.EMAIL,
+                        Resource.Error(R.string.error_login_sign_up_email_field_empty)
+                    )
+                )
             // When the email is invalid, build a Validation with an appropriate error message
             !PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() ->
                 add(
                     Validation(
                         Field.EMAIL,
-                        Resource.error(R.string.error_login_sign_up_email_field_invalid)
+                        Resource.Error(R.string.error_login_sign_up_email_field_invalid)
                     )
                 )
             // When the email is valid, build a Validation with success resource
             else ->
-                add(Validation(Field.EMAIL, Resource.success()))
+                add(Validation(Field.EMAIL, Resource.Success()))
         }
     }
 
@@ -94,7 +99,7 @@ object Validator {
                 add(
                     Validation(
                         Field.PASSWORD,
-                        Resource.error(R.string.error_login_sign_up_password_field_empty)
+                        Resource.Error(R.string.error_login_sign_up_password_field_empty)
                     )
                 )
             // When password length is below the required criteria, build a Validation
@@ -103,12 +108,12 @@ object Validator {
                 add(
                     Validation(
                         Field.PASSWORD,
-                        Resource.error(R.string.error_login_sign_up_password_field_small_length)
+                        Resource.Error(R.string.error_login_sign_up_password_field_small_length)
                     )
                 )
             // When password is valid, build a Validation with success resource
             else ->
-                add(Validation(Field.PASSWORD, Resource.success()))
+                add(Validation(Field.PASSWORD, Resource.Success()))
         }
     }
 
@@ -119,10 +124,10 @@ object Validator {
         when {
             // When name is empty or blank, build a Validation with an appropriate error message
             name.isNullOrBlank() ->
-                add(Validation(Field.NAME, Resource.error(R.string.error_sign_up_name_field_empty)))
+                add(Validation(Field.NAME, Resource.Error(R.string.error_sign_up_name_field_empty)))
             // When name is valid, build a Validation with success resource
             else ->
-                add(Validation(Field.NAME, Resource.success()))
+                add(Validation(Field.NAME, Resource.Success()))
         }
     }
 
@@ -152,12 +157,12 @@ data class Validation(val field: Field, val resource: Resource<Int>) {
 
 /**
  * Extension function on [LiveData] of [List] of [Validation]s that transforms
- * the [List] of [Validation]s to a [LiveData] of [Resource] for the
+ * [List] of [Validation]s to a [LiveData] of [Resource] for the
  * required [field] being validated.
  */
 fun LiveData<List<Validation>>.filterValidation(field: Field): LiveData<Resource<Int>> =
-    Transformations.map(this) { validations ->
+    this.map { validations ->
         validations.find { validation -> validation.field == field }
             ?.resource
-            ?: Resource.unknown()
+            ?: Resource.Unknown()
     }

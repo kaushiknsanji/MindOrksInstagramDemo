@@ -2,7 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
@@ -52,23 +52,27 @@ class ProfileViewModel(
         Networking.HEADER_ACCESS_TOKEN to user.accessToken
     )
 
-    // Transform the [userInfo] to get the Name of the logged-in User
-    val userName: LiveData<String> = Transformations.map(userInfo) { user -> user.name }
-    // Transform the [userInfo] to get the Tag-line of the logged-in User
-    val userTagline: LiveData<String> = Transformations.map(userInfo) { user -> user.tagline ?: "" }
-    // Transform the [userInfo] to get the [Image] model of the logged-in User's Profile Picture
-    val userImage: LiveData<Image> = Transformations.map(userInfo) { user ->
+    // Transforms [userInfo] to get the Name of the logged-in User
+    val userName: LiveData<String> = userInfo.map { user -> user.name }
+
+    // Transforms [userInfo] to get the Tag-line of the logged-in User
+    val userTagline: LiveData<String> = userInfo.map { user -> user.tagline ?: "" }
+
+    // Transforms [userInfo] to get the [Image] model of the logged-in User's Profile Picture
+    val userImage: LiveData<Image?> = userInfo.map { user ->
         user.profilePicUrl?.run { Image(url = this, headers = headers) }
     }
-    // Transform the [userPosts] to get the count of Posts created by the logged-in User
+
+    // Transforms [userPosts] to get the count of Posts created by the logged-in User
     val userPostsCount: LiveData<Int> =
-        Transformations.map(userPosts) { resourceWrapper -> resourceWrapper.getData()?.size ?: 0 }
-    // Transform the [userPosts] to get the presence of Posts created by the logged-in User
-    val userPostsEmpty: LiveData<Boolean> =
-        Transformations.map(userPosts) { resourceWrapper -> resourceWrapper.getData()?.isEmpty() ?: false }
+        userPosts.map { resourceWrapper -> resourceWrapper.peekData()?.size ?: 0 }
+
+    // Transforms [userPostsCount] to get the presence of Posts created by the logged-in User
+    val userPostsEmpty: LiveData<Boolean> = userPostsCount.map { postCount -> postCount == 0 }
 
     // LiveData for launching EditProfileActivity
     val launchEditProfile: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
+
     // LiveData for launching LoginActivity
     val launchLogin: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
 
@@ -139,7 +143,7 @@ class ProfileViewModel(
                         { posts: List<Post> ->
                             // Update the LiveData with the User's List of Posts
                             // (This triggers LiveData transformations for field values)
-                            userPosts.postValue(Resource.success(posts))
+                            userPosts.postValue(Resource.Success(posts))
                             // Stop the [liveProgress] indication
                             liveProgress.postValue(false)
                         },
@@ -212,14 +216,14 @@ class ProfileViewModel(
         // Hence we need to ensure that the [newPost] is not already present in the list of user posts before updating.
 
         // Get the current list of Posts
-        val currentPosts: List<Post>? = userPosts.value?.getData()
+        val currentPosts: List<Post>? = userPosts.value?.peekData()
 
         // Check if the list contains the New Post before adding
         currentPosts?.takeIf { it.isNotEmpty() }?.none { post: Post -> post.id == newPost.id }
             ?.let { isAbsent: Boolean ->
                 if (isAbsent) {
                     // When it does not contain the [newPost], add and update the User's List of Posts LiveData
-                    userPosts.postValue(Resource.success(currentPosts.toMutableList().apply {
+                    userPosts.postValue(Resource.Success(currentPosts.toMutableList().apply {
                         add(0, newPost)
                     }))
                 }
@@ -245,7 +249,7 @@ class ProfileViewModel(
      * Removes the Post with the [postId] from the [userPosts] and reloads the list.
      */
     fun onPostDeleted(postId: String) =
-        userPosts.postValue(Resource.success(userPosts.value?.getData()?.toMutableList()?.apply {
+        userPosts.postValue(Resource.Success(userPosts.value?.peekData()?.toMutableList()?.apply {
             removeAll { post: Post -> post.id == postId }
         }))
 

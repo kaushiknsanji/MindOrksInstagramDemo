@@ -3,7 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.detail
 import android.util.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
@@ -63,29 +63,37 @@ class PostDetailViewModel(
     // LiveData for the Post Details of the Post requested
     private val postData: MutableLiveData<Post> = MutableLiveData()
 
-    // Transform the [postData] to get the Name of the Post Creator
-    val postCreatorName: LiveData<String> = Transformations.map(postData) { post -> post.creator.name }
-    // Transform the [postData] to get the Creation Time of the Post (in words via the TimeUtils)
+    // Transforms [postData] to get the Name of the Post Creator
+    val postCreatorName: LiveData<String> = postData.map { post -> post.creator.name }
+
+    // Transforms [postData] to get the Creation Time of the Post (in words via the TimeUtils)
     val postCreationTime: LiveData<String> =
-        Transformations.map(postData) { post -> TimeUtils.getTimeAgo(post.createdAt) }
-    // Transform the [postData] to get the number of Likes on the Post
-    val likesCount: LiveData<Int> = Transformations.map(postData) { post -> post.likedBy?.size ?: 0 }
-    // Transform the [likesCount] to find if any user has liked the Post
-    val postHasLikes: LiveData<Boolean> = Transformations.map(likesCount) { countOfLikes: Int -> countOfLikes > 0 }
-    // Transform the [postData] to find if the logged-in user had liked the Post
-    val hasUserLiked: LiveData<Boolean> = Transformations.map(postData) { post ->
-        post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id }
+        postData.map { post -> TimeUtils.getTimeAgo(post.createdAt) }
+
+    // Transforms [postData] to get the number of Likes on the Post
+    val likesCount: LiveData<Int> = postData.map { post -> post.likedBy?.size ?: 0 }
+
+    // Transforms [likesCount] to find if any user has liked the Post
+    val postHasLikes: LiveData<Boolean> = likesCount.map { countOfLikes: Int -> countOfLikes > 0 }
+
+    // Transforms [postData] to find if the logged-in user had liked the Post
+    val hasUserLiked: LiveData<Boolean> = postData.map { post ->
+        post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id } ?: false
     }
-    // Transform the [postData] to get the list of Likes on the Post
-    val postLikes: LiveData<List<Post.User>?> = Transformations.map(postData) { post -> post.getLikesCopy() }
-    // Transform the [postData] to check if the Post was created by the logged-in user
-    val postByUser: LiveData<Boolean> = Transformations.map(postData) { post -> post.creator.id == user.id }
-    // Transform the [postData] to get the [Image] model of the Post Creator's Profile Picture
-    val profileImage: LiveData<Image> = Transformations.map(postData) { post ->
+
+    // Transforms [postData] to get the list of Likes on the Post
+    val postLikes: LiveData<List<Post.User>?> = postData.map { post -> post.getLikesCopy() }
+
+    // Transforms [postData] to check if the Post was created by the logged-in user
+    val postByUser: LiveData<Boolean> = postData.map { post -> post.creator.id == user.id }
+
+    // Transforms [postData] to get the [Image] model of the Post Creator's Profile Picture
+    val profileImage: LiveData<Image?> = postData.map { post ->
         post.creator.profilePicUrl?.run { Image(url = this, headers = headers) }
     }
-    // Transform the [postData] to get the [Image] model of the Post Creator's Photo
-    val postImage: LiveData<Image> = Transformations.map(postData) { post ->
+
+    // Transforms [postData] to get the [Image] model of the Post Creator's Photo
+    val postImage: LiveData<Image> = postData.map { post ->
         Image(
             url = post.imageUrl,
             headers = headers,
@@ -216,7 +224,7 @@ class PostDetailViewModel(
                 // When we have the network connectivity, initiate Post Deletion
 
                 // Start the [deleteProgress] indication
-                deleteProgress.postValue(Resource.loading(R.string.progress_post_delete))
+                deleteProgress.postValue(Resource.Loading(R.string.progress_post_delete))
 
                 // Make the Remote API Call and save the resulting disposable
                 compositeDisposable.add(
@@ -226,14 +234,20 @@ class PostDetailViewModel(
                             // OnSuccess
                             { resource: Resource<String> ->
                                 // Stop the [deleteProgress] indication
-                                deleteProgress.postValue(Resource.success())
+                                deleteProgress.postValue(Resource.Success())
                                 if (resource.status == Status.SUCCESS) {
                                     // When Resource status is Success, we have deleted the Post successfully
                                     // Hence trigger an event to go back to the parent with Successful Delete results
                                     navigateParentWithDeleteSuccess.postValue(
                                         Event(ArrayMap<String, Serializable>().apply {
-                                            put(PostDetailActivity.EXTRA_RESULT_DELETED_POST_ID, this@run.id)
-                                            put(PostDetailActivity.EXTRA_RESULT_DELETE_POST_SUCCESS, resource.getData())
+                                            put(
+                                                PostDetailActivity.EXTRA_RESULT_DELETED_POST_ID,
+                                                this@run.id
+                                            )
+                                            put(
+                                                PostDetailActivity.EXTRA_RESULT_DELETE_POST_SUCCESS,
+                                                resource.peekData()
+                                            )
                                         })
                                     )
                                 } else {
@@ -246,7 +260,7 @@ class PostDetailViewModel(
                             // OnError
                             { throwable: Throwable? ->
                                 // Stop the [deleteProgress] indication
-                                deleteProgress.postValue(Resource.success())
+                                deleteProgress.postValue(Resource.Success())
                                 // Handle and display the appropriate error
                                 handleNetworkError(throwable)
                             }

@@ -198,9 +198,9 @@ class PostRepository @Inject constructor(
             // Transforming the [GeneralResponse] to [Resource]
             when (response.status) {
                 // On Success, return the message with Success status
-                HttpURLConnection.HTTP_OK -> Resource.success(response.message)
+                HttpURLConnection.HTTP_OK -> Resource.Success(response.message)
                 // else, return the message with Unknown status
-                else -> Resource.unknown(response.message)
+                else -> Resource.Unknown(response.message)
             }
         }
 }

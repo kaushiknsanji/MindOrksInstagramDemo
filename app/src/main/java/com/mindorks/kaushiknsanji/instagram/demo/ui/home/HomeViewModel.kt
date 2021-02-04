@@ -96,7 +96,7 @@ class HomeViewModel(
                         // Stop the [loadingProgress] indication
                         loadingProgress.postValue(false)
                         // Trigger List of All Posts to be reloaded
-                        reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
+                        reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
                     },
                     // OnError
                     { throwable: Throwable? ->
@@ -117,7 +117,7 @@ class HomeViewModel(
         // Restore all Posts into the Adapter if we have already downloaded some posts
         if (allPostList.size > 0) {
             // Trigger List of All Posts to be reloaded
-            reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
+            reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
         }
         // Load the following list of Posts
         loadMorePosts()
@@ -149,11 +149,11 @@ class HomeViewModel(
         // Update the new Post to the Top of All Posts
         allPostList.add(0, newPost)
         // Trigger New List of All Posts to be reloaded
-        reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
+        reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
         // Trigger an Event to scroll to the Top of the list
         scrollToTop.postValue(Event(true))
         // Display post creation success message
-        messageStringId.postValue(Resource.success(R.string.message_home_post_published))
+        messageStringId.postValue(Resource.Success(R.string.message_home_post_published))
     }
 
     /**
@@ -212,7 +212,7 @@ class HomeViewModel(
                                 }
 
                             // Trigger List of All Posts to be reloaded
-                            reloadAllPosts.postValue(Resource.success(allPostListCopy(allPostList)))
+                            reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
                         }
                     },
                     // OnError
@@ -243,7 +243,7 @@ class HomeViewModel(
             removeAll { post: Post -> post.id == postId }
         }?.run {
             // Trigger List of All Posts to be reloaded
-            reloadAllPosts.postValue(Resource.success(allPostListCopy(this)))
+            reloadAllPosts.postValue(Resource.Success(allPostListCopy(this)))
         }
 
     /**
@@ -286,7 +286,7 @@ class HomeViewModel(
             } ?: false // Returning false when the Liked list needed no update
         }?.run {
             // Trigger List of All Posts to be reloaded when the Liked list has been updated
-            reloadAllPosts.postValue(Resource.success(allPostListCopy(this)))
+            reloadAllPosts.postValue(Resource.Success(allPostListCopy(this)))
         }
     }
 

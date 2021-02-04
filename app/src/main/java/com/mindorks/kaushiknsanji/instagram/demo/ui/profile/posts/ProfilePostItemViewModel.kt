@@ -2,7 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
@@ -44,8 +44,8 @@ class ProfilePostItemViewModel @Inject constructor(
         Networking.HEADER_ACCESS_TOKEN to user.accessToken
     )
 
-    // Transform the [itemData] to get the [Image] model of the User's Post Photo
-    val postImage: LiveData<Image> = Transformations.map(itemData) { post ->
+    // Transforms [itemData] to get the [Image] model of the User's Post Photo
+    val postImage: LiveData<Image> = itemData.map { post ->
         Image(
             url = post.imageUrl,
             headers = headers,

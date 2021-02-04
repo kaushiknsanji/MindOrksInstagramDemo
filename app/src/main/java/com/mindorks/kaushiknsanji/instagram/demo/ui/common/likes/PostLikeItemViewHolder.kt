@@ -3,7 +3,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
@@ -54,23 +53,28 @@ class PostLikeItemViewHolder(
         super.setupObservers()
 
         // Register an observer on the User Name LiveData to set its value on the corresponding textView
-        itemViewModel.userName.observe(this, Observer { name ->
+        itemViewModel.userName.observe(this) { name ->
             itemView.text_post_like_item_user_profile_name.text = name
-        })
+        }
 
         // Register an observer on the User Handle LiveData to set its value on the corresponding textView
-        itemViewModel.userHandle.observe(this, Observer { handle ->
+        itemViewModel.userHandle.observe(this) { handle ->
             itemView.text_post_like_item_user_profile_handle.text = handle
-        })
+        }
 
         // Register an observer on the User's Profile Picture LiveData to load the Image
         // into the corresponding ImageView
-        itemViewModel.userImage.observe(this, Observer { image: Image? ->
+        itemViewModel.userImage.observe(this) { image: Image? ->
             image?.run {
                 // Configuring Glide with Image URL and other relevant customizations
                 val glideRequest = GlideApp
                     .with(itemView.context) // Loading with ItemView's context
-                    .load(GlideHelper.getProtectedUrl(image.url, image.headers)) // Loading the GlideUrl with Headers
+                    .load(
+                        GlideHelper.getProtectedUrl(
+                            image.url,
+                            image.headers
+                        )
+                    ) // Loading the GlideUrl with Headers
                     .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_profile)) // Loading with PlaceHolder Image
 
@@ -108,7 +112,7 @@ class PostLikeItemViewHolder(
                     .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
                     .into(itemView.image_post_like_item_user_profile) // Load into the corresponding ImageView
             }
-        })
+        }
 
     }
 }

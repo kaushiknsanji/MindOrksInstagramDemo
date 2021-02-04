@@ -2,7 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
@@ -50,23 +50,28 @@ class PostItemViewModel @Inject constructor(
         Networking.HEADER_ACCESS_TOKEN to user.accessToken
     )
 
-    // Transform the [itemData] to get the Name of the Post Creator
-    val postCreatorName: LiveData<String> = Transformations.map(itemData) { post -> post.creator.name }
-    // Transform the [itemData] to get the Creation Time of the Post (in words via the TimeUtils)
+    // Transforms [itemData] to get the Name of the Post Creator
+    val postCreatorName: LiveData<String> = itemData.map { post -> post.creator.name }
+
+    // Transforms [itemData] to get the Creation Time of the Post (in words via the TimeUtils)
     val postCreationTime: LiveData<String> =
-        Transformations.map(itemData) { post -> TimeUtils.getTimeAgo(post.createdAt) }
-    // Transform the [itemData] to get the number of Likes on the Post
-    val likesCount: LiveData<Int> = Transformations.map(itemData) { post -> post.likedBy?.size ?: 0 }
-    // Transform the [itemData] to find if the logged-in user had liked the Post
-    val hasUserLiked: LiveData<Boolean> = Transformations.map(itemData) { post ->
-        post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id }
+        itemData.map { post -> TimeUtils.getTimeAgo(post.createdAt) }
+
+    // Transforms [itemData] to get the number of Likes on the Post
+    val likesCount: LiveData<Int> = itemData.map { post -> post.likedBy?.size ?: 0 }
+
+    // Transforms [itemData] to find if the logged-in user had liked the Post
+    val hasUserLiked: LiveData<Boolean> = itemData.map { post ->
+        post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id } ?: false
     }
-    // Transform the [itemData] to get the [Image] model of the Post Creator's Profile Picture
-    val profileImage: LiveData<Image> = Transformations.map(itemData) { post ->
+
+    // Transforms [itemData] to get the [Image] model of the Post Creator's Profile Picture
+    val profileImage: LiveData<Image?> = itemData.map { post ->
         post.creator.profilePicUrl?.run { Image(url = this, headers = headers) }
     }
-    // Transform the [itemData] to get the [Image] model of the Post Creator's Photo
-    val postImage: LiveData<Image> = Transformations.map(itemData) { post ->
+
+    // Transforms [itemData] to get the [Image] model of the Post Creator's Photo
+    val postImage: LiveData<Image> = itemData.map { post ->
         Image(
             url = post.imageUrl,
             headers = headers,

@@ -3,7 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.main
 import android.util.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity
@@ -41,41 +41,35 @@ class MainSharedViewModel(
     // LiveData triggered when the Post is created and uploaded
     private val postPublished: MutableLiveData<Post> = MutableLiveData()
 
-    // Transform the [postPublished] to trigger an event with the new Post for [HomeFragment]
+    // Transforms [postPublished] to trigger an event with the new Post for [HomeFragment]
     val postPublishUpdateToHome: LiveData<Event<Post>> =
-        Transformations.map(postPublished) { newPost: Post ->
-            Event(newPost)
-        }
+        postPublished.map { newPost: Post -> Event(newPost) }
 
-    // Transform the [postPublished] to trigger an event with the new Post for [ProfileFragment]
+    // Transforms [postPublished] to trigger an event with the new Post for [ProfileFragment]
     val postPublishUpdateToProfile: LiveData<Event<Post>> =
-        Transformations.map(postPublished) { newPost: Post ->
-            Event(newPost)
-        }
+        postPublished.map { newPost: Post -> Event(newPost) }
 
     // LiveData triggered when the User Profile information is updated
     private val userProfileInfoChanged: MutableLiveData<Boolean> = MutableLiveData()
 
-    // Transform the [userProfileInfoChanged] to trigger the profile info update event for [HomeFragment]
+    // Transforms [userProfileInfoChanged] to trigger the profile info update event for [HomeFragment]
     val userProfileInfoUpdateToHome: LiveData<Event<Boolean>> =
-        Transformations.map(userProfileInfoChanged) { reload: Boolean ->
-            Event(reload)
-        }
+        userProfileInfoChanged.map { reload: Boolean -> Event(reload) }
 
-    // Transform the [userProfileInfoChanged] to trigger the profile info update event for [ProfileFragment]
+    // Transforms [userProfileInfoChanged] to trigger the profile info update event for [ProfileFragment]
     val userProfileInfoUpdateToProfile: LiveData<Event<Boolean>> =
-        Transformations.map(userProfileInfoChanged) { reload: Boolean ->
-            Event(reload)
-        }
+        userProfileInfoChanged.map { reload: Boolean -> Event(reload) }
 
     // LiveData triggered when the Post is deleted
     private val postDeleted: MutableLiveData<String> = MutableLiveData()
-    // Transform the [postDeleted] to trigger an event to remove Post from [HomeFragment]
-    val postDeletedEventToHome: LiveData<Event<String>> = Transformations.map(postDeleted) { postId: String ->
+
+    // Transforms [postDeleted] to trigger an event to remove Post from [HomeFragment]
+    val postDeletedEventToHome: LiveData<Event<String>> = postDeleted.map { postId: String ->
         Event(postId)
     }
-    // Transform the [postDeleted] to trigger an event to remove Post from [ProfileFragment]
-    val postDeletedEventToProfile: LiveData<Event<String>> = Transformations.map(postDeleted) { postId: String ->
+
+    // Transforms [postDeleted] to trigger an event to remove Post from [ProfileFragment]
+    val postDeletedEventToProfile: LiveData<Event<String>> = postDeleted.map { postId: String ->
         Event(postId)
     }
 

@@ -3,7 +3,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.home
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mindorks.kaushiknsanji.instagram.demo.R
@@ -105,7 +104,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
         super.setupObservers()
 
         // Register an observer on Posts download progress to show/hide the Progress horizontal
-        viewModel.loadingProgress.observe(this, Observer { started: Boolean ->
+        viewModel.loadingProgress.observe(this) { started: Boolean ->
             // Show the Progress horizontal when [started], else leave it hidden
             progress_horizontal_home.setVisibility(started)
         })

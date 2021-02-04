@@ -64,8 +64,8 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
 
         // Register an observer on the Post Creator's Photo LiveData to load the Image
         // into the corresponding ImageView
-        viewModel.postImage.observe(this, Observer { image: Image? ->
-            image?.run {
+        viewModel.postImage.observeNonNull(this) { image: Image ->
+            image.run {
                 // Configuring Glide with Image URL and other relevant customizations
                 GlideApp
                     .with(this@ImmersivePhotoActivity) // Loading with Activity's context
@@ -79,7 +79,7 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
                     .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_photo)) // Loading with PlaceHolder Image
                     .into(view_immersive_photo) // Start the download and load into the corresponding ImageView
             }
-        })
+        }
 
         // Register an observer for Fullscreen Toggle events to toggle the System UI Visibility bits
         // for Fullscreen Sticky Immersive mode
