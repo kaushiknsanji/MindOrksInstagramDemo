@@ -1,9 +1,11 @@
 package com.mindorks.kaushiknsanji.instagram.demo.utils.display
 
 import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 /**
- * Kotlin file for extension functions on android `View`.
+ * Kotlin file for extension functions on android `View` and `ViewGroup`.
  *
  * @author Kaushik N Sanji
  */
@@ -33,3 +35,11 @@ fun View.showWhen(visibilityCondition: Boolean) {
         hide()
     }
 }
+
+/**
+ * Casts the receiver [ViewGroup] to [RecyclerView] and returns the same.
+ *
+ * @throws [ClassCastException] if [ViewGroup] is NOT a [RecyclerView]
+ */
+@Throws(ClassCastException::class)
+fun ViewGroup.toRecyclerView() = this as RecyclerView

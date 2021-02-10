@@ -2,14 +2,13 @@ package com.mindorks.kaushiknsanji.instagram.demo.utils.widget
 
 import android.graphics.Rect
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 /**
  * RecyclerView [RecyclerView.ItemDecoration] class
  * to add spacing between the items and its parent in the Grid managed by
- * [GridLayoutManager] or [StaggeredGridLayoutManager].
+ * [androidx.recyclerview.widget.GridLayoutManager] or
+ * [androidx.recyclerview.widget.StaggeredGridLayoutManager].
  *
  * NOTE: Applicable for Grid based layout in [RecyclerView.VERTICAL] orientation only.
  *
@@ -44,19 +43,11 @@ class VerticalGridItemSpacingDecoration(
      * @param state   The current state of RecyclerView.
      */
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        // Get the Grid Span count and Orientation from the layout manager
-        var spanCount = 0
-        var orientation: Int = -1
-        (parent.layoutManager as? GridLayoutManager)?.apply {
-            spanCount = this.spanCount
-            orientation = this.orientation
-        } ?: (parent.layoutManager as? StaggeredGridLayoutManager)?.apply {
-            spanCount = this.spanCount
-            orientation = this.orientation
-        }
-
-        if (orientation == RecyclerView.VERTICAL) {
+        if (parent.isOrientationVertical()) {
             // Proceed only when RecyclerView Orientation is Vertical
+
+            // Get the Grid Span count from the layout manager of the RecyclerView
+            val spanCount: Int = parent.getSpanCount()
 
             // Ensure spanCount is at least 1 before proceeding
             if (spanCount < 1) {

@@ -2,7 +2,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.utils.widget
 
 import android.graphics.Rect
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -47,7 +46,7 @@ class VerticalListItemSpacingDecoration(
      * @param state   The current state of RecyclerView.
      */
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        if ((parent.layoutManager as? LinearLayoutManager)?.orientation == RecyclerView.VERTICAL) {
+        if (parent.isOrientationVertical()) {
             // Proceed only when RecyclerView Orientation is Vertical
 
             // Get the Child View position in the adapter

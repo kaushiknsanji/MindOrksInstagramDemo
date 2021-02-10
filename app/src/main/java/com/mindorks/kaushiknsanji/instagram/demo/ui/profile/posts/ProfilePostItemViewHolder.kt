@@ -11,7 +11,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponen
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.ImageUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
-import kotlinx.android.synthetic.main.item_profile_post.view.*
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.toRecyclerView
+import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.getSpanCount
 
 /**
  * [BaseItemViewHolder] subclass used as [androidx.recyclerview.widget.RecyclerView.ViewHolder]
@@ -80,13 +81,4 @@ class ProfilePostItemViewHolder(
         }
     }
 
-    /**
-     * Retrieves the Span Count if applied on the RecyclerView [container] GridLayoutManager. If not applied, then it
-     * returns `1` as the default value.
-     */
-    private fun getContainerSpanCount(): Int =
-        (container as? RecyclerView)?.let { recyclerView ->
-            // Retrieving the SpanCount value if the layout manager is GridLayoutManager
-            (recyclerView.layoutManager as? GridLayoutManager)?.spanCount ?: 1
-        } ?: 1
 }
