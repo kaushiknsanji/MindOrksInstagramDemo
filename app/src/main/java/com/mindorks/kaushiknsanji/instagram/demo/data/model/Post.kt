@@ -68,20 +68,3 @@ data class Post(
      */
     fun getLikesCopy(): MutableList<User>? = likedBy?.map { it }?.toMutableList()
 }
-
-/**
- * Extension function utility on [Post] that calculates the width ratio of the target screen/window to the source image,
- * and then scales the source Image height to fit the width of the target screen/window, while respecting the aspect ratio
- * of the source Image.
- *
- * @param targetWidth [Int] value of the target screen/window width
- * @param unavailableImageHeight Higher order function to provide a default height to be used
- * when [Post.imageHeight] of the source image is unavailable.
- * @return [Int] value of the scaled height when [Post.imageHeight] of the source image is available.
- * Otherwise the value provided by the function [unavailableImageHeight] is returned.
- */
-fun Post.scaleImageHeightToTargetWidth(targetWidth: Int, unavailableImageHeight: () -> Int): Int =
-    this.imageHeight?.let { imageHeight ->
-        (this.imageWidth?.let { imageWidth -> targetWidth.toFloat() / imageWidth.toFloat() }
-            ?: 1f) * imageHeight.toFloat()
-    }?.toInt() ?: unavailableImageHeight.invoke()

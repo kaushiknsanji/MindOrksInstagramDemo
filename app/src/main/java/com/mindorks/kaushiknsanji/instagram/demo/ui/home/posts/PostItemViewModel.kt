@@ -6,12 +6,12 @@ import androidx.lifecycle.map
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
-import com.mindorks.kaushiknsanji.instagram.demo.data.model.scaleImageHeightToTargetWidth
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.ImageUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.TimeUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ScreenUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
@@ -80,7 +80,13 @@ class PostItemViewModel @Inject constructor(
              * If the source Image height is available, then it will be scaled to the Image width on the screen.
              * Otherwise, it will be fixed to 1/3rd of the screen height
              */
-            placeHolderHeight = post.scaleImageHeightToTargetWidth(screenWidth) { screenHeight / 3 }
+            placeHolderHeight = ImageUtils.scaleImageHeightToTargetWidth(
+                post.imageWidth,
+                post.imageHeight,
+                screenWidth
+            ) {
+                screenHeight / 3
+            }
         )
     }
 

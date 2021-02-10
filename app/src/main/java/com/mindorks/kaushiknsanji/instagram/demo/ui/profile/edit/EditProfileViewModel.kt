@@ -262,7 +262,7 @@ class EditProfileViewModel(
             // Create a SingleSource to save the [inputStream] to an Image File, so that the operation can be
             // done in the background
             Single.fromCallable {
-                FileUtils.saveInputStreamToFile(
+                ImageUtils.saveImageToFile(
                     inputStream,
                     directory, // Directory to save the resulting Image File
                     "TMP_IMG_PICKED", // Name of the resulting Image File
@@ -314,7 +314,7 @@ class EditProfileViewModel(
                     { imagePath: String ->
                         File(imagePath).apply {
                             // Test for its bounds, and then update the LiveData for the File chosen
-                            FileUtils.getImageSize(this)?.let {
+                            ImageUtils.getImageSize(this)?.let {
                                 chosenProfileImageFile.postValue(this)
                                 liveProgress.postValue(Resource.Success()) // Stop the [liveProgress] indication
                             } ?: run {

@@ -8,16 +8,12 @@ import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
-import com.mindorks.kaushiknsanji.instagram.demo.data.model.scaleImageHeightToTargetWidth
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo.ImmersivePhotoActivity
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.TimeUtils
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ScreenUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
@@ -102,7 +98,13 @@ class PostDetailViewModel(
              * If the source Image height is available, then it will be scaled to the Image width on the screen.
              * Otherwise, it will be fixed to 1/3rd of the screen height
              */
-            placeHolderHeight = post.scaleImageHeightToTargetWidth(screenWidth) { screenHeight / 3 }
+            placeHolderHeight = ImageUtils.scaleImageHeightToTargetWidth(
+                post.imageWidth,
+                post.imageHeight,
+                screenWidth
+            ) {
+                screenHeight / 3
+            }
         )
     }
 

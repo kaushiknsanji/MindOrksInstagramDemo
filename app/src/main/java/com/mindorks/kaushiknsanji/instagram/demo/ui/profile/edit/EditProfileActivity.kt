@@ -181,13 +181,37 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         // Register an observer on the User's Profile Picture LiveData to load the Image
         // into the corresponding ImageView
         viewModel.userImage.observe(this) { image: Image? ->
-            loadProfileImage(imageData = image)
+            ImageUtils.loadImage(
+                this,
+                binding.imageEditProfileChangePic,
+                imageData = image,
+                requestOptions = listOf(
+                    RequestOptions.circleCropTransform(),
+                    RequestOptions.placeholderOf(R.drawable.ic_profile_add_pic)
+                ),
+                defaultImageRes = R.drawable.ic_profile_add_pic,
+                defaultImageRequestOptions = listOf(
+                    RequestOptions.circleCropTransform()
+                )
+            )
         }
 
         // Register an observer on the chosen Profile Picture LiveData to load the Image
         // into the corresponding ImageView
         viewModel.chosenProfileImageFile.observe(this) { input: File? ->
-            loadProfileImage(imageFile = input)
+            ImageUtils.loadImage(
+                this,
+                binding.imageEditProfileChangePic,
+                imageFile = input,
+                requestOptions = listOf(
+                    RequestOptions.circleCropTransform(),
+                    RequestOptions.placeholderOf(R.drawable.ic_profile_add_pic)
+                ),
+                defaultImageRes = R.drawable.ic_profile_add_pic,
+                defaultImageRequestOptions = listOf(
+                    RequestOptions.circleCropTransform()
+                )
+            )
         }
 
         // Register an observer for PhotoOptionsDialogFragment launch events
@@ -303,60 +327,6 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
                     viewModel.onPhotoSnapped { camera.cameraBitmapPath }
                 }
             }
-        }
-    }
-
-    /**
-     * Method that loads a Profile Picture into the corresponding ImageView.
-     *
-     * @param imageData [Image] instance to be provided when the Image is to be downloaded from the Remote.
-     * @param imageFile [File] instance pointing to an Image in the local storage, to be provided if the Image
-     * needs to be loaded from local.
-     */
-    private fun loadProfileImage(imageData: Image? = null, imageFile: File? = null) {
-        if (imageData != null || imageFile != null) {
-            // Configuring Glide with Image URL/File and other relevant customizations
-            val glideRequest = GlideApp
-                .with(this) // Loading with Activity reference
-                .load(imageData?.let {
-                    // Loading the GlideUrl with Headers when we have [imageData]
-                    GlideHelper.getProtectedUrl(it.url, it.headers)
-                } ?: /* else, Load the File */ imageFile)
-                .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
-                .apply(RequestOptions.placeholderOf(R.drawable.ic_profile_add_pic)) // Loading with PlaceHolder Image
-
-            imageData?.run {
-                // Applies when we have [imageData]
-                if (placeHolderWidth > 0 && placeHolderHeight > 0) {
-                    // If we have the placeholder dimensions from the [image], then scale the ImageView
-                    // to match these dimensions
-
-                    // Scaling the ImageView dimensions to fit the placeholder dimensions
-                    image_edit_profile_change_pic.run {
-                        val params = layoutParams as ViewGroup.LayoutParams
-                        params.width = placeHolderWidth
-                        params.height = placeHolderHeight
-                        layoutParams = params
-                    }
-
-                    // Override the dimensions of the Image (downloaded) to placeholder dimensions
-                    glideRequest
-                        .apply(RequestOptions.overrideOf(placeHolderWidth, placeHolderHeight))
-                }
-            }
-
-            // Start and load the image into the corresponding ImageView
-            glideRequest.into(image_edit_profile_change_pic)
-
-        } else {
-            // Set default photo when there is no profile picture
-
-            // Configuring Glide with relevant customizations and then setting the default photo
-            GlideApp
-                .with(this) // Loading with Activity reference
-                .load(ContextCompat.getDrawable(this, R.drawable.ic_profile_add_pic)) // Loading the default Image
-                .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
-                .into(image_edit_profile_change_pic) // Load into the corresponding ImageView
         }
     }
 

@@ -171,90 +171,32 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Register an observer on the Post Creator's Profile Picture LiveData to load the Image
         // into the corresponding ImageView
         viewModel.profileImage.observe(this) { image: Image? ->
-            image?.run {
-                // Configuring Glide with Image URL and other relevant customizations
-                val glideRequest = GlideApp
-                    .with(this@PostDetailActivity) // Loading with Activity's context
-                    .load(
-                        GlideHelper.getProtectedUrl(
-                            image.url,
-                            image.headers
-                        )
-                    ) // Loading the GlideUrl with Headers
-                    .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
-                    .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_profile)) // Loading with PlaceHolder Image
-
-                if (placeHolderWidth > 0 && placeHolderHeight > 0) {
-                    // If we have the placeholder dimensions from the [image], then scale the ImageView
-                    // to match these dimensions
-
-                    // Scaling the ImageView dimensions to fit the placeholder dimensions
-                    image_post_detail_creator_profile.run {
-                        val params = layoutParams as ViewGroup.LayoutParams
-                        params.width = placeHolderWidth
-                        params.height = placeHolderHeight
-                        layoutParams = params
-                    }
-
-                    // Override the dimensions of the Image (downloaded) to placeholder dimensions
-                    glideRequest
-                        .apply(RequestOptions.overrideOf(placeHolderWidth, placeHolderHeight))
-                }
-
-                // Start the download and load into the corresponding ImageView
-                glideRequest.into(image_post_detail_creator_profile)
-            } ?: run {
-                // Set default photo when there is no profile picture
-
-                // Configuring Glide with relevant customizations and then setting the default photo
-                GlideApp
-                    .with(this) // Loading with Activity's context
-                    .load(
-                        ContextCompat.getDrawable(
-                            this,
-                            R.drawable.ic_placeholder_profile
-                        )
-                    ) // Loading the default Image
-                    .apply(RequestOptions.circleCropTransform()) // Cropping the Image with a Circular Mask
-                    .into(image_post_detail_creator_profile) // Load into the corresponding ImageView
-            }
+            ImageUtils.loadImage(
+                this,
+                binding.imagePostDetailCreatorProfile,
+                imageData = image,
+                requestOptions = listOf(
+                    RequestOptions.circleCropTransform(),
+                    RequestOptions.placeholderOf(R.drawable.ic_placeholder_profile)
+                ),
+                defaultImageRes = R.drawable.ic_placeholder_profile,
+                defaultImageRequestOptions = listOf(
+                    RequestOptions.circleCropTransform()
+                )
+            )
         }
 
         // Register an observer on the Post Creator's Photo LiveData to load the Image
         // into the corresponding ImageView
         viewModel.postImage.observe(this) { image: Image ->
-            image.run {
-                // Configuring Glide with Image URL and other relevant customizations
-                val glideRequest = GlideApp
-                    .with(this@PostDetailActivity) // Loading with Activity's context
-                    .load(
-                        GlideHelper.getProtectedUrl(
-                            image.url,
-                            image.headers
-                        )
-                    ) // Loading the GlideUrl with Headers
-                    .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_photo)) // Loading with PlaceHolder Image
-
-                if (placeHolderWidth > 0 && placeHolderHeight > 0) {
-                    // If we have the placeholder dimensions from the [image], then scale the ImageView
-                    // to match these dimensions
-
-                    // Scaling the ImageView dimensions to fit the placeholder dimensions
-                    image_post_detail_photo.run {
-                        val params = layoutParams as ViewGroup.LayoutParams
-                        params.width = placeHolderWidth
-                        params.height = placeHolderHeight
-                        layoutParams = params
-                    }
-
-                    // Override the dimensions of the Image (downloaded) to placeholder dimensions
-                    glideRequest
-                        .apply(RequestOptions.overrideOf(placeHolderWidth, placeHolderHeight))
-                }
-
-                // Start the download and load into the corresponding ImageView
-                glideRequest.into(image_post_detail_photo)
-            }
+            ImageUtils.loadImage(
+                this,
+                binding.imagePostDetailPhoto,
+                imageData = image,
+                requestOptions = listOf(
+                    RequestOptions.placeholderOf(R.drawable.ic_placeholder_photo)
+                )
+            )
         }
 
         // Register an observer on the Name LiveData to set its value on the corresponding textView

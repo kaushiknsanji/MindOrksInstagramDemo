@@ -2,8 +2,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
@@ -11,8 +9,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.databinding.ItemProfilePostBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.ImageUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import kotlinx.android.synthetic.main.item_profile_post.view.*
 
@@ -59,45 +56,22 @@ class ProfilePostItemViewHolder(
         // Register an Observer on User's Post Photo LiveData to load the Image
         // into the corresponding ImageView
         itemViewModel.postImage.observe(this) { image: Image ->
-            image.run {
-                // Configuring Glide with Image URL and other relevant customizations
-                val glideRequest = GlideApp
-                    .with(itemView.context) // Loading with ItemView's context
-                    .load(
-                        GlideHelper.getProtectedUrl(
-                            image.url,
-                            image.headers
-                        )
-                    ) // Loading the GlideUrl with Headers
-                    .apply(RequestOptions.placeholderOf(R.drawable.ic_placeholder_photo)) // Loading with PlaceHolder Image
-
-                // Get the Span Count of GridLayoutManager from [container]
-                val gridSpanCount = getContainerSpanCount()
-
-                if (placeHolderWidth > 0 && placeHolderHeight > 0) {
-                    // If we have the placeholder dimensions from the [image], then scale the ImageView
-                    // to match these dimensions
-
-                    // Dividing the Placeholder dimensions by the Span Count
-                    val itemWidth = placeHolderWidth / gridSpanCount
-                    val itemHeight = placeHolderHeight / gridSpanCount
-
-                    // Scaling the ImageView dimensions to fit the placeholder dimensions
-                    itemView.image_profile_item_post_photo.run {
-                        val params = layoutParams as ViewGroup.LayoutParams
-                        params.width = itemWidth
-                        params.height = itemHeight
-                        layoutParams = params
-                    }
-
-                    // Override the dimensions of the Image (downloaded) to placeholder dimensions
-                    glideRequest
-                        .apply(RequestOptions.overrideOf(itemWidth, itemHeight))
-                }
-
-                // Start the download and load into the corresponding ImageView
-                glideRequest.into(itemView.image_profile_item_post_photo)
-            }
+            // Get the Span Count of GridLayoutManager from [container]
+            val spanCount = container.toRecyclerView().getSpanCount(1)
+            // Load the Image
+            ImageUtils.loadImage(
+                itemView.context,
+                itemViewBinding.imageProfileItemPostPhoto,
+                imageData = image.copy(
+                    // Make a copy with the Placeholder dimensions normalized by the Span Count
+                    // in order to fit the Grid accordingly
+                    placeHolderWidth = image.placeHolderWidth / spanCount,
+                    placeHolderHeight = image.placeHolderHeight / spanCount
+                ),
+                requestOptions = listOf(
+                    RequestOptions.placeholderOf(R.drawable.ic_placeholder_photo)
+                )
+            )
         }
 
         // Register an observer for the User's Click action on Post Item

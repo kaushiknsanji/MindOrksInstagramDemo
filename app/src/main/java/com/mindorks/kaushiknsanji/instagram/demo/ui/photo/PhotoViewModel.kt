@@ -10,7 +10,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.IMAGE_MAX_HEIGHT_SCALE
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.FileUtils
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.ImageUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
@@ -67,7 +67,7 @@ class PhotoViewModel(
             // Create a SingleSource to save the [inputStream] to an Image File, so that the operation can be
             // done in the background
             Single.fromCallable {
-                FileUtils.saveInputStreamToFile(
+                ImageUtils.saveImageToFile(
                     inputStream,
                     directory, // Directory to save the resulting Image File
                     "TMP_IMG_PICKED", // Name of the resulting Image File
@@ -80,7 +80,7 @@ class PhotoViewModel(
                     { imageFile: File? ->
                         imageFile?.run {
                             // When we have the resulting Image File, get its bounds, upload the Photo and create a Post
-                            FileUtils.getImageSize(this)?.let { imageBounds: Pair<Int, Int> ->
+                            ImageUtils.getImageSize(this)?.let { imageBounds: Pair<Int, Int> ->
                                 uploadPhotoAndCreatePost(this, imageBounds)
                             } ?: run {
                                 // When decoding of the Image Bounds failed, display an error to the user requesting to retry
@@ -126,7 +126,7 @@ class PhotoViewModel(
                     { imagePath: String ->
                         File(imagePath).apply {
                             // Get its bounds, upload the Photo and create a Post
-                            FileUtils.getImageSize(this)?.let { imageBounds: Pair<Int, Int> ->
+                            ImageUtils.getImageSize(this)?.let { imageBounds: Pair<Int, Int> ->
                                 uploadPhotoAndCreatePost(this, imageBounds)
                             } ?: run {
                                 // When decoding of the Image Bounds failed, display an error to the user
