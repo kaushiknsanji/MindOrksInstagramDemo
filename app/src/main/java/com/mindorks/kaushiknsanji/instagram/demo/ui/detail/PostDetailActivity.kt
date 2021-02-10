@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.ViewGroup
+import android.view.View
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityPostDetailBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogFragment
@@ -24,8 +25,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showAndEnableWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
-import kotlinx.android.synthetic.main.activity_post_detail.*
-import kotlinx.android.synthetic.main.layout_no_likes.*
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -53,6 +52,9 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
     @Inject
     lateinit var sharedConfirmOptionDialogViewModel: SharedConfirmOptionDialogViewModel
 
+    // ViewBinding instance for this Activity
+    private val binding by viewBinding(ActivityPostDetailBinding::inflate)
+
     /**
      * Injects dependencies exposed by [ActivityComponent] into Activity.
      */
@@ -61,9 +63,10 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
     }
 
     /**
-     * Provides the Resource Layout Id for the Activity.
+     * Provides the [Root View][View] for the Activity
+     * inflated using `Android ViewBinding`.
      */
-    override fun provideLayoutId(): Int = R.layout.activity_post_detail
+    override fun provideContentView(): View = binding.root
 
     /**
      * Initializes the Layout of the Activity.
@@ -74,7 +77,7 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         intent.getStringExtra(EXTRA_POST_ID)!!.let { postId: String -> viewModel.onLoadPostDetails(postId) }
 
         // Initialize Toolbar
-        toolbar_post_detail.apply {
+        binding.toolbarPostDetail.apply {
             // Set Title
             title = getString(R.string.title_post_detail_toolbar)
             // Set Previous Icon as the Navigation Icon
@@ -103,7 +106,7 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         }
 
         // Setting up RecyclerView
-        rv_post_detail_likes.apply {
+        binding.rvPostDetailLikes.apply {
             // Set the Layout Manager to LinearLayoutManager
             layoutManager = linearLayoutManager
             // Set the Adapter for RecyclerView
@@ -119,10 +122,10 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         }
 
         // Register click listener on Post Photo
-        image_post_detail_photo.setOnClickListener { viewModel.onLaunchPhoto() }
+        binding.imagePostDetailPhoto.setOnClickListener { viewModel.onLaunchPhoto() }
 
         // Register click listener on the "No Likes Heart Image" to enable user to click and "Be the first to Like"
-        image_no_likes.setOnClickListener { viewModel.onLikeAction() }
+        binding.includePostDetailNoLikes.imageNoLikes.setOnClickListener { viewModel.onLikeAction() }
 
     }
 
@@ -136,7 +139,7 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Register an observer on Post data loading progress to show/hide the Progress Circle
         viewModel.loadingProgress.observe(this) { started: Boolean ->
             // Show the Progress Circle when [started], else leave it hidden
-            progress_post_detail.showWhen(started)
+            binding.progressPostDetail.showWhen(started)
         }
 
         // Register an observer on Delete progress LiveData to show/hide the Delete Progress Dialog
@@ -256,18 +259,18 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
 
         // Register an observer on the Name LiveData to set its value on the corresponding textView
         viewModel.postCreatorName.observe(this) { name ->
-            text_post_detail_creator_name.text = name
+            binding.textPostDetailCreatorName.text = name
         }
 
         // Register an observer on the Post Creation Time LiveData to set its value on the corresponding textView
         viewModel.postCreationTime.observe(this) { creationTime ->
-            text_post_detail_time.text = creationTime
+            binding.textPostDetailTime.text = creationTime
         }
 
         // Register an observer on the "Likes count of the Post" - LiveData to set its value
         // on the corresponding textView
         viewModel.likesCount.observe(this) { likesCount ->
-            text_post_detail_like_count.text = getString(
+            binding.textPostDetailLikeCount.text = getString(
                 R.string.label_home_item_post_like_count,
                 likesCount
             )
@@ -275,17 +278,19 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
 
         // Register an observer on the Post Likes' Presence LiveData to set the visibility of views accordingly
         viewModel.postHasLikes.observe(this) { hasLikes: Boolean ->
-            // When there are Likes, show the RecyclerView
-            rv_post_detail_likes.showWhen(hasLikes)
-            // When there are NO Likes, show the Empty view
-            include_post_detail_no_likes.showWhen(!hasLikes)
+            with(binding) {
+                // When there are Likes, show the RecyclerView
+                rvPostDetailLikes.showWhen(hasLikes)
+                // When there are NO Likes, show the Empty view
+                includePostDetailNoLikes.root.showWhen(!hasLikes)
+            }
         }
 
         // Register an observer on the LiveData that determines whether the Post was created by the logged-in User,
         // in order to enable/disable the "Delete" menu button accordingly
         viewModel.postByUser.observe(this) { isUserPost: Boolean ->
             // Lookup for the Delete Menu item
-            toolbar_post_detail.menu.findItem(R.id.action_post_detail_delete)
+            binding.toolbarPostDetail.menu.findItem(R.id.action_post_detail_delete)
                 ?.let { menuItem: MenuItem ->
                     menuItem.showAndEnableWhen(isUserPost)
                 }
@@ -294,7 +299,7 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Register an observer on the User Like Menu button LiveData to change the "Heart" Image accordingly
         viewModel.hasUserLiked.observe(this) { hasLiked: Boolean ->
             // Lookup for the Heart Menu item
-            toolbar_post_detail.menu.findItem(R.id.action_post_detail_like)
+            binding.toolbarPostDetail.menu.findItem(R.id.action_post_detail_like)
                 ?.let { menuItem: MenuItem ->
                     // Change the Heart Icon based on whether User had liked the post or not
                     if (hasLiked) {

@@ -3,13 +3,14 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress
 import android.app.Dialog
 import android.os.Bundle
 import com.mindorks.kaushiknsanji.instagram.demo.R
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.DialogProgressTextBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.hide
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.show
-import kotlinx.android.synthetic.main.dialog_progress_text.*
 
 /**
  * [BaseDialogFragment] subclass that inflates the layout 'R.layout.dialog_progress_text' to show a Progress Dialog
@@ -20,6 +21,9 @@ import kotlinx.android.synthetic.main.dialog_progress_text.*
  * @author Kaushik N Sanji
  */
 class ProgressTextDialogFragment : BaseDialogFragment<SharedProgressTextViewModel>() {
+
+    // ViewBinding instance for this DialogFragment
+    private val binding by viewBinding(DialogProgressTextBinding::bind)
 
     /**
      * Injects dependencies exposed by [DialogFragmentComponent] into DialogFragment.
@@ -55,7 +59,7 @@ class ProgressTextDialogFragment : BaseDialogFragment<SharedProgressTextViewMode
             when (status) {
                 Status.LOADING -> {
                     // When Loading, initialize and show the Status TextView if available
-                    text_progress_circle_status.run {
+                    binding.textProgressCircleStatus.run {
                         data?.let { statusResourceId: Int ->
                             show()
                             text = getString(statusResourceId)
@@ -67,7 +71,7 @@ class ProgressTextDialogFragment : BaseDialogFragment<SharedProgressTextViewMode
                 }
                 else -> {
                     // When NOT Loading, hide the Status TextView
-                    text_progress_circle_status.hide()
+                    binding.textProgressCircleStatus.hide()
                 }
             }
         }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.FragmentPhotoBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.FragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
@@ -16,8 +17,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.TYPE_IMAGE
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.paracamera.Camera
-import kotlinx.android.synthetic.main.fragment_photo.*
 import java.io.FileNotFoundException
 import java.io.InputStream
 import javax.inject.Inject
@@ -43,6 +44,9 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
     @Inject
     lateinit var sharedProgressTextViewModel: SharedProgressTextViewModel
 
+    // ViewBinding instance for this Fragment
+    private val binding by viewBinding(FragmentPhotoBinding::bind)
+
     /**
      * Injects dependencies exposed by [FragmentComponent] into Fragment.
      */
@@ -61,13 +65,14 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
     override fun setupView(view: View, savedInstanceState: Bundle?) {
 
         // Initialize Toolbar
-        toolbar_photo.apply {
+        binding.toolbarPhoto.apply {
             // Set Title
             title = getString(R.string.title_photo_toolbar)
         }
 
         // Register click listener on "Camera" option
-        view_photo_option_camera_background!!.setOnClickListener {
+        (binding.includePhotoOptions?.viewPhotoOptionCameraBackground
+            ?: binding.viewPhotoOptionCameraBackground!!).setOnClickListener {
             try {
                 // Launches the Camera activity with the ACTION_IMAGE_CAPTURE Intent, that saves the captured image
                 // to a temporary file
@@ -78,7 +83,8 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
         }
 
         // Register click listener on "Gallery" option
-        view_photo_option_gallery_background!!.setOnClickListener {
+        (binding.includePhotoOptions?.viewPhotoOptionGalleryBackground
+            ?: binding.viewPhotoOptionGalleryBackground!!).setOnClickListener {
             Intent(Intent.ACTION_OPEN_DOCUMENT).run {
                 // With the Intent that can open any document..
                 // Filter results that can be streamed like files (this excludes stuff like timezones and contacts)

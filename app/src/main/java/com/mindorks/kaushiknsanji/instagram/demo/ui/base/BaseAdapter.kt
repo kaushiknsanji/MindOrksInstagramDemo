@@ -21,7 +21,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.listeners.BaseListenerO
  *
  * @author Kaushik N Sanji
  */
-abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : BaseItemViewHolder<T, L, out BaseItemViewModel<T>>>(
+abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : BaseItemViewHolder<T, L, out BaseItemViewModel<T>, *>>(
     parentLifecycle: Lifecycle,
     hostListener: L? = null,
     protected val listenerObservable: BaseListenerObservable<L> = BaseListenerObservable()
@@ -57,7 +57,8 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
                         // Updating the visible ViewHolders in the range to Started state
                         (firstVisibleItemPosition..lastVisibleItemPosition).forEach { adapterPosition ->
                             findViewHolderForAdapterPosition(adapterPosition)?.let { viewHolder ->
-                                (viewHolder as BaseItemViewHolder<*, *, *>).onStart()
+                                @Suppress("UNCHECKED_CAST")
+                                (viewHolder as VH).onStart()
                             }
                         }
                     }
@@ -81,7 +82,8 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
                 recyclerView?.run {
                     (0 until childCount).forEach { childIndex ->
                         getChildAt(childIndex)?.let { childView ->
-                            (getChildViewHolder(childView) as BaseItemViewHolder<*, *, *>).onStop()
+                            @Suppress("UNCHECKED_CAST")
+                            (getChildViewHolder(childView) as VH).onStop()
                         }
                     }
                 }
@@ -102,7 +104,8 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
                 recyclerView?.run {
                     (0 until childCount).forEach { childIndex ->
                         getChildAt(childIndex)?.let { childView ->
-                            (getChildViewHolder(childView) as BaseItemViewHolder<*, *, *>).onDestroy()
+                            @Suppress("UNCHECKED_CAST")
+                            (getChildViewHolder(childView) as VH).onDestroy()
                         }
                     }
                 }
@@ -213,7 +216,8 @@ abstract class BaseAdapter<T : Any, L : BaseAdapter.DefaultListener<T>, VH : Bas
         this.recyclerView?.run {
             (0 until childCount).forEach { childIndex ->
                 getChildAt(childIndex)?.let { childView ->
-                    (getChildViewHolder(childView) as BaseItemViewHolder<*, *, *>).onDestroy()
+                    @Suppress("UNCHECKED_CAST")
+                    (getChildViewHolder(childView) as VH).onDestroy()
                 }
             }
         }

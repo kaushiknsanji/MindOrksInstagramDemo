@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center">
 
-    <include layout="@layout/layout_photo_options" />
+    <include
+        android:id="@+id/include_photo_options"
+        layout="@layout/layout_photo_options" />
 
 </FrameLayout>

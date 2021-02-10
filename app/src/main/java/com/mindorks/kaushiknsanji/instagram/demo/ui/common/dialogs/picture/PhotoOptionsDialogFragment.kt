@@ -4,9 +4,10 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import com.mindorks.kaushiknsanji.instagram.demo.R
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.DialogPhotoOptionsBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.layout_photo_options.*
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 
 /**
  * [BaseDialogFragment] subclass that inflates the layout 'R.layout.dialog_photo_options' to show a Dialog
@@ -17,6 +18,9 @@ import kotlinx.android.synthetic.main.layout_photo_options.*
  * @author Kaushik N Sanji
  */
 class PhotoOptionsDialogFragment : BaseDialogFragment<SharedPhotoOptionsViewModel>() {
+
+    // ViewBinding instance for this DialogFragment
+    private val binding by viewBinding(DialogPhotoOptionsBinding::bind)
 
     /**
      * Injects dependencies exposed by [DialogFragmentComponent] into DialogFragment.
@@ -36,13 +40,13 @@ class PhotoOptionsDialogFragment : BaseDialogFragment<SharedPhotoOptionsViewMode
     override fun setupView(view: View, savedInstanceState: Bundle?) {
         super.setupView(view, savedInstanceState)
         // Register click listener on "Camera" option
-        view_photo_option_camera_background.setOnClickListener {
+        binding.includePhotoOptions.viewPhotoOptionCameraBackground.setOnClickListener {
             // Delegate to the Primary Shared ViewModel
             viewModel.onOptionCamera()
         }
 
         // Register click listener on "Gallery" option
-        view_photo_option_gallery_background.setOnClickListener {
+        binding.includePhotoOptions.viewPhotoOptionGalleryBackground.setOnClickListener {
             // Delegate to the Primary Shared ViewModel
             viewModel.onOptionGallery()
         }

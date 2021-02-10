@@ -5,12 +5,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.ViewGroup
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityEditProfileBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.PhotoOptionsDialogFragment
@@ -22,7 +23,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showAndEnableWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setTextOnChange
 import com.mindorks.paracamera.Camera
-import kotlinx.android.synthetic.main.activity_edit_profile.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStream
@@ -49,6 +49,9 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
     @Inject
     lateinit var camera: Camera
 
+    // ViewBinding instance for this Activity
+    private val binding by viewBinding(ActivityEditProfileBinding::inflate)
+
     /**
      * Injects dependencies exposed by [ActivityComponent] into Activity.
      */
@@ -57,9 +60,10 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
     }
 
     /**
-     * Provides the Resource Layout Id for the Activity.
+     * Provides the [Root View][View] for the Activity
+     * inflated using `Android ViewBinding`.
      */
-    override fun provideLayoutId(): Int = R.layout.activity_edit_profile
+    override fun provideContentView(): View = binding.root
 
     /**
      * Initializes the Layout of the Activity.
@@ -67,7 +71,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
     override fun setupView(savedInstanceState: Bundle?) {
 
         // Initialize Toolbar
-        toolbar_edit_profile.apply {
+        binding.toolbarEditProfile.apply {
             // Set Title
             title = getString(R.string.title_edit_profile_toolbar)
             // Set Close Icon as the Navigation Icon
@@ -96,22 +100,22 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         }
 
         // Register text change listener on Name field for validations
-        edit_profile_name.doOnTextChanged { text, _, _, _ ->
+        binding.editProfileName.doOnTextChanged { text, _, _, _ ->
             // When Name text changes, delegate to the EditProfileViewModel
             viewModel.onNameChange(text.toString())
         }
 
         // Register text change listener on Bio field for validations
-        edit_profile_bio.doOnTextChanged { text, _, _, _ ->
+        binding.editProfileBio.doOnTextChanged { text, _, _, _ ->
             // When Bio text changes, delegate to the EditProfileViewModel
             viewModel.onBioChange(text.toString())
         }
 
         // Register click listener on "Change Photo" Button
-        text_button_edit_profile_change_pic.setOnClickListener { viewModel.onChangePhoto() }
+        binding.textButtonEditProfileChangePic.setOnClickListener { viewModel.onChangePhoto() }
 
         // Register click listener on "Change Photo" Image
-        image_edit_profile_change_pic.setOnClickListener { viewModel.onChangePhoto() }
+        binding.imageEditProfileChangePic.setOnClickListener { viewModel.onChangePhoto() }
     }
 
     /**
@@ -143,22 +147,22 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
 
         // Register an observer on Name field LiveData to set the new value on change
         viewModel.nameField.observe(this) { nameValue ->
-            edit_profile_name.setTextOnChange(nameValue)
+            binding.editProfileName.setTextOnChange(nameValue)
         }
 
         // Register an observer on Bio field LiveData to set the new value on change
         viewModel.bioField.observe(this) { bioValue ->
-            edit_profile_bio.setTextOnChange(bioValue)
+            binding.editProfileBio.setTextOnChange(bioValue)
         }
 
         // Register an observer on Email field LiveData to set its value
         viewModel.userEmail.observe(this) { emailValue ->
-            edit_profile_email.setText(emailValue)
+            binding.editProfileEmail.setText(emailValue)
         }
 
         // Register an observer on Name field validation result to show the error if any
         viewModel.nameValidation.observeResource(this) { status: Status, messageResId: Int? ->
-            text_input_edit_profile_name.setErrorStatus(
+            binding.textInputEditProfileName.setErrorStatus(
                 status,
                 messageResId?.run { getString(this) }
             )
@@ -168,7 +172,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         // the user to reset using the menu button
         viewModel.hasAnyInfoChanged.observe(this) { hasChanged: Boolean ->
             // Lookup the Menu item for reset
-            toolbar_edit_profile.menu.findItem(R.id.action_edit_profile_reset)
+            binding.toolbarEditProfile.menu.findItem(R.id.action_edit_profile_reset)
                 ?.let { menuItem: MenuItem ->
                     menuItem.showAndEnableWhen(hasChanged)
                 }

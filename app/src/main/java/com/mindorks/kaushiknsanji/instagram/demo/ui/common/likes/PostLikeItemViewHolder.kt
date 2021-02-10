@@ -7,6 +7,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ItemPostLikeBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
@@ -25,10 +26,11 @@ import kotlinx.android.synthetic.main.item_post_like.view.*
 class PostLikeItemViewHolder(
     container: ViewGroup,
     listener: PostLikesAdapter.Listener? = null
-) : BaseItemViewHolder<Post.User, PostLikesAdapter.Listener, PostLikeItemViewModel>(
+) : BaseItemViewHolder<Post.User, PostLikesAdapter.Listener, PostLikeItemViewModel, ItemPostLikeBinding>(
     R.layout.item_post_like,
     container,
-    listener
+    listener,
+    viewBindingFactory = ItemPostLikeBinding::inflate
 ) {
 
     /**
@@ -54,12 +56,12 @@ class PostLikeItemViewHolder(
 
         // Register an observer on the User Name LiveData to set its value on the corresponding textView
         itemViewModel.userName.observe(this) { name ->
-            itemView.text_post_like_item_user_profile_name.text = name
+            itemViewBinding.textPostLikeItemUserProfileName.text = name
         }
 
         // Register an observer on the User Handle LiveData to set its value on the corresponding textView
         itemViewModel.userHandle.observe(this) { handle ->
-            itemView.text_post_like_item_user_profile_handle.text = handle
+            itemViewBinding.textPostLikeItemUserProfileHandle.text = handle
         }
 
         // Register an observer on the User's Profile Picture LiveData to load the Image

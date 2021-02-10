@@ -4,21 +4,22 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityPostLikeBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeNonNull
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.putExtrasFromMap
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ThemeUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
-import kotlinx.android.synthetic.main.activity_post_like.*
-import kotlinx.android.synthetic.main.layout_no_likes.*
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -39,6 +40,9 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
     @Inject
     lateinit var postLikesAdapter: PostLikesAdapter
 
+    // ViewBinding instance for this Activity
+    private val binding by viewBinding(ActivityPostLikeBinding::inflate)
+
     /**
      * Injects dependencies exposed by [ActivityComponent] into Activity.
      */
@@ -47,9 +51,10 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
     }
 
     /**
-     * Provides the Resource Layout Id for the Activity.
+     * Provides the [Root View][View] for the Activity
+     * inflated using `Android ViewBinding`.
      */
-    override fun provideLayoutId(): Int = R.layout.activity_post_like
+    override fun provideContentView(): View = binding.root
 
     /**
      * Initializes the Layout of the Activity.
@@ -59,7 +64,7 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
         intent.getStringExtra(EXTRA_POST_ID)!!.let { postId: String -> viewModel.onLoadPostDetails(postId) }
 
         // Initialize Toolbar
-        toolbar_post_like.apply {
+        binding.toolbarPostLike.apply {
             // Set Title
             title = getString(R.string.title_post_like_toolbar)
             // Set Close Icon as the Navigation Icon
@@ -83,7 +88,7 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
         }
 
         // Setting up RecyclerView
-        rv_post_likes.apply {
+        binding.rvPostLikes.apply {
             // Set the Layout Manager to LinearLayoutManager
             layoutManager = linearLayoutManager
             // Set the Adapter for RecyclerView
@@ -99,7 +104,7 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
         }
 
         // Register click listener on the "No Likes Heart Image" to enable user to click and "Be the first to Like"
-        image_no_likes.setOnClickListener { viewModel.onLikeAction() }
+        binding.includePostLikeEmpty.imageNoLikes.setOnClickListener { viewModel.onLikeAction() }
     }
 
     /**
@@ -112,7 +117,7 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
         // Register an observer on Post data loading progress to show/hide the Progress Circle
         viewModel.loadingProgress.observe(this) { started: Boolean ->
             // Show the Progress Circle when [started], else leave it hidden
-            progress_post_like.showWhen(started)
+            binding.progressPostLike.showWhen(started)
         }
 
         // Register an observer on the Post Likes LiveData to load the Adapter with the List of all Post Likes
@@ -123,30 +128,35 @@ class PostLikeActivity : BaseActivity<PostLikeViewModel>() {
 
         // Register an observer on the Post Likes' Presence LiveData to set the visibility of views accordingly
         viewModel.postHasLikes.observe(this) { hasLikes: Boolean ->
-            // When there are Likes, show the RecyclerView and the Bottom App Bar
-            rv_post_likes.showWhen(hasLikes)
-            bottom_app_bar_post_like.showWhen(hasLikes)
-            // When there are NO Likes, show the Empty view
-            include_post_like_empty.showWhen(!hasLikes)
+            with(binding) {
+                // When there are Likes, show the RecyclerView and the Bottom App Bar
+                rvPostLikes.showWhen(hasLikes)
+                bottomAppBarPostLike.showWhen(hasLikes)
+                // When there are NO Likes, show the Empty view
+                includePostLikeEmpty.root.showWhen(!hasLikes)
+            }
         }
 
         // Register an observer on the "Likes count of the Post" - LiveData to set its value
         // on the corresponding textView
         viewModel.likesCount.observe(this) { likesCount ->
-            text_post_like_count.text = likesCount.toString()
+            binding.textPostLikeCount.text = likesCount.toString()
         }
 
         // Register an observer on the User Like Menu button LiveData to change the "Heart" Image accordingly
         viewModel.hasUserLiked.observe(this) { hasLiked: Boolean ->
             // Lookup for the Heart Menu item
-            toolbar_post_like.menu.findItem(R.id.action_post_like)?.let { menuItem: MenuItem ->
-                // Change the Heart Icon based on whether User had liked the post or not
-                if (hasLiked) {
-                    menuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_heart_selected)
-                } else {
-                    menuItem.icon = ContextCompat.getDrawable(this, R.drawable.ic_heart_unselected)
+            binding.toolbarPostLike.menu.findItem(R.id.action_post_like)
+                ?.let { menuItem: MenuItem ->
+                    // Change the Heart Icon based on whether User had liked the post or not
+                    if (hasLiked) {
+                        menuItem.icon =
+                            ContextCompat.getDrawable(this, R.drawable.ic_heart_selected)
+                    } else {
+                        menuItem.icon =
+                            ContextCompat.getDrawable(this, R.drawable.ic_heart_unselected)
+                    }
                 }
-            }
         }
 
         // Register an observer for close action events, to close this Activity and update the Calling Activity

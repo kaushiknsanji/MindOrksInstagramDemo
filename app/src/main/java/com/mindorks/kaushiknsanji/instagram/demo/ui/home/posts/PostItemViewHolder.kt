@@ -11,12 +11,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ItemHomePostBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
-import kotlinx.android.synthetic.main.item_home_post.view.*
 
 /**
  * [BaseItemViewHolder] subclass used as [androidx.recyclerview.widget.RecyclerView.ViewHolder]
@@ -28,10 +28,11 @@ import kotlinx.android.synthetic.main.item_home_post.view.*
  * @author Kaushik N Sanji
  */
 class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? = null) :
-    BaseItemViewHolder<Post, PostsAdapter.Listener, PostItemViewModel>(
+    BaseItemViewHolder<Post, PostsAdapter.Listener, PostItemViewModel, ItemHomePostBinding>(
         R.layout.item_home_post,
         container,
-        listener
+        listener,
+        viewBindingFactory = ItemHomePostBinding::inflate
     ) {
 
     /**
@@ -47,7 +48,7 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
     @SuppressLint("ClickableViewAccessibility")
     override fun setupView(itemView: View) {
         // Register a Click Listener on the "Heart" ImageButton, to enable like/unlike Post
-        itemView.imgbtn_home_item_toggle_post_like.setOnClickListener { itemViewModel.onLikeClick() }
+        itemViewBinding.imgbtnHomeItemTogglePostLike.setOnClickListener { itemViewModel.onLikeClick() }
 
         // Create a Double Tap Gesture Detection on Post Photo, to enable like/unlike Post on Double Tap action
         val postPhotoDoubleTapGestureDetector = GestureDetectorCompat(
@@ -96,22 +97,20 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
                     // Report as Consumed
                     return true
                 }
-
             }
         )
 
         // Register a Double Tap Listener using the Gesture Detection on Post Photo
-        itemView.image_home_item_post_photo.setOnTouchListener { _, event: MotionEvent ->
+        itemViewBinding.imageHomeItemPostPhoto.setOnTouchListener { _, event: MotionEvent ->
             // Pass all the events to the Double Tap Gesture Detector and return its result
             postPhotoDoubleTapGestureDetector.onTouchEvent(event)
         }
 
         // Register a Click Listener on the TextView that displays the number of Likes on the Post
-        itemView.text_home_item_post_like_count.setOnClickListener { itemViewModel.onLikeCountClick() }
+        itemViewBinding.textHomeItemPostLikeCount.setOnClickListener { itemViewModel.onLikeCountClick() }
 
         // Register a Click Listener on the Post Item
-        itemView.setOnClickListener { itemViewModel.onItemClick() }
-
+        itemViewBinding.root.setOnClickListener { itemViewModel.onItemClick() }
     }
 
     /**
@@ -123,18 +122,18 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
 
         // Register an observer on the Name LiveData to set its value on the corresponding textView
         itemViewModel.postCreatorName.observe(this) { name ->
-            itemView.text_home_item_post_creator_name.text = name
+            itemViewBinding.textHomeItemPostCreatorName.text = name
         }
 
         // Register an observer on the Post Creation Time LiveData to set its value on the corresponding textView
         itemViewModel.postCreationTime.observe(this) { creationTime ->
-            itemView.text_home_item_post_time.text = creationTime
+            itemViewBinding.textHomeItemPostTime.text = creationTime
         }
 
         // Register an observer on the "Likes count of the Post" - LiveData to set its value
         // on the corresponding textView
         itemViewModel.likesCount.observe(this) { likesCount ->
-            itemView.text_home_item_post_like_count.text = itemView.context.getString(
+            itemViewBinding.textHomeItemPostLikeCount.text = itemView.context.getString(
                 R.string.label_home_item_post_like_count,
                 likesCount
             )
@@ -142,7 +141,7 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
 
         // Register an observer on the user like button action LiveData to change the "Heart" image accordingly
         itemViewModel.hasUserLiked.observe(this) { hasLiked: Boolean ->
-            itemView.imgbtn_home_item_toggle_post_like.isActivated = hasLiked
+            itemViewBinding.imgbtnHomeItemTogglePostLike.isActivated = hasLiked
         }
 
         // Register an observer on the Post Creator's Profile Picture LiveData to load the Image

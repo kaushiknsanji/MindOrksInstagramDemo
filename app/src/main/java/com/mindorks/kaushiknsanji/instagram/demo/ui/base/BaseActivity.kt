@@ -1,6 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.base
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -45,7 +46,7 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
         // Call to super
         super.onCreate(savedInstanceState)
         // Set the Activity's layout
-        setContentView(provideLayoutId())
+        provideContentView()?.let { setContentView(it) } ?: setContentView(provideLayoutId())
         // Setup any LiveData observers
         setupObservers()
         // Setup the Activity view
@@ -117,10 +118,17 @@ abstract class BaseActivity<VM : BaseViewModel> : AppCompatActivity() {
     protected abstract fun injectDependencies(activityComponent: ActivityComponent)
 
     /**
-     * To be overridden by subclasses to provide the Resource Layout Id for the Activity.
+     * Can be overridden by subclasses to provide the Resource Layout Id for the Activity.
+     * If not provided, value of `0` will be returned.
      */
     @LayoutRes
-    protected abstract fun provideLayoutId(): Int
+    protected open fun provideLayoutId(): Int = 0
+
+    /**
+     * Can be overridden by subclasses to provide the [Root View][View] for the Activity
+     * inflated using either `Android ViewBinding or DataBinding`.
+     */
+    protected open fun provideContentView(): View? = null
 
     /**
      * To be overridden by subclasses to setup the Layout of the Activity.

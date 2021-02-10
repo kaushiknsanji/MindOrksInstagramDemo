@@ -5,15 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DaggerViewHolderComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ViewHolderModule
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResourceEvent
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.Toaster
 import javax.inject.Inject
 
@@ -24,25 +24,30 @@ import javax.inject.Inject
  * @param T The type of ItemView's data.
  * @param L The type of Listeners that extends [BaseAdapter.DefaultListener].
  * @param VM The type of ItemView's ViewModel that extends [BaseItemViewModel]
+ * @param VB The type of ItemView's ViewBinding that extends [ViewBinding]. Can be [ViewBinding]
+ * if not intending to use ViewBinding for layout inflation.
  * @param itemLayoutId [Int] value of the layout resource Id of the ItemView.
  * @param container [ViewGroup] that contains the ItemViews.
  * @property listener Instance of listeners of type [L] to receive Navigation events. Defaulted to `null`.
+ * @param layoutInflater [LayoutInflater] instance built using the parameters provided,
+ * for inflating the layout [itemLayoutId].
+ * @param viewBindingFactory Factory Method reference for inflating the layout [itemLayoutId] using ViewBinding.
+ * Can be `null` if not intending to use ViewBinding for layout inflation.
+ * @param viewBinding [ViewBinding] instance of type [VB] constructed when [viewBindingFactory]
+ * is provided. Will be `null` if [viewBindingFactory] is NOT provided.
  *
  * @author Kaushik N Sanji
  */
-abstract class BaseItemViewHolder<T : Any, L : BaseAdapter.DefaultListener<T>, VM : BaseItemViewModel<T>>(
+abstract class BaseItemViewHolder<T : Any, L : BaseAdapter.DefaultListener<T>, VM : BaseItemViewModel<T>, VB : ViewBinding>(
     @LayoutRes itemLayoutId: Int,
     container: ViewGroup,
-    protected val listener: L? = null
+    protected val listener: L? = null,
+    layoutInflater: LayoutInflater = LayoutInflater.from(container.context),
+    viewBindingFactory: ((inflater: LayoutInflater, parent: ViewGroup, attachToParent: Boolean) -> VB)? = null,
+    viewBinding: VB? = viewBindingFactory?.run { this(layoutInflater, container, false) }
 ) : RecyclerView.ViewHolder(
-    LayoutInflater.from(container.context).inflate(itemLayoutId, container, false)
-),
-    LifecycleOwner {
-
-    init {
-        // Mark the Lifecycle state as Created when ViewHolder is initialized
-        onCreate()
-    }
+    viewBinding?.root ?: layoutInflater.inflate(itemLayoutId, container, false)
+), LifecycleOwner {
 
     // For the ItemView's ViewModel
     @Inject
@@ -51,6 +56,14 @@ abstract class BaseItemViewHolder<T : Any, L : BaseAdapter.DefaultListener<T>, V
     // For the Lifecycle
     @Inject
     lateinit var lifecycleRegistry: LifecycleRegistry
+
+    // ViewBinding instance for this ItemView
+    protected val itemViewBinding by viewBinding { viewBinding }
+
+    init {
+        // Mark the Lifecycle state as Created when ViewHolder is initialized
+        onCreate()
+    }
 
     /**
      * Returns the [Lifecycle] of the provider.

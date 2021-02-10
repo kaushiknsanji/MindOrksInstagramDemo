@@ -8,6 +8,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ItemProfilePostBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ViewHolderComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseItemViewHolder
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
@@ -26,10 +27,11 @@ import kotlinx.android.synthetic.main.item_profile_post.view.*
  */
 class ProfilePostItemViewHolder(
     private val container: ViewGroup, listener: ProfilePostsAdapter.Listener? = null
-) : BaseItemViewHolder<Post, ProfilePostsAdapter.Listener, ProfilePostItemViewModel>(
+) : BaseItemViewHolder<Post, ProfilePostsAdapter.Listener, ProfilePostItemViewModel, ItemProfilePostBinding>(
     R.layout.item_profile_post,
     container,
-    listener
+    listener,
+    viewBindingFactory = ItemProfilePostBinding::inflate
 ) {
 
     /**

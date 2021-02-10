@@ -5,14 +5,14 @@ import android.view.View
 import com.bumptech.glide.request.RequestOptions
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityImmersivePhotoBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideApp
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.GlideHelper
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.ImageUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeNonNull
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
-import kotlinx.android.synthetic.main.activity_immersive_photo.*
 
 /**
  * [BaseActivity] subclass that inflates the layout 'R.layout.activity_immersive_photo' to show the Post's Photo
@@ -23,6 +23,9 @@ import kotlinx.android.synthetic.main.activity_immersive_photo.*
  */
 class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
 
+    // ViewBinding instance for this Activity
+    private val binding by viewBinding(ActivityImmersivePhotoBinding::inflate)
+
     /**
      * Injects dependencies exposed by [ActivityComponent] into Activity.
      */
@@ -31,9 +34,10 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
     }
 
     /**
-     * Provides the Resource Layout Id for the Activity.
+     * Provides the [Root View][View] for the Activity
+     * inflated using `Android ViewBinding`.
      */
-    override fun provideLayoutId(): Int = R.layout.activity_immersive_photo
+    override fun provideContentView(): View = binding.root
 
     /**
      * Initializes the Layout of the Activity.
@@ -49,10 +53,10 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
         updateImmersiveModeState(window.decorView.systemUiVisibility)
 
         // Register Tap listener on the Post Photo
-        view_immersive_photo.setOnPhotoTapListener { _, _, _ -> viewModel.onToggleFullscreen() }
+        binding.viewImmersivePhoto.setOnPhotoTapListener { _, _, _ -> viewModel.onToggleFullscreen() }
 
         // Register Click listener on the "Close" Image
-        image_immersive_photo_close.setOnClickListener { viewModel.onClose() }
+        binding.imageImmersivePhotoClose.setOnClickListener { viewModel.onClose() }
     }
 
     /**
@@ -101,7 +105,7 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
         // Register an observer on Immersive Mode state change events to show/hide other views accordingly
         viewModel.immersiveModeState.observeEvent(this) { immersiveModeOn: Boolean ->
             // When Immersive Mode is On, hide the Photo Close ImageView
-            image_immersive_photo_close.showWhen(!immersiveModeOn)
+            binding.imageImmersivePhotoClose.showWhen(!immersiveModeOn)
         }
 
         // Register an observer for close action events, to close this Activity

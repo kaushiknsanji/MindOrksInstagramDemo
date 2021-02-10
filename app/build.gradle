@@ -1,10 +1,8 @@
 plugins {
     id 'com.android.application'
-    //Targeting Android Platform of Kotlin
+    // Targeting Android Platform of Kotlin
     id 'kotlin-android'
-    //Kotlin extensions on Android for View Binding, Caching etc.
-    id 'kotlin-android-extensions'
-    //Annotation processing tool for Kotlin
+    // Annotation processing tool for Kotlin
     id 'kotlin-kapt'
 }
 
@@ -46,9 +44,13 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
     // Target Java8
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     // Target Java8

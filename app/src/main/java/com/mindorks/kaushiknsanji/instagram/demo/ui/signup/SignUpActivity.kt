@@ -2,8 +2,9 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.core.widget.doOnTextChanged
-import com.mindorks.kaushiknsanji.instagram.demo.R
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivitySignUpBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity
@@ -11,10 +12,10 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setTextOnChange
-import kotlinx.android.synthetic.main.activity_sign_up.*
 
 /**
  * [BaseActivity] subclass that inflates the layout 'R.layout.activity_sign_up' to show the Sign-Up screen.
@@ -28,6 +29,9 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
         const val TAG = "SignUpActivity"
     }
 
+    // ViewBinding instance for this Activity
+    private val binding by viewBinding(ActivitySignUpBinding::inflate)
+
     /**
      * Injects dependencies exposed by [ActivityComponent] into Activity.
      */
@@ -36,38 +40,41 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
     }
 
     /**
-     * Provides the Resource Layout Id for the Activity.
+     * Provides the [Root View][View] for the Activity
+     * inflated using `Android ViewBinding`.
      */
-    override fun provideLayoutId(): Int = R.layout.activity_sign_up
+    override fun provideContentView(): View = binding.root
 
     /**
      * Initializes the Layout of the Activity.
      */
     override fun setupView(savedInstanceState: Bundle?) {
 
-        // Register text change listener on Email field for validations
-        edit_sign_up_email.doOnTextChanged { text, _, _, _ ->
-            // When email text changes, delegate to the SignUpViewModel
-            viewModel.onEmailChange(text.toString())
+        with(binding) {
+            // Register text change listener on Email field for validations
+            editSignUpEmail.doOnTextChanged { text, _, _, _ ->
+                // When email text changes, delegate to the SignUpViewModel
+                viewModel.onEmailChange(text.toString())
+            }
+
+            // Register text change listener on Password field for validations
+            editSignUpPassword.doOnTextChanged { text, _, _, _ ->
+                // When password text changes, delegate to the SignUpViewModel
+                viewModel.onPasswordChange(text.toString())
+            }
+
+            // Register text change listener on Name field for validations
+            editSignUpName.doOnTextChanged { text, _, _, _ ->
+                // When name text changes, delegate to the SignUpViewModel
+                viewModel.onNameChange(text.toString())
+            }
+
+            // Register click listener on "Sign Up" Button
+            buttonSignUp.setOnClickListener { viewModel.onSignUp() }
+
+            // Register click listener on "Login with Email" Button
+            textButtonSignUpOptionLogin.setOnClickListener { viewModel.onLoginWithEmail() }
         }
-
-        // Register text change listener on Password field for validations
-        edit_sign_up_password.doOnTextChanged { text, _, _, _ ->
-            // When password text changes, delegate to the SignUpViewModel
-            viewModel.onPasswordChange(text.toString())
-        }
-
-        // Register text change listener on Name field for validations
-        edit_sign_up_name.doOnTextChanged { text, _, _, _ ->
-            // When name text changes, delegate to the SignUpViewModel
-            viewModel.onNameChange(text.toString())
-        }
-
-        // Register click listener on "Sign Up" Button
-        button_sign_up.setOnClickListener { viewModel.onSignUp() }
-
-        // Register click listener on "Login with Email" Button
-        text_button_sign_up_option_login.setOnClickListener { viewModel.onLoginWithEmail() }
 
     }
 
@@ -80,22 +87,22 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
 
         // Register an observer on Email field value to set the new value on change
         viewModel.emailField.observe(this) { emailValue ->
-            edit_sign_up_email.setTextOnChange(emailValue)
+            binding.editSignUpEmail.setTextOnChange(emailValue)
         }
 
         // Register an observer on Password field value to set the new value on change
         viewModel.passwordField.observe(this) { passwordValue ->
-            edit_sign_up_password.setTextOnChange(passwordValue)
+            binding.editSignUpPassword.setTextOnChange(passwordValue)
         }
 
         // Register an observer on Name field value to set the new value on change
         viewModel.nameField.observe(this) { nameValue ->
-            edit_sign_up_name.setTextOnChange(nameValue)
+            binding.editSignUpName.setTextOnChange(nameValue)
         }
 
         // Register an observer on Email field validation result to show the error if any
         viewModel.emailValidation.observeResource(this) { status: Status, messageResId: Int? ->
-            text_input_sign_up_email.setErrorStatus(
+            binding.textInputSignUpEmail.setErrorStatus(
                 status,
                 messageResId?.run { getString(this) }
             )
@@ -103,7 +110,7 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
 
         // Register an observer on Password field validation result to show the error if any
         viewModel.passwordValidation.observeResource(this) { status: Status, messageResId: Int? ->
-            text_input_sign_up_password.setErrorStatus(
+            binding.textInputSignUpPassword.setErrorStatus(
                 status,
                 messageResId?.run { getString(this) }
             )
@@ -111,7 +118,7 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
 
         // Register an observer on Name field validation result to show the error if any
         viewModel.nameValidation.observeResource(this) { status: Status, messageResId: Int? ->
-            text_input_sign_up_name.setErrorStatus(
+            binding.textInputSignUpName.setErrorStatus(
                 status,
                 messageResId?.run { getString(this) }
             )
@@ -120,7 +127,7 @@ class SignUpActivity : BaseActivity<SignUpViewModel>() {
         // Register an observer on Sign-Up request progress to show/hide the Progress Circle
         viewModel.signUpProgress.observe(this) { started: Boolean ->
             // Show the Progress Circle when [started], else leave it hidden
-            progress_sign_up.showWhen(started)
+            binding.progressSignUp.showWhen(started)
         }
 
         // Register an observer for MainActivity launch events

@@ -7,15 +7,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.FragmentHomeBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.FragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
-import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 /**
@@ -39,6 +40,9 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
     @Inject
     lateinit var mainSharedViewModel: MainSharedViewModel
 
+    // ViewBinding instance for this Fragment
+    private val binding by viewBinding(FragmentHomeBinding::bind)
+
     /**
      * Injects dependencies exposed by [FragmentComponent] into Fragment.
      */
@@ -57,7 +61,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
     override fun setupView(view: View, savedInstanceState: Bundle?) {
 
         // Setting up RecyclerView
-        rv_home_posts.apply {
+        binding.rvHomePosts.apply {
             // Set the Layout Manager to LinearLayoutManager
             layoutManager = linearLayoutManager
             // Set the Adapter for RecyclerView
@@ -106,7 +110,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
         // Register an observer on Posts download progress to show/hide the Progress horizontal
         viewModel.loadingProgress.observe(this) { started: Boolean ->
             // Show the Progress horizontal when [started], else leave it hidden
-            progress_horizontal_home.showWhen(started)
+            binding.progressHorizontalHome.showWhen(started)
         }
 
         // Register an observer on the Post creation LiveData to add the New Post to the top of the List
@@ -128,7 +132,7 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
         viewModel.scrollToTop.observeEvent(this) { scroll: Boolean ->
             if (scroll) {
                 // Scroll immediately to the top of the RecyclerView
-                rv_home_posts.scrollToPosition(0)
+                binding.rvHomePosts.scrollToPosition(0)
             }
         }
 

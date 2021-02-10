@@ -2,8 +2,10 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.mindorks.kaushiknsanji.instagram.demo.R
+import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityMainBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
@@ -16,7 +18,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.putExtrasFromMap
-import kotlinx.android.synthetic.main.activity_main.*
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -37,6 +39,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
     @Inject
     lateinit var mainSharedViewModel: MainSharedViewModel
 
+    // ViewBinding instance for this Activity
+    private val binding by viewBinding(ActivityMainBinding::inflate)
+
     // Saves the fragment instance being shown
     private var activeFragment: Fragment? = null
 
@@ -48,9 +53,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
     }
 
     /**
-     * Provides the Resource Layout Id for the Activity.
+     * Provides the [Root View][View] for the Activity
+     * inflated using `Android ViewBinding`.
      */
-    override fun provideLayoutId(): Int = R.layout.activity_main
+    override fun provideContentView(): View = binding.root
 
     /**
      * Initializes the Layout of the Activity.
@@ -58,7 +64,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun setupView(savedInstanceState: Bundle?) {
 
         // Register a navigation listener on the Bottom Navigation Menu Items
-        bottom_nav_main.run {
+        binding.bottomNavMain.run {
             // Clearing icon tinting to fix icon distortion
             itemIconTintList = null
             // Registering the listener
@@ -131,7 +137,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         // Register an observer for HomeFragment redirection events
         mainSharedViewModel.redirectHome.observeEvent(this) {
             // Select programmatically the Home button of the Bottom Navigation
-            bottom_nav_main.selectedItemId = R.id.action_main_bottom_nav_home
+            binding.bottomNavMain.selectedItemId = R.id.action_main_bottom_nav_home
         }
 
         // Register an observer for EditProfileActivity launch events
