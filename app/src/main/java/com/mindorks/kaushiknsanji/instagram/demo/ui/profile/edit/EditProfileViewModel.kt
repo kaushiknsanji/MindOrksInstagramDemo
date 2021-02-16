@@ -42,9 +42,17 @@ class EditProfileViewModel(
         const val TAG = "EditProfileViewModel"
 
         // Constant used as keys for tracking changes in editable fields
-        const val KEY_NAME_FIELD = "Name"
-        const val KEY_BIO_FIELD = "Bio"
-        const val KEY_PROFILE_PIC_FIELD = "ProfilePic"
+        private const val KEY_NAME_FIELD = "Name"
+        private const val KEY_BIO_FIELD = "Bio"
+        private const val KEY_PROFILE_PIC_FIELD = "ProfilePic"
+
+        // Getter for the array of all the fields to be tracked for changes
+        private val fieldsToTrackForEdits
+            get() = arrayOf(
+                KEY_NAME_FIELD,
+                KEY_BIO_FIELD,
+                KEY_PROFILE_PIC_FIELD
+            )
     }
 
     // LiveData for loading, upload and save progress indication
@@ -107,70 +115,34 @@ class EditProfileViewModel(
     private val hasProfilePictureChanged: LiveData<Boolean> =
         chosenProfileImageFile.map { imageFile: File? -> imageFile?.exists() ?: false }
 
-    // MediatorLiveData to see if any data has been changed to update to the remote
+    // BitStateTracker to help with merging the changed state of any editable fields
+    // to "Reset Menu" visibility
+    private val infoChangeMerger = BitStateTracker(
+        fieldsToTrackForEdits, // Fields to track for changes
+        Int::or, // Bitwise operation for True state
+        { bitState: Int, bitKey: Int ->
+            // Bitwise operation for False state
+            bitState and bitKey.inv()
+        },
+        { bitState: Int ->
+            // BitState transformation to visibility boolean
+            bitState != 0
+        }
+    )
+
+    // MediatorLiveData to see if any data has been changed, for setting Reset Menu visibility
+    // and updating to the remote
     val hasAnyInfoChanged: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        // Mutable List for tracking fields that have been changed
-        val changeTrackingList = mutableListOf<String>()
         // Add sources for the tracked fields
-        addSource(hasNameChanged) { newValue ->
-            postValue(
-                trackAndReportFieldChange(
-                    KEY_NAME_FIELD,
-                    newValue,
-                    changeTrackingList
-                )
-            )
+        addSource(hasNameChanged) { newValue: Boolean ->
+            postValue(infoChangeMerger.updateState(KEY_NAME_FIELD, newValue))
         }
-        addSource(hasBioChanged) { newValue ->
-            postValue(
-                trackAndReportFieldChange(
-                    KEY_BIO_FIELD,
-                    newValue,
-                    changeTrackingList
-                )
-            )
+        addSource(hasBioChanged) { newValue: Boolean ->
+            postValue(infoChangeMerger.updateState(KEY_BIO_FIELD, newValue))
         }
-        addSource(hasProfilePictureChanged) { newValue ->
-            postValue(
-                trackAndReportFieldChange(
-                    KEY_PROFILE_PIC_FIELD,
-                    newValue,
-                    changeTrackingList
-                )
-            )
+        addSource(hasProfilePictureChanged) { newValue: Boolean ->
+            postValue(infoChangeMerger.updateState(KEY_PROFILE_PIC_FIELD, newValue))
         }
-    }
-
-    /**
-     * Tracks changes in the [field][newKey] and updates the same to the [changeTracker]
-     * when [newKey] is not present in [changeTracker] and [newValue] is `true` indicating that
-     * there was a change in this [field][newKey].
-     *
-     * When [newValue] is `false`, i.e., when there is no modification, any tracked entry
-     * for the [field][newKey] is removed from [changeTracker].
-     *
-     * @param changeTracker [MutableList] for tracking fields that have been changed.
-     *
-     * @return `true` when there are some fields currently having modifications; `false` otherwise.
-     */
-    private fun trackAndReportFieldChange(
-        newKey: String,
-        newValue: Boolean,
-        changeTracker: MutableList<String>
-    ): Boolean {
-        if (newValue) {
-            // When there is a modification
-            if (changeTracker.none { key -> key == newKey }) {
-                // Add the field to be tracked for changes when not previously tracked
-                changeTracker.add(newKey)
-            }
-        } else {
-            // When there is no modification, remove the field from tracking if tracked previously
-            changeTracker.removeAll { key -> key == newKey }
-        }
-
-        // Return true if any field is currently having modifications
-        return changeTracker.isNotEmpty()
     }
 
     // LiveData for launching PhotoOptionsDialogFragment

@@ -1,6 +1,11 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.base
 
+import androidx.annotation.CallSuper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import com.mindorks.kaushiknsanji.instagram.demo.utils.common.BitStateTracker
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
@@ -18,6 +23,21 @@ abstract class BaseDialogViewModel(
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper
 ) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
+
+    companion object {
+        // Constant used as keys for tracking buttons initialized
+        private const val KEY_BUTTON_POSITIVE = "PositiveButton"
+        private const val KEY_BUTTON_NEGATIVE = "NegativeButton"
+        private const val KEY_BUTTON_NEUTRAL = "NeutralButton"
+
+        // Getter for the array of all the Buttons to be tracked for initialized state
+        private val buttonsTrackedForInitState
+            get() = arrayOf(
+                KEY_BUTTON_POSITIVE,
+                KEY_BUTTON_NEGATIVE,
+                KEY_BUTTON_NEUTRAL
+            )
+    }
 
     // LiveData for the Dialog Title
     val titleDialogId: MutableLiveData<Resource<Int>> = MutableLiveData()
@@ -42,6 +62,50 @@ abstract class BaseDialogViewModel(
 
     // LiveData for Neutral Button action events
     val actionNeutralButton: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
+    // Function to convert Resource to Boolean based on whether there is Data in the Resource or not
+    private val resourceDataNotNull: (resourceWrapper: Resource<Int>) -> Boolean =
+        { resourceWrapper: Resource<Int> ->
+            resourceWrapper.peekData() != null
+        }
+
+    // Transforms [positiveButtonTextId] to see if the Positive Button has been set or not
+    private val hasPositiveButton: LiveData<Boolean> = positiveButtonTextId.map(resourceDataNotNull)
+
+    // Transforms [negativeButtonTextId] to see if the Negative Button has been set or not
+    private val hasNegativeButton: LiveData<Boolean> = negativeButtonTextId.map(resourceDataNotNull)
+
+    // Transforms [neutralButtonTextId] to see if the Neutral Button has been set or not
+    private val hasNeutralButton: LiveData<Boolean> = neutralButtonTextId.map(resourceDataNotNull)
+
+    // BitStateTracker to help with merging any button's initialized state to button panel's visibility
+    private val buttonInitStateMerger = BitStateTracker(
+        buttonsTrackedForInitState, // Buttons to track
+        Int::or, // Bitwise operation for True state
+        { bitState: Int, bitKey: Int ->
+            // Bitwise operation for False state
+            bitState and bitKey.inv()
+        },
+        { bitState: Int ->
+            // BitState transformation to visibility boolean
+            bitState != 0
+        }
+    )
+
+    // MediatorLiveData to see if any Buttons have been initialized in the Dialog,
+    // for updating the Button Panel visibility accordingly
+    val hasAnyButtons: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        // Add sources for the tracked Buttons
+        addSource(hasPositiveButton) { newValue: Boolean ->
+            postValue(buttonInitStateMerger.updateState(KEY_BUTTON_POSITIVE, newValue))
+        }
+        addSource(hasNegativeButton) { newValue: Boolean ->
+            postValue(buttonInitStateMerger.updateState(KEY_BUTTON_NEGATIVE, newValue))
+        }
+        addSource(hasNeutralButton) { newValue: Boolean ->
+            postValue(buttonInitStateMerger.updateState(KEY_BUTTON_NEUTRAL, newValue))
+        }
+    }
 
     /**
      * Called when the Dialog Title needs to be set/changed to [titleId]
