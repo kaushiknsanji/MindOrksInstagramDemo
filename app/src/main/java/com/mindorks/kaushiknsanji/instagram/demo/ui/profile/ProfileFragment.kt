@@ -12,6 +12,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.databinding.FragmentProfileBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.FragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogMetadata
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts.ProfilePostsAdapter
@@ -41,6 +44,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
     // Instance of the ViewModel shared with the MainActivity provided by Dagger
     @Inject
     lateinit var mainSharedViewModel: MainSharedViewModel
+
+    // SharedConfirmOptionDialogViewModel instance provided by Dagger
+    @Inject
+    lateinit var sharedConfirmOptionDialogViewModel: SharedConfirmOptionDialogViewModel
 
     // ViewBinding instance for this Fragment
     private val binding by viewBinding(FragmentProfileBinding::bind)
@@ -82,7 +89,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         binding.buttonProfileEdit.setOnClickListener { viewModel.onEditProfile() }
 
         // Register Click Listener on "Logout" button, to allow the logged-in user to logout
-        binding.textButtonProfileLogout.setOnClickListener { viewModel.onLogout() }
+        binding.textButtonProfileLogout.setOnClickListener { viewModel.onLogoutRequest() }
     }
 
     /**
@@ -179,6 +186,26 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
             if (reload) {
                 // On reload, delegate to the ViewModel to refresh User information
                 viewModel.onRefreshUserInfo()
+            }
+        }
+
+        // Register an observer on Logout confirmation Request events
+        viewModel.launchLogoutConfirm.observeEvent(this) { metadata: ConfirmOptionDialogMetadata ->
+            // Show the Confirmation Dialog to the User for Logout Request
+            dialogManager.showDialog(
+                ConfirmOptionDialogFragment::class.java,
+                ConfirmOptionDialogFragment.Companion::newInstance
+            )
+            // Pass the metadata of the Dialog to be shown via its Shared ViewModel
+            sharedConfirmOptionDialogViewModel.onDialogMetadataChange(metadata)
+        }
+
+        // Register an observer on Logout confirmation - Positive response events
+        sharedConfirmOptionDialogViewModel.actionPositiveButton.observeEvent(this) {
+            // Check if the Dialog Confirmation response is for Logout Dialog type
+            if (sharedConfirmOptionDialogViewModel.isDialogType(ProfileViewModel.CONFIRM_OPTION_DIALOG_TYPE_LOGOUT)) {
+                // Delegate to the Primary ViewModel to begin the Logout process
+                viewModel.onLogoutConfirm()
             }
         }
 

@@ -24,14 +24,21 @@ class ConfirmOptionDialogFragment : BaseDialogFragment<SharedConfirmOptionDialog
     }
 
     /**
-     * Constructs a [android.app.Dialog] using [dialogBuilder].
+     * Constructs a Template [android.app.Dialog] with the required elements using [dialogBuilder],
+     * since we can only hide the elements that are initialized.
      */
-    override fun constructDialog(dialogBuilder: AlertDialog.Builder, savedInstanceState: Bundle?) {
-        super.constructDialog(dialogBuilder, savedInstanceState)
+    override fun constructTemplateDialog(
+        dialogBuilder: AlertDialog.Builder,
+        savedInstanceState: Bundle?
+    ) {
+        super.constructTemplateDialog(dialogBuilder, savedInstanceState)
 
         dialogBuilder.apply {
             // Set the Default Title
             setTitle(R.string.title_dialog_confirm_default)
+
+            // Set the Default Message
+            setMessage(R.string.message_dialog_confirm_default)
 
             // Set the Default Positive Button Name and its Listener
             setPositiveButton(R.string.dialog_confirm_button_positive_default) { _, _ ->

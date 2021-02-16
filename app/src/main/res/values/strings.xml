@@ -101,6 +101,9 @@
     <string name="profile_no_posts_description">Create your post using the plus button below</string>
     <string name="cd_image_profile_posts_empty">My Posts empty icon</string>
     <string name="cd_image_profile_item_post">Image posted by the logged-in User</string>
+    <string name="message_dialog_confirm_profile_logout">Are you sure you want to logout?</string>
+    <string name="dialog_confirm_profile_logout_button_positive">Logout</string>
+    <string name="dialog_confirm_profile_logout_button_negative">Cancel</string>
 
     <!-- ===================================== -->
     <!-- STRINGS USED IN EDIT PROFILE ACTIVITY -->
@@ -158,7 +161,8 @@
     <!-- STRINGS USED IN CONFIRM OPTION DIALOG FRAGMENT -->
     <!-- ============================================== -->
     <string name="title_dialog_confirm_default">Confirm</string>
-    <string name="dialog_confirm_button_positive_default">YES</string>
-    <string name="dialog_confirm_button_negative_default">NO</string>
+    <string name="message_dialog_confirm_default">Do you wish to proceed?</string>
+    <string name="dialog_confirm_button_positive_default">Yes</string>
+    <string name="dialog_confirm_button_negative_default">No</string>
 
 </resources>

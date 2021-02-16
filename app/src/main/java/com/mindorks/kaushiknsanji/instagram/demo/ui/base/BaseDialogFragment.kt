@@ -18,7 +18,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComp
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.DialogFragmentModule
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResourceEvent
-import com.mindorks.kaushiknsanji.instagram.demo.utils.display.Toaster
+import com.mindorks.kaushiknsanji.instagram.demo.utils.display.*
 import javax.inject.Inject
 
 /**
@@ -75,8 +75,8 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
      */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(requireContext(), provideTheme()).apply {
-            // Construct the Dialog using builder
-            constructDialog(this, savedInstanceState)
+            // Construct a Template Dialog with the required elements using builder
+            constructTemplateDialog(this, savedInstanceState)
         }.create().apply {
             // Setup the Dialog
             setupDialog(this, savedInstanceState)
@@ -149,32 +149,42 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
         viewModel.titleDialogId.observeResource(this) { _, titleResId: Int? ->
             // Set the new Dialog Title
             titleResId?.let { setDialogTitle(getString(it)) }
+                ?: alertDialog.hideTitle() // Hide the Title when null
         }
 
         // Register an observer for the Dialog Message-id LiveData
         viewModel.messageDialogId.observeResource(this) { _, messageResId: Int? ->
             // Set the new Dialog Message
             messageResId?.let { setDialogMessage(getString(it)) }
+                ?: alertDialog.hideMessage() // Hide the Message when null
         }
 
         // Register an observer for the Dialog's Positive Button Text-id LiveData
         viewModel.positiveButtonTextId.observeResource(this) { _, nameId: Int? ->
             // Set the new Name for Positive Button
             nameId?.let { setDialogButtonName(getString(it), DialogInterface.BUTTON_POSITIVE) }
+                ?: alertDialog.hideButtonPositive() // Hide Positive Button when null
         }
 
         // Register an observer for the Dialog's Negative Button Text-id LiveData
         viewModel.negativeButtonTextId.observeResource(this) { _, nameId: Int? ->
             // Set the new Name for Negative Button
             nameId?.let { setDialogButtonName(getString(it), DialogInterface.BUTTON_NEGATIVE) }
+                ?: alertDialog.hideButtonNegative() // Hide Negative Button when null
         }
 
         // Register an observer for the Dialog's Neutral Button Text-id LiveData
         viewModel.neutralButtonTextId.observeResource(this) { _, nameId: Int? ->
             // Set the new Name for Neutral Button
             nameId?.let { setDialogButtonName(getString(it), DialogInterface.BUTTON_NEUTRAL) }
+                ?: alertDialog.hideButtonNeutral() // Hide Neutral Button when null
         }
 
+        // Register an observer on the LiveData that detects if any Buttons are initialized
+        // in order to hide the Button Panel when none of them are initialized
+        viewModel.hasAnyButtons.observe(this) { hasButtons: Boolean ->
+            hasButtons.takeUnless { it }?.run { alertDialog.hideButtonPanel() }
+        }
     }
 
     /**
@@ -243,10 +253,15 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
     protected open fun provideLayoutId(): Int = 0
 
     /**
-     * Can be overridden by subclasses to construct a [Dialog] using [dialogBuilder].
+     * Can be overridden by subclasses to construct a Template [Dialog] with the
+     * required elements using [dialogBuilder], since we can only hide the elements
+     * that are initialized.
      */
     @CallSuper
-    protected open fun constructDialog(dialogBuilder: AlertDialog.Builder, savedInstanceState: Bundle?) {
+    protected open fun constructTemplateDialog(
+        dialogBuilder: AlertDialog.Builder,
+        savedInstanceState: Bundle?
+    ) {
     }
 
     /**

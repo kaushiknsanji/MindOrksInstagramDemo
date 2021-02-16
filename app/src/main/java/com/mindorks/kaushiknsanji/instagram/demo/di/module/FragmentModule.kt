@@ -12,6 +12,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.FragmentScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.posts.PostsAdapter
@@ -197,5 +198,23 @@ class FragmentModule(private val fragment: BaseFragment<*>) {
                 networkHelper
             )
         })[SharedProgressTextViewModel::class.java]
+
+    /**
+     * Provides instance of [SharedConfirmOptionDialogViewModel]
+     */
+    @Provides
+    fun provideSharedConfirmOptionDialogViewModel(
+        schedulerProvider: SchedulerProvider,
+        compositeDisposable: CompositeDisposable,
+        networkHelper: NetworkHelper
+    ): SharedConfirmOptionDialogViewModel = ViewModelProvider(fragment.requireActivity(),
+        ViewModelProviderFactory(SharedConfirmOptionDialogViewModel::class) {
+            // [creator] lambda that creates and returns the ViewModel instance
+            SharedConfirmOptionDialogViewModel(
+                schedulerProvider,
+                compositeDisposable,
+                networkHelper
+            )
+        })[SharedConfirmOptionDialogViewModel::class.java]
 
 }

@@ -11,7 +11,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogMetadata
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogMetadata
 import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo.ImmersivePhotoActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ScreenUtils
@@ -35,6 +37,11 @@ class PostDetailViewModel(
     userRepository: UserRepository,
     private val postRepository: PostRepository
 ) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
+
+    companion object {
+        // Constant for the Dialog Type of Delete Post Confirmation request
+        const val CONFIRM_OPTION_DIALOG_TYPE_DELETE_POST = "DeletePost"
+    }
 
     // LiveData for the Post data loading progress indication
     val loadingProgress: MutableLiveData<Boolean> = MutableLiveData()
@@ -109,7 +116,9 @@ class PostDetailViewModel(
     }
 
     // LiveData for Delete Post confirmation request events
-    val launchDeletePostConfirm: MutableLiveData<Resource<Int>> = MutableLiveData()
+    val launchDeletePostConfirm: MutableLiveData<Event<ConfirmOptionDialogMetadata>> =
+        MutableLiveData()
+
     // LiveData for ImmersivePhotoActivity launch events
     val launchImmersivePhoto: MutableLiveData<Event<Map<String, Serializable>>> = MutableLiveData()
     // LiveData for navigating back to the Parent with the status of logged-in User's Like on the Post
@@ -211,8 +220,17 @@ class PostDetailViewModel(
      * Triggers an event to confirm the action with the user before proceeding.
      */
     fun onDeleteRequest() {
-        // Trigger the event and pass the title of the dialog to be shown
-        launchDeletePostConfirm.postValue(Resource.Success(R.string.title_dialog_confirm_post_detail_delete_post))
+        // Trigger the event and pass the information for the dialog to be shown
+        launchDeletePostConfirm.postValue(Event(
+            ConfirmOptionDialogMetadata { base: BaseDialogMetadata.BaseCompanion ->
+                arrayOf(
+                    base.KEY_TITLE to Resource.Success(R.string.title_dialog_confirm_post_detail_delete_post),
+                    base.KEY_BUTTON_POSITIVE to Resource.Success(R.string.dialog_confirm_button_positive_default),
+                    base.KEY_BUTTON_NEGATIVE to Resource.Success(R.string.dialog_confirm_button_negative_default),
+                    KEY_DIALOG_TYPE to CONFIRM_OPTION_DIALOG_TYPE_DELETE_POST
+                )
+            }
+        ))
     }
 
     /**

@@ -110,35 +110,35 @@ abstract class BaseDialogViewModel(
     /**
      * Called when the Dialog Title needs to be set/changed to [titleId]
      */
-    fun onDialogTitleTextChange(titleId: Resource<Int>) {
+    private fun onDialogTitleTextChange(titleId: Resource<Int>) {
         titleDialogId.postValue(titleId)
     }
 
     /**
      * Called when the Dialog Message needs to be set/changed to [messageId]
      */
-    fun onDialogMessageTextChange(messageId: Resource<Int>) {
+    private fun onDialogMessageTextChange(messageId: Resource<Int>) {
         messageDialogId.postValue(messageId)
     }
 
     /**
      * Called when the Dialog's Positive Button Name needs to be set/changed to [nameId]
      */
-    fun onDialogPositiveButtonTextChange(nameId: Resource<Int>) {
+    private fun onDialogPositiveButtonTextChange(nameId: Resource<Int>) {
         positiveButtonTextId.postValue(nameId)
     }
 
     /**
      * Called when the Dialog's Negative Button Name needs to be set/changed to [nameId]
      */
-    fun onDialogNegativeButtonTextChange(nameId: Resource<Int>) {
+    private fun onDialogNegativeButtonTextChange(nameId: Resource<Int>) {
         negativeButtonTextId.postValue(nameId)
     }
 
     /**
      * Called when the Dialog's Neutral Button Name needs to be set/changed to [nameId]
      */
-    fun onDialogNeutralButtonTextChange(nameId: Resource<Int>) {
+    private fun onDialogNeutralButtonTextChange(nameId: Resource<Int>) {
         neutralButtonTextId.postValue(nameId)
     }
 
@@ -159,4 +159,19 @@ abstract class BaseDialogViewModel(
      * Triggers an event to [actionNeutralButton] LiveData.
      */
     fun onDialogNeutralButtonClicked() = actionNeutralButton.postValue(Event(true))
+
+    /**
+     * Called when the Dialog's elements needs to be set/changed according to [metadata].
+     * Can be overridden by subclasses to set their custom [metadata].
+     */
+    @CallSuper
+    open fun onDialogMetadataChange(metadata: BaseDialogMetadata) {
+        metadata.run {
+            onDialogTitleTextChange(titleDialogId)
+            onDialogMessageTextChange(messageDialogId)
+            onDialogPositiveButtonTextChange(positiveButtonTextId)
+            onDialogNegativeButtonTextChange(negativeButtonTextId)
+            onDialogNeutralButtonTextChange(neutralButtonTextId)
+        }
+    }
 }

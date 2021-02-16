@@ -16,6 +16,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityPostDetailB
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogFragment
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogMetadata
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
@@ -255,20 +256,23 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         }
 
         // Register an observer on Delete Post confirmation Request events
-        viewModel.launchDeletePostConfirm.observeResourceEvent(this) { _, titleResId: Int ->
+        viewModel.launchDeletePostConfirm.observeEvent(this) { metadata: ConfirmOptionDialogMetadata ->
             // Show the Confirmation Dialog to the User for Delete Post request
             dialogManager.showDialog(
                 ConfirmOptionDialogFragment::class.java,
                 ConfirmOptionDialogFragment.Companion::newInstance
             )
-            // Pass the Dialog Title to be shown via its Shared ViewModel
-            sharedConfirmOptionDialogViewModel.onDialogTitleTextChange(Resource.Success(titleResId))
+            // Pass the metadata of the Dialog to be shown via its Shared ViewModel
+            sharedConfirmOptionDialogViewModel.onDialogMetadataChange(metadata)
         }
 
         // Register an observer on Delete Post confirmation - Positive response events
         sharedConfirmOptionDialogViewModel.actionPositiveButton.observeEvent(this) {
-            // Delegate to the Primary ViewModel to begin the delete process
-            viewModel.onDeleteConfirm()
+            // Check if the Dialog Confirmation response is for DeletePost Dialog type
+            if (sharedConfirmOptionDialogViewModel.isDialogType(PostDetailViewModel.CONFIRM_OPTION_DIALOG_TYPE_DELETE_POST)) {
+                // Delegate to the Primary ViewModel to begin the delete process
+                viewModel.onDeleteConfirm()
+            }
         }
 
         // Register an observer to return to the Calling Activity with the status of User's Like on the Post

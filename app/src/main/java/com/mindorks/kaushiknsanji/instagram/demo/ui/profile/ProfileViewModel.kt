@@ -3,13 +3,16 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
+import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogMetadata
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogMetadata
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
@@ -32,6 +35,11 @@ class ProfileViewModel(
     private val userRepository: UserRepository,
     private val postRepository: PostRepository
 ) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
+
+    companion object {
+        // Constant for the Dialog Type of Logout Confirmation request
+        const val CONFIRM_OPTION_DIALOG_TYPE_LOGOUT = "Logout"
+    }
 
     // LiveData for the posts loading and logout progress indication
     val liveProgress: MutableLiveData<Boolean> = MutableLiveData()
@@ -75,6 +83,9 @@ class ProfileViewModel(
 
     // LiveData for launching LoginActivity
     val launchLogin: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
+
+    // LiveData for Logout confirmation request events
+    val launchLogoutConfirm: MutableLiveData<Event<ConfirmOptionDialogMetadata>> = MutableLiveData()
 
     init {
         // When this ViewModel is first initialized..
@@ -168,9 +179,32 @@ class ProfileViewModel(
     }
 
     /**
-     * Called when the user clicks on the "Logout" button. Communicates with the Remote API to logout the [user].
+     * Called when the user clicks on the "Logout" button.
+     *
+     * Triggers an event to confirm the action with the user before proceeding.
      */
-    fun onLogout() {
+    fun onLogoutRequest() {
+        // Trigger the event and pass the information for the dialog to be shown
+        launchLogoutConfirm.postValue(
+            Event(
+                ConfirmOptionDialogMetadata { base: BaseDialogMetadata.BaseCompanion ->
+                    arrayOf(
+                        base.KEY_MESSAGE to Resource.Success(R.string.message_dialog_confirm_profile_logout),
+                        base.KEY_BUTTON_POSITIVE to Resource.Success(R.string.dialog_confirm_profile_logout_button_positive),
+                        base.KEY_BUTTON_NEGATIVE to Resource.Success(R.string.dialog_confirm_profile_logout_button_negative),
+                        KEY_DIALOG_TYPE to CONFIRM_OPTION_DIALOG_TYPE_LOGOUT
+                    )
+                }
+            )
+        )
+    }
+
+    /**
+     * Called when the "Logout" action is confirmed by the user.
+     *
+     * Communicates with the Remote API to logout the [user].
+     */
+    fun onLogoutConfirm() {
         if (checkInternetConnectionWithMessage()) {
             // When we have the network connectivity, start the logout process
 
