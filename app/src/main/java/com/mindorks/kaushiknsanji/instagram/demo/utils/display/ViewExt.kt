@@ -2,6 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.utils.display
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -29,11 +30,8 @@ fun View.hide() {
  * When [visibilityCondition] evaluates to `true`, then this [View] will be shown; otherwise hidden.
  */
 fun View.showWhen(visibilityCondition: Boolean) {
-    if (visibilityCondition) {
-        show()
-    } else {
-        hide()
-    }
+    // Delegate to the property to handle
+    isVisible = visibilityCondition
 }
 
 /**
