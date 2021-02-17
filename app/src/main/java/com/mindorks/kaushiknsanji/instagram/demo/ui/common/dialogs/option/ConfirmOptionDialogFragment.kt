@@ -9,12 +9,12 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
 /**
  * [BaseDialogFragment] subclass that constructs and shows a Confirmation Type of Dialog to request the
  * User to re-confirm the previous action.
- * [SharedConfirmOptionDialogViewModel] is the Primary [androidx.lifecycle.ViewModel] of this DialogFragment,
+ * [ConfirmOptionDialogSharedViewModel] is the Primary [androidx.lifecycle.ViewModel] of this DialogFragment,
  * which is shared with other Activities/Fragments that require to show this Dialog.
  *
  * @author Kaushik N Sanji
  */
-class ConfirmOptionDialogFragment : BaseDialogFragment<SharedConfirmOptionDialogViewModel>() {
+class ConfirmOptionDialogFragment : BaseDialogFragment<ConfirmOptionDialogSharedViewModel>() {
 
     /**
      * Injects dependencies exposed by [DialogFragmentComponent] into DialogFragment.

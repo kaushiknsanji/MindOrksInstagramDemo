@@ -17,9 +17,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogMetadata
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo.ImmersivePhotoActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.*
@@ -45,13 +45,13 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
     @Inject
     lateinit var postLikesAdapter: PostLikesAdapter
 
-    // SharedProgressTextViewModel instance provided by Dagger
+    // ProgressTextDialogSharedViewModel instance provided by Dagger
     @Inject
-    lateinit var sharedProgressTextViewModel: SharedProgressTextViewModel
+    lateinit var progressTextDialogSharedViewModel: ProgressTextDialogSharedViewModel
 
-    // SharedConfirmOptionDialogViewModel instance provided by Dagger
+    // ConfirmOptionDialogSharedViewModel instance provided by Dagger
     @Inject
-    lateinit var sharedConfirmOptionDialogViewModel: SharedConfirmOptionDialogViewModel
+    lateinit var confirmOptionDialogSharedViewModel: ConfirmOptionDialogSharedViewModel
 
     // ViewBinding instance for this Activity
     private val binding by viewBinding(ActivityPostDetailBinding::inflate)
@@ -154,7 +154,7 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
                         ProgressTextDialogFragment.Companion::newInstance
                     )
                     // Update the Status Text
-                    sharedProgressTextViewModel.onProgressStatusChange(resourceWrapper)
+                    progressTextDialogSharedViewModel.onProgressStatusChange(resourceWrapper)
                 }
                 else -> {
                     // When not loading, dismiss any active dialog
@@ -263,13 +263,13 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
                 ConfirmOptionDialogFragment.Companion::newInstance
             )
             // Pass the metadata of the Dialog to be shown via its Shared ViewModel
-            sharedConfirmOptionDialogViewModel.onDialogMetadataChange(metadata)
+            confirmOptionDialogSharedViewModel.onDialogMetadataChange(metadata)
         }
 
         // Register an observer on Delete Post confirmation - Positive response events
-        sharedConfirmOptionDialogViewModel.actionPositiveButton.observeEvent(this) {
+        confirmOptionDialogSharedViewModel.actionPositiveButton.observeEvent(this) {
             // Check if the Dialog Confirmation response is for DeletePost Dialog type
-            if (sharedConfirmOptionDialogViewModel.isDialogType(PostDetailViewModel.CONFIRM_OPTION_DIALOG_TYPE_DELETE_POST)) {
+            if (confirmOptionDialogSharedViewModel.isDialogType(PostDetailViewModel.CONFIRM_OPTION_DIALOG_TYPE_DELETE_POST)) {
                 // Delegate to the Primary ViewModel to begin the delete process
                 viewModel.onDeleteConfirm()
             }

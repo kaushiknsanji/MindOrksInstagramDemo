@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
  *
  * @author Kaushik N Sanji
  */
-class SharedProgressTextViewModel(
+class ProgressTextDialogSharedViewModel(
     schedulerProvider: SchedulerProvider,
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper

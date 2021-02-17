@@ -10,9 +10,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.ActivityScope
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.SharedPhotoOptionsViewModel
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogSharedViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.PhotoOptionsDialogSharedViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.likes.PostLikesAdapter
 import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.photo.ImmersivePhotoViewModel
@@ -160,40 +160,40 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         })[EditProfileViewModel::class.java]
 
     /**
-     * Provides instance of [SharedProgressTextViewModel]
+     * Provides instance of [ProgressTextDialogSharedViewModel]
      */
     @Provides
-    fun provideSharedProgressTextViewModel(
+    fun provideProgressTextDialogSharedViewModel(
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedProgressTextViewModel = ViewModelProvider(activity,
-        ViewModelProviderFactory(SharedProgressTextViewModel::class) {
+    ): ProgressTextDialogSharedViewModel = ViewModelProvider(activity,
+        ViewModelProviderFactory(ProgressTextDialogSharedViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
-            SharedProgressTextViewModel(
+            ProgressTextDialogSharedViewModel(
                 schedulerProvider,
                 compositeDisposable,
                 networkHelper
             )
-        })[SharedProgressTextViewModel::class.java]
+        })[ProgressTextDialogSharedViewModel::class.java]
 
     /**
-     * Provides instance of [SharedPhotoOptionsViewModel]
+     * Provides instance of [PhotoOptionsDialogSharedViewModel]
      */
     @Provides
-    fun provideSharedPhotoOptionsViewModel(
+    fun providePhotoOptionsDialogSharedViewModel(
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedPhotoOptionsViewModel = ViewModelProvider(activity,
-        ViewModelProviderFactory(SharedPhotoOptionsViewModel::class) {
+    ): PhotoOptionsDialogSharedViewModel = ViewModelProvider(activity,
+        ViewModelProviderFactory(PhotoOptionsDialogSharedViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
-            SharedPhotoOptionsViewModel(
+            PhotoOptionsDialogSharedViewModel(
                 schedulerProvider,
                 compositeDisposable,
                 networkHelper
             )
-        })[SharedPhotoOptionsViewModel::class.java]
+        })[PhotoOptionsDialogSharedViewModel::class.java]
 
     /**
      * Provides instance of [Camera] for taking a photo
@@ -280,20 +280,20 @@ class ActivityModule(private val activity: BaseActivity<*>) {
         })[ImmersivePhotoViewModel::class.java]
 
     /**
-     * Provides instance of [SharedConfirmOptionDialogViewModel]
+     * Provides instance of [ConfirmOptionDialogSharedViewModel]
      */
     @Provides
-    fun provideSharedConfirmOptionDialogViewModel(
+    fun provideConfirmOptionDialogSharedViewModel(
         schedulerProvider: SchedulerProvider,
         compositeDisposable: CompositeDisposable,
         networkHelper: NetworkHelper
-    ): SharedConfirmOptionDialogViewModel = ViewModelProvider(activity,
-        ViewModelProviderFactory(SharedConfirmOptionDialogViewModel::class) {
+    ): ConfirmOptionDialogSharedViewModel = ViewModelProvider(activity,
+        ViewModelProviderFactory(ConfirmOptionDialogSharedViewModel::class) {
             // [creator] lambda that creates and returns the ViewModel instance
-            SharedConfirmOptionDialogViewModel(
+            ConfirmOptionDialogSharedViewModel(
                 schedulerProvider,
                 compositeDisposable,
                 networkHelper
             )
-        })[SharedConfirmOptionDialogViewModel::class.java]
+        })[ConfirmOptionDialogSharedViewModel::class.java]
 }

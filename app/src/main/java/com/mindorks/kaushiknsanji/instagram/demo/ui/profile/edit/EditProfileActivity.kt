@@ -15,9 +15,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityEditProfile
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.PhotoOptionsDialogFragment
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.SharedPhotoOptionsViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.PhotoOptionsDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showAndEnableWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus
@@ -37,13 +37,13 @@ import javax.inject.Inject
  */
 class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
 
-    // SharedPhotoOptionsViewModel instance provided by Dagger
+    // PhotoOptionsDialogSharedViewModel instance provided by Dagger
     @Inject
-    lateinit var sharedPhotoOptionsViewModel: SharedPhotoOptionsViewModel
+    lateinit var photoOptionsDialogSharedViewModel: PhotoOptionsDialogSharedViewModel
 
-    // SharedProgressTextViewModel instance provided by Dagger
+    // ProgressTextDialogSharedViewModel instance provided by Dagger
     @Inject
-    lateinit var sharedProgressTextViewModel: SharedProgressTextViewModel
+    lateinit var progressTextDialogSharedViewModel: ProgressTextDialogSharedViewModel
 
     // Instance of ParaCamera provided by Dagger
     @Inject
@@ -136,7 +136,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
                         ProgressTextDialogFragment.Companion::newInstance
                     )
                     // Update the Status Text
-                    sharedProgressTextViewModel.onProgressStatusChange(resourceWrapper)
+                    progressTextDialogSharedViewModel.onProgressStatusChange(resourceWrapper)
                 }
                 else -> {
                     // When not loading, dismiss any active dialog
@@ -255,7 +255,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         }
 
         // Register an observer for System Camera launch events
-        sharedPhotoOptionsViewModel.launchCamera.observeEvent(this) {
+        photoOptionsDialogSharedViewModel.launchCamera.observeEvent(this) {
             try {
                 // Launches the Camera activity with the ACTION_IMAGE_CAPTURE Intent, that saves the captured image
                 // to a temporary file
@@ -269,7 +269,7 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         }
 
         // Register an observer for System Gallery launch events
-        sharedPhotoOptionsViewModel.launchGallery.observeEvent(this) {
+        photoOptionsDialogSharedViewModel.launchGallery.observeEvent(this) {
             Intent(Intent.ACTION_OPEN_DOCUMENT).run {
                 // With the Intent that can open any document..
                 // Filter results that can be streamed like files (this excludes stuff like timezones and contacts)

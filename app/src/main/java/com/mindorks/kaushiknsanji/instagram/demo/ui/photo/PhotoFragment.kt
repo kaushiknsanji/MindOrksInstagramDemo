@@ -12,7 +12,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.databinding.FragmentPhotoBindin
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.FragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogFragment
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.SharedProgressTextViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.TYPE_IMAGE
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
@@ -40,9 +40,9 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
     @Inject
     lateinit var mainSharedViewModel: MainSharedViewModel
 
-    // SharedProgressTextViewModel instance provided by Dagger
+    // ProgressTextDialogSharedViewModel instance provided by Dagger
     @Inject
-    lateinit var sharedProgressTextViewModel: SharedProgressTextViewModel
+    lateinit var progressTextDialogSharedViewModel: ProgressTextDialogSharedViewModel
 
     // ViewBinding instance for this Fragment
     private val binding by viewBinding(FragmentPhotoBinding::bind)
@@ -115,7 +115,7 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
                         ProgressTextDialogFragment.Companion::newInstance
                     )
                     // Update the Status Text
-                    sharedProgressTextViewModel.onProgressStatusChange(resourceWrapper)
+                    progressTextDialogSharedViewModel.onProgressStatusChange(resourceWrapper)
                 }
                 else -> {
                     // When not loading, dismiss any active dialog

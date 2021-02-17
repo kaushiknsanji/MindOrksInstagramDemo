@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
  *
  * @author Kaushik N Sanji
  */
-class SharedConfirmOptionDialogViewModel(
+class ConfirmOptionDialogSharedViewModel(
     schedulerProvider: SchedulerProvider,
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper

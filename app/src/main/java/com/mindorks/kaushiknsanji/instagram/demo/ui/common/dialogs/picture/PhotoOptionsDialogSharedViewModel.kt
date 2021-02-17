@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
  *
  * @author Kaushik N Sanji
  */
-class SharedPhotoOptionsViewModel(
+class PhotoOptionsDialogSharedViewModel(
     schedulerProvider: SchedulerProvider,
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper
@@ -20,6 +20,7 @@ class SharedPhotoOptionsViewModel(
 
     // LiveData for launching System Camera
     val launchCamera: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
     // LiveData for launching System Gallery
     val launchGallery: MutableLiveData<Event<Boolean>> = MutableLiveData()
 

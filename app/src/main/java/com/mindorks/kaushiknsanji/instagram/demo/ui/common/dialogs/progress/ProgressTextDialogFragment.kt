@@ -15,12 +15,12 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.display.show
 /**
  * [BaseDialogFragment] subclass that inflates the layout 'R.layout.dialog_progress_text' to show a Progress Dialog
  * with a status message.
- * [SharedProgressTextViewModel] is the Primary [androidx.lifecycle.ViewModel] of this DialogFragment, which is shared
+ * [ProgressTextDialogSharedViewModel] is the Primary [androidx.lifecycle.ViewModel] of this DialogFragment, which is shared
  * with other Activities/Fragments that require to show this Dialog.
  *
  * @author Kaushik N Sanji
  */
-class ProgressTextDialogFragment : BaseDialogFragment<SharedProgressTextViewModel>() {
+class ProgressTextDialogFragment : BaseDialogFragment<ProgressTextDialogSharedViewModel>() {
 
     // ViewBinding instance for this DialogFragment
     private val binding by viewBinding(DialogProgressTextBinding::bind)

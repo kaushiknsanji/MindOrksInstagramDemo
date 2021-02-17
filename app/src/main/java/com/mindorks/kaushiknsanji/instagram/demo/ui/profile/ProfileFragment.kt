@@ -14,7 +14,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.FragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogMetadata
-import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.SharedConfirmOptionDialogViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.login.LoginActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.posts.ProfilePostsAdapter
@@ -45,9 +45,9 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
     @Inject
     lateinit var mainSharedViewModel: MainSharedViewModel
 
-    // SharedConfirmOptionDialogViewModel instance provided by Dagger
+    // ConfirmOptionDialogSharedViewModel instance provided by Dagger
     @Inject
-    lateinit var sharedConfirmOptionDialogViewModel: SharedConfirmOptionDialogViewModel
+    lateinit var confirmOptionDialogSharedViewModel: ConfirmOptionDialogSharedViewModel
 
     // ViewBinding instance for this Fragment
     private val binding by viewBinding(FragmentProfileBinding::bind)
@@ -197,13 +197,13 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
                 ConfirmOptionDialogFragment.Companion::newInstance
             )
             // Pass the metadata of the Dialog to be shown via its Shared ViewModel
-            sharedConfirmOptionDialogViewModel.onDialogMetadataChange(metadata)
+            confirmOptionDialogSharedViewModel.onDialogMetadataChange(metadata)
         }
 
         // Register an observer on Logout confirmation - Positive response events
-        sharedConfirmOptionDialogViewModel.actionPositiveButton.observeEvent(this) {
+        confirmOptionDialogSharedViewModel.actionPositiveButton.observeEvent(this) {
             // Check if the Dialog Confirmation response is for Logout Dialog type
-            if (sharedConfirmOptionDialogViewModel.isDialogType(ProfileViewModel.CONFIRM_OPTION_DIALOG_TYPE_LOGOUT)) {
+            if (confirmOptionDialogSharedViewModel.isDialogType(ProfileViewModel.CONFIRM_OPTION_DIALOG_TYPE_LOGOUT)) {
                 // Delegate to the Primary ViewModel to begin the Logout process
                 viewModel.onLogoutConfirm()
             }

@@ -12,12 +12,12 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 /**
  * [BaseDialogFragment] subclass that inflates the layout 'R.layout.dialog_photo_options' to show a Dialog
  * with Photo Options to capture/select a picture.
- * [SharedPhotoOptionsViewModel] is the Primary [androidx.lifecycle.ViewModel] of this DialogFragment, which is shared
+ * [PhotoOptionsDialogSharedViewModel] is the Primary [androidx.lifecycle.ViewModel] of this DialogFragment, which is shared
  * with other Activities/Fragments that require to show this Dialog.
  *
  * @author Kaushik N Sanji
  */
-class PhotoOptionsDialogFragment : BaseDialogFragment<SharedPhotoOptionsViewModel>() {
+class PhotoOptionsDialogFragment : BaseDialogFragment<PhotoOptionsDialogSharedViewModel>() {
 
     // ViewBinding instance for this DialogFragment
     private val binding by viewBinding(DialogPhotoOptionsBinding::bind)
