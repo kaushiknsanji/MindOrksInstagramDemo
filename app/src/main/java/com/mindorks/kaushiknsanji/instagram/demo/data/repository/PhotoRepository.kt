@@ -1,7 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.data.repository
 
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.ImageUploadResponse
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.TYPE_IMAGE
 import io.reactivex.Single

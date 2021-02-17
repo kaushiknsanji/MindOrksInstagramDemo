@@ -7,9 +7,9 @@ import androidx.room.Room
 import com.mindorks.kaushiknsanji.instagram.demo.BuildConfig
 import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.TokenService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.NetworkService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.TokenService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.auth.AccessTokenAuthenticator
 import com.mindorks.kaushiknsanji.instagram.demo.di.ApplicationContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory

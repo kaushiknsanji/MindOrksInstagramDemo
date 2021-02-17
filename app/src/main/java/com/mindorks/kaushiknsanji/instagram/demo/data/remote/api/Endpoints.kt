@@ -1,4 +1,4 @@
-package com.mindorks.kaushiknsanji.instagram.demo.data.remote
+package com.mindorks.kaushiknsanji.instagram.demo.data.remote.api
 
 /**
  * Singleton object for managing all the API Endpoints in one place.

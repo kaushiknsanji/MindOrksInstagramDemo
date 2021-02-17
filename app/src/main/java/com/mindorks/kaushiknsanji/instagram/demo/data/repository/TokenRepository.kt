@@ -2,7 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.data.repository
 
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.prefs.UserPreferences
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.TokenService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.TokenService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.TokenRefreshRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.TokenRefreshResponse
 import java.net.HttpURLConnection

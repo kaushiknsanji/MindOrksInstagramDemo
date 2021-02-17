@@ -3,7 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.data.repository
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.prefs.UserPreferences
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.NetworkService
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.LoginRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.SignUpRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.UpdateMyInfoRequest

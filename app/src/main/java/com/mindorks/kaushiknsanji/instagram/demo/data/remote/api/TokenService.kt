@@ -1,5 +1,6 @@
-package com.mindorks.kaushiknsanji.instagram.demo.data.remote
+package com.mindorks.kaushiknsanji.instagram.demo.data.remote.api
 
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.TokenRefreshRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.TokenRefreshResponse
 import retrofit2.Call
