@@ -56,7 +56,7 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toEndOf="@+id/guideline_profile_vertical_begin"
                 app:layout_constraintTop_toBottomOf="@+id/guideline_profile_horizontal_top"
-                tools:src="@drawable/ic_profile_signup" />
+                tools:src="@drawable/ic_signup" />
 
             <TextView
                 android:id="@+id/text_profile_user_name"

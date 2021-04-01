@@ -30,7 +30,7 @@
         app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/ic_profile_signup" />
+        app:srcCompat="@drawable/ic_signup" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_sign_up_name"
