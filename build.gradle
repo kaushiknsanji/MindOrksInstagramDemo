@@ -5,13 +5,13 @@ buildscript {
     ext.versions = [:]
 
     // Plugin versions
-    versions.kotlin_plugin = '1.4.30'
-    versions.gradle_plugin = '4.1.2'
+    versions.kotlin_plugin = '1.4.32'
+    versions.gradle_plugin = '4.1.3'
 
     // Sdk and Tools
     versions.min_sdk = 21
-    versions.target_sdk = 29
-    versions.compile_sdk = 29
+    versions.target_sdk = 30
+    versions.compile_sdk = 30
 
     // AppCompat
     versions.appcompat = '1.2.0'
@@ -20,7 +20,7 @@ buildscript {
     versions.core = '1.3.2'
 
     // Material
-    versions.material = '1.2.1'
+    versions.material = '1.3.0'
 
     // ConstraintLayout
     versions.constraintlayout = '2.0.4'
@@ -35,14 +35,14 @@ buildscript {
     versions.multidex = '2.0.1'
 
     // Lifecycle
-    versions.lifecycle = '2.2.0'
+    versions.lifecycle = '2.3.1'
 
     // ReactiveX
     versions.rxjava = '2.2.3'
     versions.rxandroid = '2.1.1'
 
     // Image
-    versions.glide = '4.11.0'
+    versions.glide = '4.12.0'
 
     // ParaCamera for capturing Images
     versions.paracamera = '0.2.2'
@@ -97,6 +97,15 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+    }
+
+    gradle.projectsEvaluated {
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                // For detecting deprecated usages
+                freeCompilerArgs += "-Xjavac-arguments=['-Xlint:deprecation']"
+            }
+        }
     }
 }
 
