@@ -73,7 +73,7 @@
             app:layout_constraintStart_toEndOf="@+id/imgbtn_home_item_toggle_post_like"
             app:layout_constraintTop_toTopOf="@+id/imgbtn_home_item_toggle_post_like"
             style="@style/HomePostLikeCount"
-            tools:text="@string/label_home_item_post_like_count" />
+            tools:text="123 likes" />
 
         <TextView
             android:id="@+id/text_home_item_post_time"

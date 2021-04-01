@@ -213,8 +213,9 @@ class PostDetailActivity : BaseActivity<PostDetailViewModel>() {
         // Register an observer on the "Likes count of the Post" - LiveData to set its value
         // on the corresponding textView
         viewModel.likesCount.observe(this) { likesCount ->
-            binding.textPostDetailLikeCount.text = getString(
-                R.string.label_home_item_post_like_count,
+            binding.textPostDetailLikeCount.text = resources.getQuantityString(
+                R.plurals.label_post_detail_like_count,
+                likesCount,
                 likesCount
             )
         }

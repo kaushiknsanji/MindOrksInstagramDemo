@@ -70,10 +70,12 @@
     <!-- ============================= -->
     <string name="cd_imgbtn_home_item_toggle_post_like">Post like/unlike toggle button</string>
     <!-- Label shown in the item view where the number of likes needs to be displayed -->
-    <string name="label_home_item_post_like_count">
-        <!-- Output will be like '123 likes' -->
-        <xliff:g example="123" id="like_count">%1$d</xliff:g> likes
-    </string>
+    <plurals name="label_home_item_post_like_count">
+        <!-- Output will be like '0 likes' / '1 like' / '123 likes' -->
+        <item quantity="zero"><xliff:g example="0" id="like_count">%d</xliff:g> likes</item>
+        <item quantity="one"><xliff:g example="1" id="like_count">%d</xliff:g> like</item>
+        <item quantity="other"><xliff:g example="123" id="like_count">%d</xliff:g> likes</item>
+    </plurals>
     <string name="message_home_post_published">Your new post is created and published!</string>
 
     <!-- ================================================================ -->
@@ -90,9 +92,12 @@
     <!-- STRINGS USED IN PROFILE FRAGMENT -->
     <!-- ================================ -->
     <!-- Label shown for the number of posts created by the logged-in user -->
-    <string name="label_profile_post_count">
-        <!-- Output will be like '123 Posts' --> &lt;b&gt;<xliff:g example="123" id="post_count">%1$d</xliff:g>&lt;/b&gt; Posts
-    </string>
+    <plurals name="label_profile_post_count">
+        <!-- Output will be like '0 Posts' / '1 Post' / '123 Posts' -->
+        <item quantity="zero">&lt;b&gt;<xliff:g example="0" id="post_count">%1$d</xliff:g>&lt;/b&gt; Posts</item>
+        <item quantity="one">&lt;b&gt;<xliff:g example="1" id="post_count">%1$d</xliff:g>&lt;/b&gt; Post</item>
+        <item quantity="other">&lt;b&gt;<xliff:g example="123" id="post_count">%1$d</xliff:g>&lt;/b&gt; Posts</item>
+    </plurals>
     <string name="label_text_button_profile_logout">Logout</string>
     <string name="cd_image_profile_user">User profile picture</string>
     <string name="label_button_profile_edit">Edit Profile</string>
@@ -135,6 +140,13 @@
     <string name="title_condensed_action_post_detail_delete">Delete the Post</string>
     <string name="cd_image_post_detail_photo_launch">Launch Photo</string>
     <string name="title_dialog_confirm_post_detail_delete_post">Delete Post?</string>
+    <!-- Label to display the number of likes -->
+    <plurals name="label_post_detail_like_count">
+        <!-- Output will be like '0 likes' / '1 like' / '123 likes' -->
+        <item quantity="zero"><xliff:g example="0" id="like_count">%d</xliff:g> likes</item>
+        <item quantity="one"><xliff:g example="1" id="like_count">%d</xliff:g> like</item>
+        <item quantity="other"><xliff:g example="123" id="like_count">%d</xliff:g> likes</item>
+    </plurals>
 
     <!-- ================================== -->
     <!-- STRINGS USED IN POST LIKE ACTIVITY -->

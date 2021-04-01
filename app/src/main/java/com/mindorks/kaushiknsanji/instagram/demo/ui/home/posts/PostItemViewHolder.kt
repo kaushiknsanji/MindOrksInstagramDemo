@@ -131,10 +131,12 @@ class PostItemViewHolder(container: ViewGroup, listener: PostsAdapter.Listener? 
         // Register an observer on the "Likes count of the Post" - LiveData to set its value
         // on the corresponding textView
         itemViewModel.likesCount.observe(this) { likesCount ->
-            itemViewBinding.textHomeItemPostLikeCount.text = itemView.context.getString(
-                R.string.label_home_item_post_like_count,
-                likesCount
-            )
+            itemViewBinding.textHomeItemPostLikeCount.text =
+                itemView.context.resources.getQuantityString(
+                    R.plurals.label_home_item_post_like_count,
+                    likesCount,
+                    likesCount
+                )
         }
 
         // Register an observer on the user like button action LiveData to change the "Heart" image accordingly

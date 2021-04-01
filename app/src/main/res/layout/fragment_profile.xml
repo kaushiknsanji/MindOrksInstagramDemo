@@ -80,7 +80,7 @@
                 android:textAppearance="@style/AppTheme.Subtitle2"
                 app:layout_constraintStart_toEndOf="@+id/image_profile_user"
                 app:layout_constraintTop_toTopOf="@+id/image_profile_user"
-                tools:text="@string/label_profile_post_count" />
+                tools:text="123 Posts" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_profile_edit"

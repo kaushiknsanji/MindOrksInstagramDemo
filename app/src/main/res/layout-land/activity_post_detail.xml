@@ -99,7 +99,7 @@
             android:layout_marginEnd="@dimen/guideline_post_detail_vertical_keyline"
             app:layout_constraintBaseline_toBaselineOf="@+id/text_post_detail_likes_title"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="@string/label_home_item_post_like_count" />
+            tools:text="123 likes" />
 
         <View
             android:id="@+id/divider_post_detail_likes"

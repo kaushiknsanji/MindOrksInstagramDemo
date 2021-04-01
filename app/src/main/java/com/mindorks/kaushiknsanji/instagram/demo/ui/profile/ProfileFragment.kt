@@ -153,8 +153,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         viewModel.userPostsCount.observe(this) { postsCount: Int ->
             TextAppearanceUtils.setHtmlText(
                 binding.textProfilePostCount,
-                resources.getString(
-                    R.string.label_profile_post_count, postsCount
+                resources.getQuantityString(
+                    R.plurals.label_profile_post_count,
+                    postsCount,
+                    postsCount
                 )
             )
         }
