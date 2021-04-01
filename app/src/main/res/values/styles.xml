@@ -16,6 +16,11 @@
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
+    <!-- Base application theme with White Window background -->
+    <style name="AppTheme.Background.White" parent="AppTheme">
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
     <style name="AppThemeFullscreen" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>

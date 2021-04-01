@@ -23,16 +23,18 @@
         <activity
             android:name=".ui.detail.PostDetailActivity"
             android:parentActivityName=".ui.main.MainActivity" />
-        <activity android:name=".ui.profile.edit.EditProfileActivity" />
+        <activity
+            android:name=".ui.profile.edit.EditProfileActivity"
+            android:theme="@style/AppTheme.Background.White" />
         <activity
             android:name=".ui.signup.SignUpActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.Background.White" />
         <activity
             android:name=".ui.login.LoginActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.Background.White" />
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.Background.White">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
