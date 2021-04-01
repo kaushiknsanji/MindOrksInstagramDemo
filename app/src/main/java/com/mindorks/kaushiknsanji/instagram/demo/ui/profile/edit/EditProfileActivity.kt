@@ -74,6 +74,9 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
         binding.toolbarEditProfile.apply {
             // Set Title
             title = getString(R.string.title_edit_profile_toolbar)
+            // Set starting title margin
+            titleMarginStart =
+                resources.getDimensionPixelSize(R.dimen.text_edit_profile_toolbar_title_margin_start)
             // Set Close Icon as the Navigation Icon
             navigationIcon = ContextCompat.getDrawable(context, R.drawable.ic_close)
             // Register click listener on close button of the toolbar
