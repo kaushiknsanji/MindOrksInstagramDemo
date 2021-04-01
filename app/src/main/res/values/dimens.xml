@@ -117,6 +117,7 @@
     <!-- FOR EDIT PROFILE ACTIVITY -->
     <!-- ========================= -->
     <dimen name="edit_profile_input_fields_text_size">16sp</dimen>
+    <dimen name="edit_profile_input_fields_collapsed_padding_top">1dp</dimen>
     <dimen name="text_edit_profile_toolbar_title_margin_start">20dp</dimen>
     <dimen name="guideline_edit_profile_vertical_keyline">30dp</dimen>
     <dimen name="image_edit_profile_change_pic_size">80dp</dimen>

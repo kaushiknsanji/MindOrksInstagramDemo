@@ -372,6 +372,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="boxBackgroundColor">@color/white</item>
         <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="boxCollapsedPaddingTop">@dimen/edit_profile_input_fields_collapsed_padding_top
+        </item>
     </style>
 
     <!-- Base Style for TextInputEditTexts -->
