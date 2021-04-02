@@ -16,6 +16,12 @@
     <color name="red">#D0021B</color>
     <color name="white">#FFFFFF</color>
 
+    <!-- ========================================= -->
+    <!-- COLORS USED IN LOGIN AND SIGN-UP ACTIVITY -->
+    <!-- ========================================= -->
+    <color name="loginSignUpTextInputBoxOnSurfaceColor">#808080</color>
+    <color name="loginSignUpTextInputBoxBackgroundColor">#FAFAFA</color>
+
     <!-- =============================== -->
     <!-- COLORS USED IN PROFILE FRAGMENT -->
     <!-- =============================== -->

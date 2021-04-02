@@ -228,7 +228,17 @@
         <item name="android:layout_marginTop">@dimen/login_sign_up_fields_vertical_margin</item>
         <item name="endIconMode">clear_text</item>
         <item name="endIconDrawable">@drawable/ic_clear</item>
-        <item name="boxStrokeColor">@color/gray</item>
+        <item name="materialThemeOverlay">@style/LoginSignUpTextInputFieldsOverlay</item>
+        <item name="boxBackgroundColor">@color/loginSignUpTextInputBoxBackgroundColor</item>
+    </style>
+
+    <!-- Theme Overlay for TextInputLayouts -->
+    <style name="LoginSignUpTextInputFieldsOverlay">
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorOnSurface">@color/loginSignUpTextInputBoxOnSurfaceColor</item>
+        <item name="editTextStyle">
+            @style/Widget.MaterialComponents.TextInputEditText.OutlinedBox
+        </item>
     </style>
 
     <!-- Base Style for TextInputEditTexts -->
