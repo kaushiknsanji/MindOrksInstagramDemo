@@ -34,7 +34,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_sign_up_name"
-        style="@style/LoginSignUpTextInputFields.UserName"
+        style="@style/LoginSignUpTextInputFields"
         android:layout_marginTop="@dimen/text_input_sign_up_name_margin_top"
         app:layout_constraintBottom_toTopOf="@+id/text_input_sign_up_email"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
@@ -49,7 +49,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_sign_up_email"
-        style="@style/LoginSignUpTextInputFields.Email"
+        style="@style/LoginSignUpTextInputFields"
         app:layout_constraintBottom_toTopOf="@+id/text_input_sign_up_password"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
         app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
@@ -63,7 +63,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_sign_up_password"
-        style="@style/LoginSignUpTextInputFields.Password.SignUp"
+        style="@style/LoginSignUpTextInputFields.Password"
         app:layout_constraintBottom_toTopOf="@+id/button_sign_up"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sign_up_vertical_end"
         app:layout_constraintStart_toEndOf="@+id/guideline_sign_up_vertical_begin"
@@ -71,7 +71,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_sign_up_password"
-            style="@style/LoginSignUpEditTextFields.Password" />
+            style="@style/LoginSignUpEditTextFields.Password.SignUp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

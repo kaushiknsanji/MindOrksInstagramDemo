@@ -230,6 +230,7 @@
         <item name="endIconDrawable">@drawable/ic_clear</item>
         <item name="materialThemeOverlay">@style/LoginSignUpTextInputFieldsOverlay</item>
         <item name="boxBackgroundColor">@color/loginSignUpTextInputBoxBackgroundColor</item>
+        <item name="hintEnabled">false</item>
     </style>
 
     <!-- Theme Overlay for TextInputLayouts -->
@@ -289,13 +290,9 @@
         <item name="android:text">@string/label_text_button_sign_up_option_login</item>
     </style>
 
-    <!-- Derived TextInputLayout Style for Email field -->
-    <style name="LoginSignUpTextInputFields.Email">
-        <item name="android:hint">@string/hint_login_sign_up_email</item>
-    </style>
-
     <!-- Derived TextInputEditText Style for Email field -->
     <style name="LoginSignUpEditTextFields.Email">
+        <item name="android:hint">@string/hint_login_sign_up_email</item>
         <item name="android:inputType">textEmailAddress</item>
     </style>
 
@@ -305,29 +302,25 @@
         <item name="endIconDrawable">@drawable/design_password_eye</item>
     </style>
 
-    <!-- Derived TextInputLayout Style for Password field in Login Activity -->
-    <style name="LoginSignUpTextInputFields.Password.Login">
-        <item name="android:hint">@string/hint_login_password</item>
-    </style>
-
-    <!-- Derived TextInputLayout Style for Password field in Sign-Up Activity -->
-    <style name="LoginSignUpTextInputFields.Password.SignUp">
-        <item name="android:hint">@string/hint_sign_up_password</item>
-    </style>
-
     <!-- Derived TextInputEditText Style for Password field -->
     <style name="LoginSignUpEditTextFields.Password">
         <item name="android:inputType">textPassword</item>
         <item name="android:maxLength">50</item>
     </style>
 
-    <!-- Derived TextInputLayout Style for Name field in Sign-Up Activity -->
-    <style name="LoginSignUpTextInputFields.UserName">
-        <item name="android:hint">@string/hint_sign_up_name</item>
+    <!-- Derived TextInputEditText Style for Password field in Login Activity -->
+    <style name="LoginSignUpEditTextFields.Password.Login">
+        <item name="android:hint">@string/hint_login_password</item>
+    </style>
+
+    <!-- Derived TextInputEditText Style for Password field in Sign-Up Activity -->
+    <style name="LoginSignUpEditTextFields.Password.SignUp">
+        <item name="android:hint">@string/hint_sign_up_password</item>
     </style>
 
     <!-- Derived TextInputEditText Style for Name field in Sign-Up Activity -->
     <style name="LoginSignUpEditTextFields.UserName">
+        <item name="android:hint">@string/hint_sign_up_name</item>
         <item name="android:inputType">textPersonName|textCapWords</item>
         <item name="android:maxLength">100</item>
     </style>

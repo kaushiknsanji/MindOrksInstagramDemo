@@ -32,7 +32,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_login_email"
-        style="@style/LoginSignUpTextInputFields.Email"
+        style="@style/LoginSignUpTextInputFields"
         android:layout_marginTop="@dimen/text_input_login_email_margin_top"
         app:layout_constraintBottom_toTopOf="@+id/text_input_login_password"
         app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
@@ -47,7 +47,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_login_password"
-        style="@style/LoginSignUpTextInputFields.Password.Login"
+        style="@style/LoginSignUpTextInputFields.Password"
         app:layout_constraintBottom_toTopOf="@+id/button_login"
         app:layout_constraintEnd_toStartOf="@+id/guideline_login_vertical_end"
         app:layout_constraintStart_toEndOf="@+id/guideline_login_vertical_begin"
@@ -55,7 +55,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_login_password"
-            style="@style/LoginSignUpEditTextFields.Password" />
+            style="@style/LoginSignUpEditTextFields.Password.Login" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
