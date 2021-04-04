@@ -382,8 +382,39 @@
         <item name="android:layout_width">@dimen/match_constraint_0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="boxBackgroundColor">@color/white</item>
-        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Medium</item>
-        <item name="boxCollapsedPaddingTop">@dimen/edit_profile_input_fields_collapsed_padding_top
+        <item name="hintTextAppearance">@style/AppTheme.Subtitle1</item>
+        <item name="hintTextColor">@color/gray</item>
+        <item name="boxCollapsedPaddingTop">
+            @dimen/edit_profile_input_fields_collapsed_padding_top
+        </item>
+        <item name="materialThemeOverlay">@style/EditProfileTextInputFieldsOverlay</item>
+        <item name="expandedHintEnabled">false</item>
+    </style>
+
+    <!-- Theme Overlay for TextInputLayouts -->
+    <style name="EditProfileTextInputFieldsOverlay">
+        <item name="editTextStyle">@style/EditProfileTextInputEditTextFieldStyle</item>
+    </style>
+
+    <!-- Edit Text Style for TextInputLayouts -->
+    <style name="EditProfileTextInputEditTextFieldStyle" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
+        <item name="android:textAppearance">@style/AppTheme.Subtitle1</item>
+        <item name="android:paddingLeft">
+            @dimen/edit_profile_input_edit_text_fields_horizontal_padding
+        </item>
+        <item name="android:paddingStart">
+            @dimen/edit_profile_input_edit_text_fields_horizontal_padding
+        </item>
+        <item name="android:paddingRight">
+            @dimen/edit_profile_input_edit_text_fields_horizontal_padding
+        </item>
+        <item name="android:paddingEnd">
+            @dimen/edit_profile_input_edit_text_fields_horizontal_padding
+        </item>
+        <item name="android:paddingTop">@dimen/edit_profile_input_edit_text_fields_padding_top
+        </item>
+        <item name="android:paddingBottom">
+            @dimen/edit_profile_input_edit_text_fields_padding_bottom
         </item>
     </style>
 
@@ -392,7 +423,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textSize">@dimen/edit_profile_input_fields_text_size</item>
     </style>
 
     <!-- Derived TextInputLayout Style for Name field -->
@@ -402,6 +432,7 @@
 
     <!-- Derived TextInputEditText Style for Name field -->
     <style name="EditProfileEditTextFields.UserName">
+        <item name="android:hint">@string/hint_edit_profile_name</item>
         <item name="android:inputType">textPersonName|textCapWords</item>
         <item name="android:maxLength">100</item>
     </style>
@@ -413,6 +444,7 @@
 
     <!-- Derived TextInputEditText Style for Bio field -->
     <style name="EditProfileEditTextFields.Bio">
+        <item name="android:hint">@string/hint_edit_profile_bio</item>
         <item name="android:inputType">textShortMessage|textMultiLine|textCapSentences|textAutoComplete</item>
         <item name="android:maxLines">2</item>
     </style>
