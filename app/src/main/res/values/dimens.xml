@@ -47,7 +47,6 @@
     <!-- ============================== -->
     <dimen name="guideline_login_sign_up_vertical_keyline">30dp</dimen>
     <dimen name="login_sign_up_fields_vertical_margin">16dp</dimen>
-    <dimen name="login_sign_up_input_fields_text_size">16sp</dimen>
     <dimen name="button_login_sign_up_text_size">18sp</dimen>
     <dimen name="button_login_sign_up_vertical_padding">8dp</dimen>
     <dimen name="text_button_login_sign_up_option_margin_top">24dp</dimen>

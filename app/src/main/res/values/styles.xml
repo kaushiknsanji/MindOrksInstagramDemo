@@ -222,7 +222,7 @@
     <!-- STYLES FOR LOGIN AND SIGN-UP ACTIVITY -->
     <!-- ===================================== -->
     <!-- Base Style for TextInputLayouts -->
-    <style name="LoginSignUpTextInputFields" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="LoginSignUpTextInputFields" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="android:layout_width">@dimen/match_constraint_0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/login_sign_up_fields_vertical_margin</item>
@@ -238,8 +238,13 @@
         <item name="colorPrimary">@color/red</item>
         <item name="colorOnSurface">@color/loginSignUpTextInputBoxOnSurfaceColor</item>
         <item name="editTextStyle">
-            @style/Widget.MaterialComponents.TextInputEditText.OutlinedBox
+            @style/LoginSignUpTextInputEditTextFieldStyle
         </item>
+    </style>
+
+    <!-- Edit Text Style for TextInputLayouts -->
+    <style name="LoginSignUpTextInputEditTextFieldStyle" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
+        <item name="android:textAppearance">@style/AppTheme.Subtitle1</item>
     </style>
 
     <!-- Base Style for TextInputEditTexts -->
@@ -247,7 +252,6 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textSize">@dimen/login_sign_up_input_fields_text_size</item>
     </style>
 
     <!-- Base Button Style for Login or Sign-Up action -->
