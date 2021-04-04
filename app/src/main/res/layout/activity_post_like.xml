@@ -35,7 +35,7 @@
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_app_bar_post_like"
         style="@style/AppTheme.BottomAppBarOverlay"
-        android:backgroundTint="@color/postLikeBottomAppBarColor">
+        app:backgroundTint="@color/postLikeBottomAppBarColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

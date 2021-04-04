@@ -262,7 +262,7 @@
         <item name="android:textSize">@dimen/button_login_sign_up_text_size</item>
         <item name="android:paddingTop">@dimen/button_login_sign_up_vertical_padding</item>
         <item name="android:paddingBottom">@dimen/button_login_sign_up_vertical_padding</item>
-        <item name="android:backgroundTint">@color/blue</item>
+        <item name="backgroundTint">@color/blue</item>
     </style>
 
     <!-- Derived Button Style for Login action -->
