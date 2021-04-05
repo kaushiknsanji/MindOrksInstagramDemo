@@ -56,7 +56,7 @@ class PhotoOptionsDialogFragment : BaseDialogFragment<PhotoOptionsDialogSharedVi
      * Can be overridden to provide the style resource describing the theme to be used for the [Dialog].
      * If not provided, value of `0` will be used as the default [Dialog] theme.
      */
-    override fun provideTheme(): Int = R.style.AppTheme_AlertDialog_Light
+    override fun provideTheme(): Int = R.style.AppTheme_MaterialAlertDialogOverlay
 
     /**
      * Can be overridden to customize the basic appearance and behavior of the

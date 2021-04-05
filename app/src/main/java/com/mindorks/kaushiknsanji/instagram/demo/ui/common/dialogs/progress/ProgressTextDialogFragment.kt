@@ -2,6 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress
 
 import android.app.Dialog
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.databinding.DialogProgressTextBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent
@@ -40,7 +41,7 @@ class ProgressTextDialogFragment : BaseDialogFragment<ProgressTextDialogSharedVi
     /**
      * Initializes the [Dialog] of the DialogFragment.
      */
-    override fun setupDialog(dialog: Dialog, savedInstanceState: Bundle?) {
+    override fun setupDialog(dialog: AlertDialog, savedInstanceState: Bundle?) {
         super.setupDialog(dialog, savedInstanceState)
         // This Dialog should not be cancelable
         isCancelable = false
@@ -82,7 +83,7 @@ class ProgressTextDialogFragment : BaseDialogFragment<ProgressTextDialogSharedVi
      * Can be overridden to provide the style resource describing the theme to be used for the [Dialog].
      * If not provided, value of `0` will be used as the default [Dialog] theme.
      */
-    override fun provideTheme(): Int = R.style.AppTheme_AlertDialog_Light
+    override fun provideTheme(): Int = R.style.AppTheme_MaterialAlertDialogOverlay
 
     /**
      * Can be overridden to customize the basic appearance and behavior of the

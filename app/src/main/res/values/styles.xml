@@ -140,13 +140,55 @@
     </style>
 
     <!-- Style for the App Dialogs -->
-    <style name="AppTheme.AlertDialog.Light" parent="Theme.MaterialComponents.Light.Dialog.Alert">
-        <!-- Buttons color-->
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme.MaterialAlertDialogOverlay" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <!-- Background color -->
+        <item name="colorSurface">@color/white</item>
         <!-- Text color -->
-        <item name="android:textColorPrimary">@color/black</item>
-        <!-- Dialog background -->
-        <item name="android:windowBackground">@drawable/shape_dialog_background</item>
+        <item name="colorOnSurface">?attr/colorPrimary</item>
+        <!-- Content Text Style -->
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body.Text
+        </item>
+        <!-- Title Text Style -->
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
+        </item>
+        <!-- Positive Button Style -->
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.TextButton.Dialog</item>
+        <!-- Negative Button Style -->
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.TextButton.Dialog</item>
+        <!-- Neutral Button Style -->
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.TextButton.Dialog.Flush</item>
+    </style>
+
+    <!-- Style for Action Buttons in App Dialogs -->
+    <style name="AppTheme.TextButton.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextButton.Dialog</item>
+    </style>
+
+    <!-- Style for Neutral Button in App Dialogs -->
+    <style name="AppTheme.TextButton.Dialog.Flush" parent="Widget.MaterialComponents.Button.TextButton.Dialog.Flush">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextButton.Dialog</item>
+    </style>
+
+    <!-- ThemeOverlay for Action Buttons in App Dialogs -->
+    <style name="ThemeOverlay.App.TextButton.Dialog" parent="">
+        <!-- Button Color when enabled -->
+        <item name="colorPrimary">?attr/colorAccent</item>
+        <!-- Button Color when disabled -->
+        <item name="colorOnSurface">?attr/colorPrimary</item>
+    </style>
+
+    <!-- Style for Content Text in App Dialogs -->
+    <style name="MaterialAlertDialog.App.Body.Text" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textAppearance">@style/AppTheme.Body2</item>
+    </style>
+
+    <!-- Style for Title Text in App Dialogs -->
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textAppearance">@style/AppTheme.Subtitle1</item>
     </style>
 
     <!-- ================== -->

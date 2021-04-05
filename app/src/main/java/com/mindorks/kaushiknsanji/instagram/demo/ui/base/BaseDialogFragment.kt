@@ -12,7 +12,9 @@ import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
+import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DaggerDialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.DialogFragmentModule
@@ -74,7 +76,7 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
      * @return Return a new Dialog instance to be displayed by the Fragment.
      */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
-        AlertDialog.Builder(requireContext(), provideTheme()).apply {
+        MaterialAlertDialogBuilder(requireContext(), provideTheme()).apply {
             // Construct a Template Dialog with the required elements using builder
             constructTemplateDialog(this, savedInstanceState)
         }.create().apply {
@@ -109,7 +111,23 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? =
         provideLayoutId().takeIf { it != 0 }?.run {
-            inflater.inflate(this, container, false).apply { alertDialog.setView(this) }
+            inflater.inflate(this, container, false).apply {
+                // Read the padding dimensions for Custom View from resources
+                val horizontalPadding = resources.getDimensionPixelSize(
+                    R.dimen.dialog_custom_view_horizontal_padding
+                )
+                val verticalPadding = resources.getDimensionPixelSize(
+                    R.dimen.dialog_custom_view_vertical_padding
+                )
+                // Set the inflated view as Dialog's Custom View with the above padding
+                alertDialog.setView(
+                    this,
+                    horizontalPadding,
+                    verticalPadding,
+                    horizontalPadding,
+                    verticalPadding
+                )
+            }
         }
 
     /**
@@ -259,7 +277,7 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
      */
     @CallSuper
     protected open fun constructTemplateDialog(
-        dialogBuilder: AlertDialog.Builder,
+        dialogBuilder: MaterialAlertDialogBuilder,
         savedInstanceState: Bundle?
     ) {
     }
@@ -268,7 +286,7 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
      * Can be overridden by subclasses to setup the [Dialog] of the DialogFragment.
      */
     @CallSuper
-    protected open fun setupDialog(dialog: Dialog, savedInstanceState: Bundle?) {
+    protected open fun setupDialog(dialog: AlertDialog, savedInstanceState: Bundle?) {
         // Fragment will always be shown as a Dialog
         showsDialog = true
         // Setup the Style of the Dialog

@@ -1,7 +1,8 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option
 
+import android.app.Dialog
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.DialogFragmentComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
@@ -28,7 +29,7 @@ class ConfirmOptionDialogFragment : BaseDialogFragment<ConfirmOptionDialogShared
      * since we can only hide the elements that are initialized.
      */
     override fun constructTemplateDialog(
-        dialogBuilder: AlertDialog.Builder,
+        dialogBuilder: MaterialAlertDialogBuilder,
         savedInstanceState: Bundle?
     ) {
         super.constructTemplateDialog(dialogBuilder, savedInstanceState)
@@ -52,8 +53,13 @@ class ConfirmOptionDialogFragment : BaseDialogFragment<ConfirmOptionDialogShared
                 viewModel.onDialogNegativeButtonClicked()
             }
         }
-
     }
+
+    /**
+     * Can be overridden to provide the style resource describing the theme to be used for the [Dialog].
+     * If not provided, value of `0` will be used as the default [Dialog] theme.
+     */
+    override fun provideTheme(): Int = R.style.AppTheme_MaterialAlertDialogOverlay
 
     companion object {
 
