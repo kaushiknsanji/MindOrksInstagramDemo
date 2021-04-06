@@ -16,6 +16,9 @@ object FileUtils {
     // Constant used for Logs
     private const val TAG: String = "FileUtils"
 
+    // Lock for creating directories
+    private val filesDirLock: ReentrantLock = ReentrantLock()
+
     /**
      * Creates a directory by the name [dirName] under the application's files directory.
      *
@@ -36,7 +39,7 @@ object FileUtils {
      */
     private fun createFilesDir(file: File): File? {
         // Ensuring synchronization with Lock while creating the Directory
-        ReentrantLock().withLock {
+        filesDirLock.withLock {
             if (!file.exists()) {
                 // Create directories when they do not exist
                 if (!file.mkdirs()) {

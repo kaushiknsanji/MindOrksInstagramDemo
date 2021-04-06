@@ -24,6 +24,9 @@ class AccessTokenAuthenticator @Inject constructor(
     private val accessTokenProvider: AccessTokenProvider
 ) : Authenticator {
 
+    // Lock for retrying failed unauthorized requests
+    private val retryLock: ReentrantLock = ReentrantLock()
+
     /**
      * Returns a request that includes a credential to satisfy an authentication challenge in
      * [response]. Returns null if the challenge cannot be satisfied.
@@ -43,7 +46,7 @@ class AccessTokenAuthenticator @Inject constructor(
 
             // Do the following operations in a lock to avoid concurrency issues
             // since OkHttp can have multiple active threads
-            ReentrantLock().withLock {
+            retryLock.withLock {
                 // Get the re-authentication retry count
                 var retryCount = retryCount(response.request)
 
