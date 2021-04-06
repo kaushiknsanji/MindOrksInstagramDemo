@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.signature.ObjectKey
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.paracamera.Camera
 import com.mindorks.paracamera.Utils
@@ -88,6 +89,13 @@ object ImageUtils {
                     glideRequest
                         .apply(RequestOptions.overrideOf(placeHolderWidth, placeHolderHeight))
                 }
+            }
+
+            imageFile?.run {
+                // Applies when we have [imageFile]
+
+                // Invalidate cache based on the Image File's Last Modified timestamp
+                glideRequest.signature(ObjectKey(this.lastModified()))
             }
 
             // Start and load the image into the corresponding ImageView

@@ -101,7 +101,7 @@ class EditProfileViewModel(
         validationsList.filterValidation(Validation.Field.NAME)
 
     // LiveData that saves the chosen Profile Image File which will be uploaded on save
-    val chosenProfileImageFile: MutableLiveData<File> = MutableLiveData()
+    val chosenProfileImageFile: MutableLiveData<File?> = MutableLiveData()
 
     // Transforms [nameField] to see if the value is different from its original
     private val hasNameChanged: LiveData<Boolean> =
@@ -312,7 +312,34 @@ class EditProfileViewModel(
      * Called when the "Reset to defaults" button in the toolbar is clicked.
      * Re-posts the same user information to [userInfo] to reset any data changed.
      */
-    fun onReset() = userInfo.value?.let { user: User -> userInfo.postValue(user) }
+    fun onReset() = userInfo.value?.let { user: User ->
+        // When a Profile picture was chosen by the user
+        chosenProfileImageFile.value?.takeIf { it.exists() }?.apply {
+            // Construct a SingleSource for deleting the Profile Image File chosen, and save its resulting disposable
+            compositeDisposable.add(
+                // Create a SingleSource to delete the Profile Image File chosen, so that the operation can be
+                // done in the background
+                Single.fromCallable {
+                    this.delete()
+                }
+                    .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
+                    .subscribe(
+                        // OnSuccess
+                        {
+                            // Clear the LiveData of chosen Profile Image File
+                            chosenProfileImageFile.postValue(null)
+                        },
+                        // OnError
+                        {
+                            // Display an error to the user requesting to retry
+                            messageStringId.postValue(Resource.Error(R.string.error_retry))
+                        }
+                    )
+            )
+        }
+        // Re-post the same user information to [userInfo] in order to reset all data
+        userInfo.postValue(user)
+    }
 
     /**
      * Called when the close button in the toolbar is clicked.

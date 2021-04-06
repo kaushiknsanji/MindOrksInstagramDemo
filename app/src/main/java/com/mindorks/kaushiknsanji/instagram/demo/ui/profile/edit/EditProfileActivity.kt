@@ -209,10 +209,6 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
                 requestOptions = listOf(
                     RequestOptions.circleCropTransform(),
                     RequestOptions.placeholderOf(R.drawable.ic_profile_add_pic)
-                ),
-                defaultImageRes = R.drawable.ic_profile_add_pic,
-                defaultImageRequestOptions = listOf(
-                    RequestOptions.circleCropTransform()
                 )
             )
         }
