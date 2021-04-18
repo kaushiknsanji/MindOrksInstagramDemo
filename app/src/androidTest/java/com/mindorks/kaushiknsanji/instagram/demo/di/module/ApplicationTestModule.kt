@@ -8,6 +8,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.BuildConfig
 import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.FakeNetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.TokenService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.auth.AccessTokenAuthenticator
@@ -15,6 +16,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.ApplicationContext
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.FileUtils
+import com.mindorks.kaushiknsanji.instagram.demo.utils.network.FakeNetworkHelperImpl
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.RxSchedulerProvider
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
@@ -50,21 +52,13 @@ class ApplicationTestModule(private val application: InstagramApplication) {
 
     @Singleton
     @Provides
-    fun provideNetworkHelper(): NetworkHelper = NetworkHelper(application)
+    fun provideNetworkHelper(): NetworkHelper = FakeNetworkHelperImpl(application)
 
     @Singleton
     @Provides
     fun provideNetworkService(
         authenticator: AccessTokenAuthenticator
-    ): NetworkService =
-        Networking.createService(
-            BuildConfig.API_KEY,
-            BuildConfig.BASE_URL,
-            application.cacheDir,
-            10 * 1024 * 1024, // 10MB Cache Size
-            NetworkService::class.java,
-            authenticator
-        )
+    ): NetworkService = FakeNetworkService()
 
     @Singleton
     @Provides

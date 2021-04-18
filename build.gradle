@@ -78,6 +78,7 @@ buildscript {
     versions.test_runner = '1.3.0'
     versions.test_ext_runner = '1.1.2'
     versions.hamcrest = '2.2'
+    versions.fragment_testing = '1.3.2'
 
     repositories {
         google()

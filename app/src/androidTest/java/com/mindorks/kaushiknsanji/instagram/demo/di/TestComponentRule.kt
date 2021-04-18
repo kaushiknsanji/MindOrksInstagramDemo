@@ -25,6 +25,11 @@ class TestComponentRule(private val context: Context) : ExternalResource() {
     fun getContext(): Context = context
 
     /**
+     * Getter for the Application [TestComponent].
+     */
+    fun getComponent(): TestComponent = testComponent!!
+
+    /**
      * Builds the [TestComponent] instance and initializes it
      * as the [com.mindorks.kaushiknsanji.instagram.demo.di.component.ApplicationComponent] for Testing.
      */

@@ -155,7 +155,12 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$versions.test_runner"
     androidTestImplementation "androidx.test.ext:junit:$versions.test_ext_runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$versions.espresso"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$versions.espresso"
     androidTestImplementation "org.mockito:mockito-core:$versions.mockito"
+    debugImplementation("androidx.fragment:fragment-testing:$versions.fragment_testing") {
+        because 'debugImplementation is used here since the FragmentScenaro relies on an ' +
+                'empty activity which is only accessible by the test target process'
+    }
     kaptAndroidTest "com.google.dagger:dagger-compiler:$versions.dagger"
 }

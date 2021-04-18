@@ -16,6 +16,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.DIRECTORY_TEMP
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.FileUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
+import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelperImpl
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.RxSchedulerProvider
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import dagger.Module
@@ -50,7 +51,7 @@ class ApplicationModule(private val application: InstagramApplication) {
 
     @Singleton
     @Provides
-    fun provideNetworkHelper(): NetworkHelper = NetworkHelper(application)
+    fun provideNetworkHelper(): NetworkHelper = NetworkHelperImpl(application)
 
     @Singleton
     @Provides

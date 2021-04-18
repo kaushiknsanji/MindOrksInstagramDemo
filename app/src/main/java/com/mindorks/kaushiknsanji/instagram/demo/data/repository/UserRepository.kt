@@ -1,5 +1,6 @@
 package com.mindorks.kaushiknsanji.instagram.demo.data.repository
 
+import androidx.annotation.RestrictTo
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.db.DatabaseService
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.prefs.UserPreferences
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
@@ -13,6 +14,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.LoginRespo
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.SignUpResponse
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import io.reactivex.Single
+import org.jetbrains.annotations.TestOnly
 import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -58,6 +60,15 @@ class UserRepository @Inject constructor(
         userPreferences.removeRefreshToken()
         userPreferences.removeProfilePicUrl()
         userPreferences.removeTagline()
+    }
+
+    /**
+     * Removes logged-in Test user information from [userPreferences]
+     */
+    @TestOnly
+    @RestrictTo(value = [RestrictTo.Scope.TESTS])
+    fun removeCurrentTestUser() {
+        removeCurrentUser()
     }
 
     /**
