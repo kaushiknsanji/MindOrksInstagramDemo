@@ -31,6 +31,21 @@ android {
         multiDexEnabled true
     }
 
+    sourceSets {
+        // Shared Test directory for classes shared between Instrumented Tests and Unit Tests
+        def sharedTestDir = 'src/sharedTest/java'
+
+        test {
+            // Add shared test directory to source of Unit Tests
+            java.srcDirs += sharedTestDir
+        }
+
+        androidTest {
+            // Add shared test directory to source of Instrumented Tests
+            java.srcDirs += sharedTestDir
+        }
+    }
+
     buildTypes {
         debug {
             buildConfigField STRING, BASE_URL, BASE_URL_VAL
