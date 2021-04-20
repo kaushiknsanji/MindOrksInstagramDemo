@@ -13,12 +13,16 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.TokenRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.di.ApplicationContext
+import com.mindorks.kaushiknsanji.instagram.demo.di.OkHttpClientAccessAuth
+import com.mindorks.kaushiknsanji.instagram.demo.di.OkHttpClientNoAuth
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.di.module.ApplicationModule
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import dagger.Component
 import io.reactivex.disposables.CompositeDisposable
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
 import javax.inject.Singleton
 
@@ -56,6 +60,23 @@ interface ApplicationComponent {
      * Exposes [NetworkHelper] instance
      */
     fun getNetworkHelper(): NetworkHelper
+
+    /**
+     * Exposes [HttpLoggingInterceptor] instance
+     */
+    fun getHttpLoggingInterceptor(): HttpLoggingInterceptor
+
+    /**
+     * Exposes [OkHttpClient] instance meant for all API Calls except for refreshing Tokens.
+     */
+    @OkHttpClientAccessAuth
+    fun getHttpClientWithAccessAuthenticator(): OkHttpClient
+
+    /**
+     * Exposes [OkHttpClient] instance meant for only refreshing Tokens.
+     */
+    @OkHttpClientNoAuth
+    fun getHttpClientWithoutAuthenticator(): OkHttpClient
 
     /**
      * Exposes [NetworkService] instance

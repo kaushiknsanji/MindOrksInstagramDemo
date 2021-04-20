@@ -13,6 +13,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.TokenService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.auth.AccessTokenAuthenticator
 import com.mindorks.kaushiknsanji.instagram.demo.di.ApplicationContext
+import com.mindorks.kaushiknsanji.instagram.demo.di.OkHttpClientAccessAuth
+import com.mindorks.kaushiknsanji.instagram.demo.di.OkHttpClientNoAuth
 import com.mindorks.kaushiknsanji.instagram.demo.di.TempDirectory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.FileUtils
@@ -23,6 +25,8 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
 import javax.inject.Singleton
 
@@ -56,18 +60,46 @@ class ApplicationTestModule(private val application: InstagramApplication) {
 
     @Singleton
     @Provides
-    fun provideNetworkService(
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
+        Networking.httpLoggingInterceptor()
+
+    @Singleton
+    @OkHttpClientAccessAuth
+    @Provides
+    fun provideHttpClientWithAccessAuthenticator(
+        loggingInterceptor: HttpLoggingInterceptor,
         authenticator: AccessTokenAuthenticator
-    ): NetworkService = FakeNetworkService()
+    ): OkHttpClient = Networking.createOkHttpClient(
+        application.cacheDir,
+        10 * 1024 * 1024, // 10MB Cache Size
+        loggingInterceptor,
+        authenticator
+    )
+
+    @Singleton
+    @OkHttpClientNoAuth
+    @Provides
+    fun provideHttpClientWithoutAuthenticator(
+        loggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient = Networking.createOkHttpClient(
+        application.cacheDir,
+        10 * 1024 * 1024, // 10MB Cache Size
+        loggingInterceptor
+    )
 
     @Singleton
     @Provides
-    fun provideTokenService(): TokenService =
+    fun provideNetworkService(): NetworkService = FakeNetworkService()
+
+    @Singleton
+    @Provides
+    fun provideTokenService(
+        @OkHttpClientNoAuth okHttpClient: OkHttpClient
+    ): TokenService =
         Networking.createService(
             BuildConfig.API_KEY,
             BuildConfig.BASE_URL,
-            application.cacheDir,
-            10 * 1024 * 1024, // 10MB Cache Size
+            okHttpClient,
             TokenService::class.java
         )
 

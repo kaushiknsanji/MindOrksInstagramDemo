@@ -31,3 +31,21 @@ annotation class ActivityContext
 @Qualifier
 @Retention(AnnotationRetention.SOURCE)
 annotation class TempDirectory
+
+/**
+ * [Qualifier] annotation used for distinguishing the [okhttp3.OkHttpClient]
+ * provided by [com.mindorks.kaushiknsanji.instagram.demo.di.module.ApplicationModule]
+ * which is meant for all API Calls except for refreshing Tokens.
+ */
+@Qualifier
+@Retention(AnnotationRetention.SOURCE)
+annotation class OkHttpClientAccessAuth
+
+/**
+ * [Qualifier] annotation used for distinguishing the [okhttp3.OkHttpClient]
+ * provided by [com.mindorks.kaushiknsanji.instagram.demo.di.module.ApplicationModule]
+ * which is meant for only refreshing Tokens.
+ */
+@Qualifier
+@Retention(AnnotationRetention.SOURCE)
+annotation class OkHttpClientNoAuth
