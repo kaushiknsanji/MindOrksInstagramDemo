@@ -19,19 +19,20 @@ object Toaster {
      * Method that displays a [Toast] for the given [text] message
      * with the Text in Black Color, overlaid over White Color Background
      */
+    @Suppress("DEPRECATION")
     fun show(context: Context, text: CharSequence) {
-        //Create a Toast with the text message passed
+        // Create a Toast with the text message passed
         val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
-        //Set the Background Color to White
-        toast.view.background.colorFilter =
+        // Set the Background Color to White
+        toast.view?.background?.colorFilter =
             BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                 ContextCompat.getColor(context, R.color.white), BlendModeCompat.SRC_IN
             )
-        //Get the TextView of Toast
-        val textView = toast.view.findViewById(android.R.id.message) as TextView
-        //Set the Text Color to Black
-        textView.setTextColor(ContextCompat.getColor(context, R.color.black))
-        //Show the Toast
+        // Get the TextView of Toast
+        val textView = toast.view?.findViewById(android.R.id.message) as? TextView
+        // Set the Text Color to Black
+        textView?.setTextColor(ContextCompat.getColor(context, R.color.black))
+        // Show the Toast
         toast.show()
     }
 
