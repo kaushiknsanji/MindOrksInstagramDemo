@@ -132,7 +132,7 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
      */
     private fun buildFragmentComponent(): FragmentComponent =
         DaggerFragmentComponent.builder()
-            .applicationComponent((context!!.applicationContext as InstagramApplication).applicationComponent)
+            .applicationComponent((requireContext().applicationContext as InstagramApplication).applicationComponent)
             .fragmentModule(FragmentModule(this))
             .build()
 

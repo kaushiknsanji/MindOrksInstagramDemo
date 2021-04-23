@@ -254,7 +254,7 @@ abstract class BaseDialogFragment<VM : BaseDialogViewModel> : DialogFragment() {
      */
     private fun buildDialogFragmentComponent(): DialogFragmentComponent =
         DaggerDialogFragmentComponent.builder()
-            .applicationComponent((context!!.applicationContext as InstagramApplication).applicationComponent)
+            .applicationComponent((requireContext().applicationContext as InstagramApplication).applicationComponent)
             .dialogFragmentModule(DialogFragmentModule(this))
             .build()
 
