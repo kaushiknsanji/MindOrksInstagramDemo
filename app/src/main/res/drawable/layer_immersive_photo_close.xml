@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="#64000000" />
+            <solid android:color="@color/immersiveModeSystemBarColor" />
             <padding
                 android:bottom="1dp"
                 android:left="1dp"

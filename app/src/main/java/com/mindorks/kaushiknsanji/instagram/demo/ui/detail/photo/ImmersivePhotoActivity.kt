@@ -7,7 +7,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityImmersivePhotoBinding
 import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
-import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseImmersiveActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.ImageUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeNonNull
@@ -15,13 +15,14 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 
 /**
- * [BaseActivity] subclass that inflates the layout 'R.layout.activity_immersive_photo' to show the Post's Photo
- * in an Immersive mode allowing the user to zoom and interact with it.
+ * [BaseImmersiveActivity] subclass that inflates the layout 'R.layout.activity_immersive_photo'
+ * to show the Post's Photo in an Immersive mode allowing the user to zoom and interact with it.
+ *
  * [ImmersivePhotoViewModel] is the Primary [androidx.lifecycle.ViewModel] of this Activity.
  *
  * @author Kaushik N Sanji
  */
-class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
+class ImmersivePhotoActivity : BaseImmersiveActivity<ImmersivePhotoViewModel>() {
 
     // ViewBinding instance for this Activity
     private val binding by viewBinding(ActivityImmersivePhotoBinding::inflate)
@@ -49,10 +50,7 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
             viewModel.onLoadImage(imageUrl)
         }
 
-        // Dispatch the current Immersive Mode state to ViewModel
-        updateImmersiveModeState(window.decorView.systemUiVisibility)
-
-        // Register Tap listener on the Post Photo
+        // Register Tap listener on the Post Photo, to trigger Fullscreen toggle events
         binding.viewImmersivePhoto.setOnPhotoTapListener { _, _, _ -> viewModel.onToggleFullscreen() }
 
         // Register Click listener on the "Close" Image
@@ -79,27 +77,11 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
             )
         }
 
-        // Register an observer for Fullscreen Toggle events to toggle the System UI Visibility bits
-        // for Fullscreen Sticky Immersive mode
-        viewModel.toggleFullscreen.observeEvent(this) { toggle: Boolean ->
-            if (toggle) {
-                // On [toggle], toggle the bits corresponding to Fullscreen Sticky Immersive in System UI Visibility
-
-                // Set the new System UI Visibility
-                window.decorView.systemUiVisibility = window.decorView.systemUiVisibility.let { uiOptions: Int ->
-                    // Toggle "Navigation bar", "Status bar" and "Sticky Immersive mode" bits
-                    uiOptions xor View.SYSTEM_UI_FLAG_HIDE_NAVIGATION xor View.SYSTEM_UI_FLAG_FULLSCREEN xor View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                }.also {
-                    // Also, update the Immersive Mode state to ViewModel
-                    updateImmersiveModeState(it)
-                }
-            }
-        }
-
-        // Register an observer on Immersive Mode state change events to show/hide other views accordingly
-        viewModel.immersiveModeState.observeEvent(this) { immersiveModeOn: Boolean ->
-            // When Immersive Mode is On, hide the Photo Close ImageView
-            binding.imageImmersivePhotoClose.showWhen(!immersiveModeOn)
+        // Register an observer on System bars visibility state change events
+        // to show/hide other views accordingly
+        viewModel.systemBarsVisibilityState.observeEvent(this) { isVisible: Boolean ->
+            // When System bars are visible, hide the Photo Close ImageView
+            binding.imageImmersivePhotoClose.showWhen(!isVisible)
         }
 
         // Register an observer for close action events, to close this Activity
@@ -109,18 +91,6 @@ class ImmersivePhotoActivity : BaseActivity<ImmersivePhotoViewModel>() {
                 finish()
             }
         }
-    }
-
-    /**
-     * Updates the current Immersive Mode state to the Primary ViewModel to handle.
-     *
-     * @param uiOptions The Bitwise-or flags of System UI Visibility, to check for Immersive Mode state.
-     * Value published will be `true` when the [View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY] bit is already set.
-     */
-    private fun updateImmersiveModeState(uiOptions: Int) {
-        viewModel.onUpdateImmersiveModeState(
-            uiOptions or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY == uiOptions
-        )
     }
 
     companion object {

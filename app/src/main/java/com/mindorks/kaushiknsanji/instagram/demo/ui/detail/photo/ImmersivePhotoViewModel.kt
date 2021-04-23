@@ -5,14 +5,14 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.Image
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
-import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseImmersiveViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * [BaseViewModel] subclass for [ImmersivePhotoActivity].
+ * [BaseImmersiveViewModel] subclass for [ImmersivePhotoActivity].
  *
  * @param userRepository [UserRepository] instance for [User] data.
  *
@@ -23,7 +23,7 @@ class ImmersivePhotoViewModel(
     compositeDisposable: CompositeDisposable,
     networkHelper: NetworkHelper,
     userRepository: UserRepository
-) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
+) : BaseImmersiveViewModel(schedulerProvider, compositeDisposable, networkHelper) {
 
     // Stores the logged-in [User] information
     private val user: User = userRepository.getCurrentUser()!!
@@ -37,12 +37,6 @@ class ImmersivePhotoViewModel(
 
     // LiveData of the Post Creator's Photo
     val postImage: MutableLiveData<Image> = MutableLiveData()
-
-    // LiveData for Fullscreen Toggle events
-    val toggleFullscreen: MutableLiveData<Event<Boolean>> = MutableLiveData()
-
-    // LiveData for Immersive Mode state change events
-    val immersiveModeState: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     // LiveData for closing the Activity
     val actionClose: MutableLiveData<Event<Boolean>> = MutableLiveData()
@@ -70,27 +64,9 @@ class ImmersivePhotoViewModel(
     }
 
     /**
-     * Called by the activity when the User taps and interacts on the Photo shown.
-     * Triggers an event to toggle the Fullscreen visibility.
-     */
-    fun onToggleFullscreen() {
-        toggleFullscreen.postValue(Event(true))
-    }
-
-    /**
      * Called when the User clicks on the "Close" Image.
      * Triggers an event to finish the Activity.
      */
     fun onClose() = actionClose.postValue(Event(true))
-
-    /**
-     * Called by the activity when there is a change in the Sticky Immersive Mode of the System UI Visibility flags.
-     * Triggers the state change event to [immersiveModeState] LiveData.
-     *
-     * @param immersiveModeOn When `true`, the Immersive Mode is enabled; `false` otherwise.
-     */
-    fun onUpdateImmersiveModeState(immersiveModeOn: Boolean) {
-        immersiveModeState.postValue(Event(immersiveModeOn))
-    }
 
 }

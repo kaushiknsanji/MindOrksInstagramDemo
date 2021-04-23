@@ -16,6 +16,9 @@
     <color name="red">#D0021B</color>
     <color name="white">#FFFFFF</color>
 
+    <!-- Color used by system bars while in Immersive mode -->
+    <color name="immersiveModeSystemBarColor">#64000000</color>
+
     <!-- ========================================= -->
     <!-- COLORS USED IN LOGIN AND SIGN-UP ACTIVITY -->
     <!-- ========================================= -->
