@@ -86,6 +86,12 @@ dependencies {
     // Core KTX
     implementation "androidx.core:core-ktx:$versions.core"
 
+    // Activity
+    implementation "androidx.activity:activity-ktx:$versions.activity"
+
+    // Fragment
+    implementation "androidx.fragment:fragment-ktx:$versions.fragment"
+
     // Multidex
     implementation "androidx.multidex:multidex:$versions.multidex"
 

@@ -1,6 +1,5 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -10,14 +9,10 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.component.ActivityComponent
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
-import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment
-import com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.photo.PhotoFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.ProfileFragment
-import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActivity
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeEvent
-import com.mindorks.kaushiknsanji.instagram.demo.utils.common.putExtrasFromMap
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import java.io.Serializable
 import javax.inject.Inject
@@ -44,6 +39,12 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     // Saves the fragment instance being shown
     private var activeFragment: Fragment? = null
+
+    // Activity Result observer to execute activity call contracts
+    // and handle the results in a separate class
+    private val activityResultObserver: MainActivityResultObserver by lazy {
+        MainActivityResultObserver(activityResultRegistry, viewModel, mainSharedViewModel)
+    }
 
     /**
      * Injects dependencies exposed by [ActivityComponent] into Activity.
@@ -119,6 +120,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override fun setupObservers() {
         super.setupObservers()
 
+        // Register an observer for Activity results
+        lifecycle.addObserver(activityResultObserver)
+
         // Register an observer for HomeFragment navigation events
         viewModel.navigateHome.observeEvent(this) {
             showHome()
@@ -142,29 +146,20 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
         // Register an observer for EditProfileActivity launch events
         mainSharedViewModel.launchEditProfile.observeEvent(this) {
-            // Start EditProfileActivity with the request code for results
-            startActivityForResult(
-                Intent(this, EditProfileActivity::class.java),
-                EditProfileActivity.REQUEST_EDIT_PROFILE
-            )
+            // Start EditProfileActivity for results
+            activityResultObserver.launchEditProfile()
         }
 
         // Register an observer for PostDetailActivity launch events
         mainSharedViewModel.launchPostDetail.observeEvent(this) { intentMap: Map<String, Serializable> ->
-            // Start PostDetailActivity with the request code for results
-            startActivityForResult(
-                Intent(this, PostDetailActivity::class.java).putExtrasFromMap(intentMap),
-                PostDetailActivity.REQUEST_POST_DETAIL
-            )
+            // Start PostDetailActivity for results
+            activityResultObserver.launchPostDetail(intentMap)
         }
 
         // Register an observer for PostLikeActivity launch events
         mainSharedViewModel.launchPostLike.observeEvent(this) { intentMap: Map<String, Serializable> ->
-            // Start PostLikeActivity with the request code for results
-            startActivityForResult(
-                Intent(this, PostLikeActivity::class.java).putExtrasFromMap(intentMap),
-                PostLikeActivity.REQUEST_POST_LIKE
-            )
+            // Start PostLikeActivity for results
+            activityResultObserver.launchPostLike(intentMap)
         }
     }
 
@@ -241,118 +236,4 @@ class MainActivity : BaseActivity<MainViewModel>() {
         activeFragment = fragment
     }
 
-    /**
-     * Receive the result from a previous call to [startActivityForResult].
-     *
-     * @param requestCode The integer request code originally supplied to
-     * startActivityForResult(), allowing you to identify who this
-     * result came from.
-     * @param resultCode The integer result code returned by the child activity
-     * through its setResult().
-     * @param intent An Intent, which can return result data to the caller
-     * (various data can be attached to Intent "extras").
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intent)
-
-        if (resultCode >= RESULT_OK) {
-            // When we have a success result from any Activity started
-
-            if (resultCode >= RESULT_FIRST_USER) {
-                // When we have the custom results for the requests made
-
-                // Taking action based on Request code
-                when (requestCode) {
-                    // For EditProfileActivity request
-                    EditProfileActivity.REQUEST_EDIT_PROFILE -> {
-                        // Taking action based on the Result codes
-                        when (resultCode) {
-                            // For the Successful edit
-                            EditProfileActivity.RESULT_EDIT_PROFILE_SUCCESS -> {
-                                // Delegate to the MainSharedViewModel, to trigger profile updates in HomeFragment
-                                // and ProfileFragment
-                                mainSharedViewModel.onEditProfileSuccess()
-                                // Display the success message if available
-                                intent?.getStringExtra(EditProfileActivity.EXTRA_RESULT_EDIT_SUCCESS)
-                                    ?.takeUnless { it.isBlank() }?.let {
-                                        showMessage(it)
-                                    }
-                            }
-                            // For the Update that did not require any action as there was no change
-                            EditProfileActivity.RESULT_EDIT_PROFILE_NO_ACTION -> {
-                                // Display a message to the user saying no changes were done
-                                showMessage(R.string.message_edit_profile_no_change)
-                            }
-                        }
-                    }
-
-                    // For PostDetailActivity request
-                    PostDetailActivity.REQUEST_POST_DETAIL -> {
-                        // Taking action based on the Result codes
-                        when (resultCode) {
-                            // For the Successful Delete
-                            PostDetailActivity.RESULT_DELETE_POST_SUCCESS -> {
-                                intent!!.extras?.apply {
-                                    // When we have Intent extras of the result
-
-                                    // Delegate to the MainSharedViewModel, to trigger profile updates in HomeFragment
-                                    // and ProfileFragment
-                                    getString(PostDetailActivity.EXTRA_RESULT_DELETED_POST_ID)
-                                        ?.takeUnless { it.isBlank() }
-                                        ?.let { mainSharedViewModel.onPostItemDeleted(it) }
-                                    // Display the success message if available
-                                    getString(PostDetailActivity.EXTRA_RESULT_DELETE_POST_SUCCESS)
-                                        ?.takeUnless { it.isBlank() }?.let {
-                                            showMessage(it)
-                                        }
-                                }
-                            }
-
-                            // For Post Like Updates
-                            PostDetailActivity.RESULT_LIKE_POST -> {
-                                intent!!.extras?.apply {
-                                    // When we have Intent extras of the result
-
-                                    // Delegate to the MainSharedViewModel, to trigger the item update in HomeFragment
-                                    getString(PostDetailActivity.EXTRA_RESULT_LIKE_POST_ID)
-                                        ?.takeUnless { it.isBlank() }?.let { postId: String ->
-                                            mainSharedViewModel.onPostLikeUpdate(
-                                                postId,
-                                                getBoolean(PostDetailActivity.EXTRA_RESULT_LIKE_POST_STATE)
-                                            )
-                                        }
-                                }
-                            }
-                        }
-                    }
-
-                    // For PostLikeActivity request
-                    PostLikeActivity.REQUEST_POST_LIKE -> {
-                        // Taking action based on the Result codes
-                        when (resultCode) {
-                            // For Post Like Updates
-                            PostLikeActivity.RESULT_LIKE_POST -> {
-                                intent!!.extras?.apply {
-                                    // When we have Intent extras of the result
-
-                                    // Delegate to the MainSharedViewModel, to trigger the item update in HomeFragment
-                                    getString(PostLikeActivity.EXTRA_RESULT_LIKE_POST_ID)
-                                        ?.takeUnless { it.isBlank() }?.let { postId: String ->
-                                            mainSharedViewModel.onPostLikeUpdate(
-                                                postId,
-                                                getBoolean(PostLikeActivity.EXTRA_RESULT_LIKE_POST_STATE)
-                                            )
-                                        }
-                                }
-                            }
-                        }
-                    }
-
-                } // end: requestCode
-
-            } // end: RESULT_FIRST_USER
-
-        } // end: RESULT_OK
-
-    }
 }

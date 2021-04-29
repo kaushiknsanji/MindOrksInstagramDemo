@@ -2,7 +2,6 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -24,8 +23,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setErrorStatus
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.setTextOnChange
 import com.mindorks.paracamera.Camera
 import java.io.File
-import java.io.FileNotFoundException
-import java.io.InputStream
 import javax.inject.Inject
 
 /**
@@ -51,6 +48,12 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
 
     // ViewBinding instance for this Activity
     private val binding by viewBinding(ActivityEditProfileBinding::inflate)
+
+    // Activity Result observer to execute activity call contracts
+    // and handle the results in a separate class
+    private val activityResultObserver: EditProfileActivityResultObserver by lazy {
+        EditProfileActivityResultObserver(activityResultRegistry, viewModel, camera)
+    }
 
     /**
      * Injects dependencies exposed by [ActivityComponent] into Activity.
@@ -127,6 +130,9 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
      */
     override fun setupObservers() {
         super.setupObservers()
+
+        // Register an observer for Activity results
+        lifecycle.addObserver(activityResultObserver)
 
         // Register an observer on loading/upload/save progress LiveData to show/hide the Progress Dialog
         viewModel.liveProgress.observe(this) { resourceWrapper ->
@@ -255,78 +261,21 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
 
         // Register an observer for System Camera launch events
         photoOptionsDialogSharedViewModel.launchCamera.observeEvent(this) {
-            try {
-                // Launches the Camera activity with the ACTION_IMAGE_CAPTURE Intent, that saves the captured image
-                // to a temporary file
-                camera.takePicture()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                // Dismiss the dialog
-                dialogManager.dismissActiveDialog()
-            }
+            // Launch the Camera App to prompt the user to Take a Picture,
+            // which saves the captured image to a temporary file
+            activityResultObserver.takePicture()
+            // Dismiss the dialog
+            dialogManager.dismissActiveDialog()
         }
 
         // Register an observer for System Gallery launch events
         photoOptionsDialogSharedViewModel.launchGallery.observeEvent(this) {
-            Intent(Intent.ACTION_OPEN_DOCUMENT).run {
-                // With the Intent that can open any document..
-                // Filter results that can be streamed like files (this excludes stuff like timezones and contacts)
-                addCategory(Intent.CATEGORY_OPENABLE)
-                // Filter only for Images
-                type = Constants.TYPE_IMAGE
-                // Start the Image Picker/Gallery Activity with the request code for results
-                startActivityForResult(this, PhotoOptionsDialogFragment.REQUEST_IMAGE_PICK)
-                // Dismiss the dialog
-                dialogManager.dismissActiveDialog()
-            }
+            // Launch the Gallery App to prompt the user to Pick an Image
+            activityResultObserver.pickImage()
+            // Dismiss the dialog
+            dialogManager.dismissActiveDialog()
         }
-    }
 
-    /**
-     * Receive the result from a previous call to [startActivityForResult].
-     *
-     * @param requestCode The integer request code originally supplied to
-     * startActivityForResult(), allowing you to identify who this
-     * result came from.
-     * @param resultCode The integer result code returned by the child activity
-     * through its setResult().
-     * @param intent An Intent, which can return result data to the caller
-     * (various data can be attached to Intent "extras").
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intent)
-
-        if (resultCode == RESULT_OK) {
-            // When we have a success result from the Activity started
-
-            // Taking action based on the Request code
-            when (requestCode) {
-                // For Gallery Image Pick
-                PhotoOptionsDialogFragment.REQUEST_IMAGE_PICK -> {
-                    try {
-                        intent?.data?.let { uri: Uri ->
-                            // When we have the URI to the Image picked, open the input stream to the URI and pass it
-                            // to the ViewModel to handle
-                            contentResolver?.openInputStream(uri)?.let { inputStream: InputStream ->
-                                viewModel.onGalleryImageSelected(inputStream)
-                            }
-                        }
-                            ?: showMessage(R.string.error_retry) // Ask to retry when we do not have the URI to the Image picked
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
-                        // Ask to retry in case of failure while opening the input stream to the URI
-                        showMessage(R.string.error_retry)
-                    }
-                }
-
-                // For Image Capture
-                Camera.REQUEST_TAKE_PHOTO -> {
-                    // Delegate to the ViewModel to handle, passing the path to the Photo's Bitmap
-                    viewModel.onPhotoSnapped { camera.cameraBitmapPath }
-                }
-            }
-        }
     }
 
     companion object {
