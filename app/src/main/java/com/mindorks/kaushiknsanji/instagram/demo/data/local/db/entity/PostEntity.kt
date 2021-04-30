@@ -1,9 +1,6 @@
 package com.mindorks.kaushiknsanji.instagram.demo.data.local.db.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.util.*
 
 /**
@@ -24,12 +21,10 @@ import java.util.*
             parentColumns = ["id"],
             childColumns = ["creator_id"],
             onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = UserEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["liked_by_user_ids"]
-        ) //TODO: Will this ForeignKey Work?
+        )
+    ],
+    indices = [
+        Index(value = ["creator_id"])
     ]
 )
 data class PostEntity(
@@ -54,12 +49,4 @@ data class PostEntity(
 
     @ColumnInfo(name = "liked_by_user_ids")
     var likedByUserIds: List<Long>?
-) {
-
-    /**
-     * Secondary Default constructor to hack around the persisting bug of Room in Kotlin.
-     * This constructor will not be used by the Room.
-     */
-    constructor() : this(0, "", 0, 0, Date(), 0, null)
-
-}
+)

@@ -25,12 +25,4 @@ data class UserEntity(
 
     @ColumnInfo(name = "tagline")
     var tagline: String
-) {
-
-    /**
-     * Secondary Default constructor to hack around the persisting bug of Room in Kotlin.
-     * This constructor will not be used by the Room.
-     */
-    constructor() : this(0, "", null, "")
-
-}
+)

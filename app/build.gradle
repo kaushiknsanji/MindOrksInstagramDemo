@@ -11,6 +11,13 @@ def apiPropertiesFile = rootProject.file("instagram_api.properties")
 def apiProperties = new Properties()
 apiProperties.load(new FileInputStream(apiPropertiesFile))
 
+kapt {
+    arguments {
+        // Enable incremental annotation processing for Room
+        arg("room.incremental", "true")
+    }
+}
+
 android {
     // Constants defined for use with buildConfigField
     def STRING = "String"
