@@ -35,7 +35,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true
     }
 
     sourceSets {
@@ -98,9 +97,6 @@ dependencies {
 
     // Fragment
     implementation "androidx.fragment:fragment-ktx:$versions.fragment"
-
-    // Multidex
-    implementation "androidx.multidex:multidex:$versions.multidex"
 
     // Constraint Layout library
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"

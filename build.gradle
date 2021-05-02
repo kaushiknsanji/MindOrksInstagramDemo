@@ -37,9 +37,6 @@ buildscript {
     // CardView
     versions.cardview = '1.0.0'
 
-    // Multidex
-    versions.multidex = '2.0.1'
-
     // Lifecycle
     versions.lifecycle = '2.3.1'
 
