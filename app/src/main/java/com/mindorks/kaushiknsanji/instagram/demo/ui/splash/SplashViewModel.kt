@@ -25,10 +25,11 @@ class SplashViewModel(
     private val userRepository: UserRepository
 ) : BaseViewModel(schedulerProvider, compositeDisposable, networkHelper) {
 
-    // LiveData Event Wrapper to launch MainActivity
+    // LiveData for launching MainActivity
     // (Map is used to store and pass the required data for launching the Activity)
     val launchMain: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
-    // LiveData Event Wrapper to launch LoginActivity
+
+    // LiveData for launching LoginActivity
     val launchLogin: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
 
     /**
@@ -37,24 +38,31 @@ class SplashViewModel(
     override fun onCreate() {
         // Create a Single and save the resulting disposable
         compositeDisposable.add(
-            // Create a Single from the logged-in User information retrieved from the repository
-            Single.fromCallable { userRepository.getCurrentUser() }
-                .delay(1, TimeUnit.SECONDS) // Delay emitting the user information for a second (for the splash)
+            // Create a Single from a timer of 1 second, for the splash to be seen
+            Single.timer(1, TimeUnit.SECONDS, schedulerProvider.computation())
+                .map {
+                    // Map the timer value to the logged-in User information
+                    // retrieved from the repository
+                    userRepository.getCurrentUser()
+                }
                 .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
                 .subscribe(
                     // OnSuccess
                     { user: User? ->
                         user?.let {
-                            // When the logged-in user information is already saved, launch MainActivity
+                            // When the logged-in user information is already saved,
+                            // launch MainActivity
                             launchMain.postValue(Event(emptyMap()))
                         } ?: run {
-                            // When there is NO logged-in user information, launch LoginActivity
+                            // When there is NO logged-in user information,
+                            // launch LoginActivity
                             launchLogin.postValue(Event(emptyMap()))
                         }
                     },
                     // OnError
                     {
-                        // When there is an error, do not show any error. Just launch LoginActivity to re-login the user
+                        // When there is an error, do not show any error. Just launch LoginActivity
+                        // to re-login the user
                         launchLogin.postValue(Event(emptyMap()))
                     }
                 )
