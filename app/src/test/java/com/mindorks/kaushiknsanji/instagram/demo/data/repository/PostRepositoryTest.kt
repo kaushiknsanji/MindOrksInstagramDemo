@@ -5,7 +5,6 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.NetworkService
-import com.mindorks.kaushiknsanji.instagram.demo.data.remote.model.MyPostItem
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.LikePostRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.PostCreationRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.UnlikePostRequest
@@ -13,6 +12,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider
+import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider.toMyPostItem
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.TestConstants
 import io.reactivex.Single
 import org.junit.After
@@ -407,13 +407,7 @@ class PostRepositoryTest {
                 PostCreationResponse(
                     statusCode = "statusCode",
                     status = 200,
-                    post = MyPostItem(
-                        id = mockedPost.id,
-                        imageUrl = mockedPost.imageUrl,
-                        imageWidth = mockedPost.imageWidth,
-                        imageHeight = mockedPost.imageHeight,
-                        createdAt = mockedPost.createdAt
-                    ),
+                    post = mockedPost.toMyPostItem(),
                     message = "Success"
                 )
             )
@@ -472,15 +466,7 @@ class PostRepositoryTest {
             statusCode = "statusCode",
             status = 200,
             message = "Success",
-            posts = mockedPosts.map { post: Post ->
-                MyPostItem(
-                    id = post.id,
-                    imageUrl = post.imageUrl,
-                    imageWidth = post.imageWidth,
-                    imageHeight = post.imageHeight,
-                    createdAt = post.createdAt
-                )
-            }
+            posts = mockedPosts.map { post: Post -> post.toMyPostItem() }
         )))
             .`when`(networkService)
             .doMyPostsListCall(
