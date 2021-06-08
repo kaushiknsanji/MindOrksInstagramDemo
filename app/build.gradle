@@ -156,7 +156,7 @@ dependencies {
 
     // Local Unit Tests
     testImplementation "junit:junit:$versions.junit"
-    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "org.mockito:mockito-inline:$versions.mockito"
     testImplementation "android.arch.core:core-testing:$versions.core_testing"
     testImplementation "org.hamcrest:hamcrest-library:$versions.hamcrest"
     kaptTest "com.google.dagger:dagger-compiler:$versions.dagger"
