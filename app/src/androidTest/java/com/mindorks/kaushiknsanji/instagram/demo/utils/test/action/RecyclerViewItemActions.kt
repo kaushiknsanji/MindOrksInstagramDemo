@@ -6,7 +6,7 @@ import androidx.annotation.IdRes
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers
-import com.mindorks.kaushiknsanji.instagram.demo.utils.test.AndroidTestUtils
+import com.mindorks.kaushiknsanji.instagram.demo.utils.test.InstrumentedTestUtils
 import org.hamcrest.Matcher
 import org.hamcrest.core.AllOf
 
@@ -75,7 +75,7 @@ object RecyclerViewItemActions {
                 // When the target View is a View in the Item View
                 "performing ViewAction ${actionOnView.description} on a child View with " +
                         "specified id '${
-                            AndroidTestUtils.getViewIdDescription(
+                            InstrumentedTestUtils.getViewIdDescription(
                                 resources,
                                 targetViewId
                             )

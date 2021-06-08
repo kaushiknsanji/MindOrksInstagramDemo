@@ -5,7 +5,7 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.matcher.BoundedMatcher
-import com.mindorks.kaushiknsanji.instagram.demo.utils.test.AndroidTestUtils
+import com.mindorks.kaushiknsanji.instagram.demo.utils.test.InstrumentedTestUtils
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 
@@ -22,9 +22,10 @@ object RecyclerViewMatchers {
      * [View] in that Item which is expected to be present.
      *
      * @param itemPosition [Int] value of the position of the Item in the data set
-     * of the [RecyclerView.Adapter]
-     * @param targetViewInItemContentMatcher A [Matcher] for a particular [View] in the Item
-     * @param targetViewIdInItem [Int] value of the Id of the [View] in the Item being matched
+     * of the [RecyclerView.Adapter].
+     * @param targetViewInItemContentMatcher A [Matcher] for a particular [View] in the Item.
+     * @param targetViewIdInItem [Int] value of the Id of the [View] in the Item being matched.
+     *
      * @return A [Matcher] that matches a [View] in an Item [View] of [RecyclerView].
      */
     fun hasViewInItemAtPosition(
@@ -47,7 +48,7 @@ object RecyclerViewMatchers {
             // Description shown for the expected case when the match fails
             description.appendText(
                 "has child view with id '${
-                    AndroidTestUtils.getViewIdDescription(resources, targetViewIdInItem)
+                    InstrumentedTestUtils.getViewIdDescription(resources, targetViewIdInItem)
                 }' in item at position '$itemPosition' and ${
                     targetViewInItemContentMatcher.toString().replace(": is", " as")
                 }"
