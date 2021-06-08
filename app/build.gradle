@@ -160,6 +160,8 @@ dependencies {
     testImplementation "android.arch.core:core-testing:$versions.core_testing"
     testImplementation "org.hamcrest:hamcrest-library:$versions.hamcrest"
     kaptTest "com.google.dagger:dagger-compiler:$versions.dagger"
+    testImplementation "com.google.truth:truth:$versions.truth"
+    testImplementation "androidx.test.ext:truth:$versions.test_ext_truth"
 
     // UI Tests
     androidTestImplementation "androidx.test:runner:$versions.test_runner"
@@ -173,4 +175,6 @@ dependencies {
                 'empty activity which is only accessible by the test target process'
     }
     kaptAndroidTest "com.google.dagger:dagger-compiler:$versions.dagger"
+    androidTestImplementation "com.google.truth:truth:$versions.truth"
+    androidTestImplementation "androidx.test.ext:truth:$versions.test_ext_truth"
 }
