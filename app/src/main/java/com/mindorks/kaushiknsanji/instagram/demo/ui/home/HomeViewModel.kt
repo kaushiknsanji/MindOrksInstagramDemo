@@ -186,14 +186,13 @@ class HomeViewModel(
             // Create a Single from the logged-in User information retrieved from the repository
             Single.fromCallable {
                 // Get updated user information from preferences
-                userRepository.getCurrentUser()
+                userRepository.getCurrentUser()!!
             }
                 .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
                 .subscribe(
                     // OnSuccess
-                    { updatedUser: User? ->
-                        updatedUser?.run {
-                            // When we have the Updated user information
+                    { updatedUser: User ->
+                        // When we have the Updated user information
 
                             // Filter and update only the user's posts loaded till now
                             allPostList
@@ -229,9 +228,8 @@ class HomeViewModel(
                                     )
                                 }
 
-                            // Trigger List of All Posts to be reloaded
-                            reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
-                        }
+                        // Trigger List of All Posts to be reloaded
+                        reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
                     },
                     // OnError
                     { throwable: Throwable? ->
