@@ -1,12 +1,16 @@
 package com.mindorks.kaushiknsanji.instagram.demo.data.remote.api
 
+import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
+import com.mindorks.kaushiknsanji.instagram.demo.data.remote.model.MyPostItem
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.*
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider
+import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider.toMyPostItem
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.TestConstants
 import io.reactivex.Single
 import okhttp3.MultipartBody
+import java.net.HttpURLConnection
 
 /**
  * Fake Retrofit API implementation for testing Instagram API.
@@ -14,6 +18,26 @@ import okhttp3.MultipartBody
  * @author Kaushik N Sanji
  */
 class FakeNetworkService : NetworkService {
+
+    companion object {
+        // Constant representing the "statusCode" value for all Responses
+        private const val STATUS_CODE = "statusCode"
+
+        // Standard Fake response message for most of the API calls
+        const val RESPONSE_SUCCESS = "Success"
+
+        // Fake response message for Logout API call
+        const val RESPONSE_LOGOUT = "Logged out successfully"
+
+        // Fake URL of the Image uploaded via Image Upload API
+        const val IMAGE_UPLOAD_RESULT_URL = "DummyUploadedImageUrl"
+
+        // Fake response message for Post Delete API call
+        const val RESPONSE_POST_DELETED = "Post deleted successfully"
+
+        // Fake response message for Update User Info API call
+        const val RESPONSE_INFO_UPDATED = "Profile information has been updated"
+    }
 
     init {
         // Defaulting API Key with a Fake for testing
@@ -23,21 +47,34 @@ class FakeNetworkService : NetworkService {
     /**
      * API method to Register a New User.
      */
-    override fun doSignUpCall(requestBody: SignUpRequest, apiKey: String): Single<SignUpResponse> {
-        TODO("Not yet implemented")
-    }
+    override fun doSignUpCall(requestBody: SignUpRequest, apiKey: String): Single<SignUpResponse> =
+        with(DataModelObjectProvider.signedInUser) {
+            // Create and return a SingleSource of SignUpResponse for User "User_10"
+            Single.just(
+                SignUpResponse(
+                    STATUS_CODE,
+                    HttpURLConnection.HTTP_OK,
+                    RESPONSE_SUCCESS,
+                    accessToken = this.accessToken,
+                    refreshToken = this.refreshToken,
+                    userId = this.id,
+                    userName = this.name,
+                    userEmail = this.email
+                )
+            )
+        }
 
     /**
      * API method to Login a registered User.
      */
     override fun doLoginCall(requestBody: LoginRequest, apiKey: String): Single<LoginResponse> =
-        with(DataModelObjectProvider.createUser("10")) {
+        with(DataModelObjectProvider.signedInUser) {
             // Create and return a SingleSource of LoginResponse for User "User_10"
             Single.just(
                 LoginResponse(
-                    statusCode = "statusCode",
-                    status = 200,
-                    message = "Success",
+                    STATUS_CODE,
+                    HttpURLConnection.HTTP_OK,
+                    RESPONSE_SUCCESS,
                     accessToken = this.accessToken,
                     refreshToken = this.refreshToken,
                     userId = this.id,
@@ -54,9 +91,10 @@ class FakeNetworkService : NetworkService {
         userId: String,
         accessToken: String,
         apiKey: String
-    ): Single<GeneralResponse> {
-        TODO("Not yet implemented")
-    }
+    ): Single<GeneralResponse> = Single.just(
+        // Create and return a SingleSource of GeneralResponse
+        GeneralResponse(STATUS_CODE, HttpURLConnection.HTTP_OK, RESPONSE_LOGOUT)
+    )
 
     /**
      * API method to fetch the information of the logged-in User.
@@ -65,8 +103,24 @@ class FakeNetworkService : NetworkService {
         userId: String,
         accessToken: String,
         apiKey: String
-    ): Single<FetchMyInfoResponse> {
-        TODO("Not yet implemented")
+    ): Single<FetchMyInfoResponse> = with(
+        // Create a User for the given User Id
+        DataModelObjectProvider.createUser(userId)
+    ) {
+        // Create and return a SingleSource of FetchMyInfoResponse for the given User
+        Single.just(
+            FetchMyInfoResponse(
+                STATUS_CODE,
+                HttpURLConnection.HTTP_OK,
+                RESPONSE_SUCCESS,
+                user = FetchMyInfoResponse.User(
+                    id = this.id,
+                    name = this.name,
+                    profilePicUrl = this.profilePicUrl,
+                    tagline = this.tagline
+                )
+            )
+        )
     }
 
     /**
@@ -77,9 +131,10 @@ class FakeNetworkService : NetworkService {
         userId: String,
         accessToken: String,
         apiKey: String
-    ): Single<GeneralResponse> {
-        TODO("Not yet implemented")
-    }
+    ): Single<GeneralResponse> = Single.just(
+        // Create and return a SingleSource of GeneralResponse
+        GeneralResponse(STATUS_CODE, HttpURLConnection.HTTP_OK, RESPONSE_INFO_UPDATED)
+    )
 
     /**
      * API method to upload an Image using a [retrofit2.http.Multipart].
@@ -89,9 +144,15 @@ class FakeNetworkService : NetworkService {
         userId: String,
         accessToken: String,
         apiKey: String
-    ): Single<ImageUploadResponse> {
-        TODO("Not yet implemented")
-    }
+    ): Single<ImageUploadResponse> = Single.just(
+        // Create and return a SingleSource of ImageUploadResponse
+        ImageUploadResponse(
+            STATUS_CODE,
+            HttpURLConnection.HTTP_OK,
+            RESPONSE_SUCCESS,
+            ImageUploadResponse.ImageData(IMAGE_UPLOAD_RESULT_URL)
+        )
+    )
 
     /**
      * API method to create an Instagram Post.
@@ -101,8 +162,20 @@ class FakeNetworkService : NetworkService {
         userId: String,
         accessToken: String,
         apiKey: String
-    ): Single<PostCreationResponse> {
-        TODO("Not yet implemented")
+    ): Single<PostCreationResponse> = with(
+        // Create a User for the given User Id
+        DataModelObjectProvider.createUser(userId)
+    ) {
+        // Create and return a SingleSource of PostCreationResponse
+        Single.just(
+            PostCreationResponse(
+                STATUS_CODE,
+                HttpURLConnection.HTTP_OK,
+                RESPONSE_SUCCESS,
+                // Get a random Post created by the given User
+                post = DataModelObjectProvider.getSingleRandomPostOfUser(this).toMyPostItem()
+            )
+        )
     }
 
     /**
@@ -120,9 +193,9 @@ class FakeNetworkService : NetworkService {
         // Create and return a SingleSource of PostDetailResponse for the Post of given Post Id
         Single.just(
             PostDetailResponse(
-                statusCode = "statusCode",
-                status = 200,
-                message = "Success",
+                STATUS_CODE,
+                HttpURLConnection.HTTP_OK,
+                RESPONSE_SUCCESS,
                 // Create Post for the given Post Id and User
                 post = DataModelObjectProvider.createPostOfUser(postId, this).apply {
                     // Get some 5 random users to like this Post
@@ -147,9 +220,10 @@ class FakeNetworkService : NetworkService {
         userId: String,
         accessToken: String,
         apiKey: String
-    ): Single<GeneralResponse> {
-        TODO("Not yet implemented")
-    }
+    ): Single<GeneralResponse> = Single.just(
+        // Create and return a SingleSource of GeneralResponse
+        GeneralResponse(STATUS_CODE, HttpURLConnection.HTTP_OK, RESPONSE_POST_DELETED)
+    )
 
     /**
      * API method to get all the Instagram Posts of the logged-in User.
@@ -159,8 +233,18 @@ class FakeNetworkService : NetworkService {
         userId: String,
         accessToken: String,
         apiKey: String
-    ): Single<MyPostsListResponse> {
-        TODO("Not yet implemented")
+    ): Single<MyPostsListResponse> = with(
+        // Create a User for the given User Id
+        DataModelObjectProvider.createUser(userId)
+    ) {
+        // Get 9 random Posts created by the given User
+        val userPosts: List<MyPostItem> = DataModelObjectProvider.getRandomPostsOfUser(this, 9)
+            .map { post: Post -> post.toMyPostItem() }
+
+        // Create and return a SingleSource of MyPostsListResponse
+        Single.just(
+            MyPostsListResponse(STATUS_CODE, HttpURLConnection.HTTP_OK, RESPONSE_SUCCESS, userPosts)
+        )
     }
 
     /**
@@ -199,7 +283,7 @@ class FakeNetworkService : NetworkService {
 
         // Create and return a SingleSource of AllPostsListResponse
         return Single.just(
-            AllPostsListResponse("statusCode", 200, "Success", allPosts)
+            AllPostsListResponse(STATUS_CODE, HttpURLConnection.HTTP_OK, RESPONSE_SUCCESS, allPosts)
         )
     }
 
@@ -213,7 +297,7 @@ class FakeNetworkService : NetworkService {
         apiKey: String
     ): Single<GeneralResponse> = Single.just(
         // Create and return a SingleSource of GeneralResponse
-        GeneralResponse("statusCode", 200, "Success")
+        GeneralResponse(STATUS_CODE, HttpURLConnection.HTTP_OK, RESPONSE_SUCCESS)
     )
 
     /**
@@ -226,6 +310,6 @@ class FakeNetworkService : NetworkService {
         apiKey: String
     ): Single<GeneralResponse> = Single.just(
         // Create and return a SingleSource of GeneralResponse
-        GeneralResponse("statusCode", 200, "Success")
+        GeneralResponse(STATUS_CODE, HttpURLConnection.HTTP_OK, RESPONSE_SUCCESS)
     )
 }
