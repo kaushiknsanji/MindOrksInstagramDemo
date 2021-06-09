@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.bumptech.glide.request.RequestOptions
@@ -51,7 +52,8 @@ class EditProfileActivity : BaseActivity<EditProfileViewModel>() {
 
     // Activity Result observer to execute activity call contracts
     // and handle the results in a separate class
-    private val activityResultObserver: EditProfileActivityResultObserver by lazy {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    val activityResultObserver: EditProfileActivityResultObserver by lazy {
         EditProfileActivityResultObserver(activityResultRegistry, viewModel, camera)
     }
 

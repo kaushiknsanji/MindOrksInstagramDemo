@@ -3,6 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.photo
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
 import com.mindorks.kaushiknsanji.instagram.demo.databinding.FragmentPhotoBinding
@@ -43,7 +44,8 @@ class PhotoFragment : BaseFragment<PhotoViewModel>() {
 
     // Activity Result observer to execute activity call contracts
     // and handle the results in a separate class
-    private val fragmentResultObserver: PhotoFragmentResultObserver by lazy {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    val fragmentResultObserver: PhotoFragmentResultObserver by lazy {
         PhotoFragmentResultObserver(
             requireActivity().activityResultRegistry,
             viewModel,

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.VisibleForTesting
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.putExtrasFromMap
 import com.mindorks.paracamera.Camera
 import java.io.Serializable
@@ -27,7 +28,8 @@ object BaseActivityResultContracts {
     private const val TAG = "BaseActivityResultContracts"
 
     // Bundle Key constant for Activity Result Code
-    private const val BUNDLE_KEY_RESULT_CODE = "$TAG.result.RESULT_CODE"
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    const val BUNDLE_KEY_RESULT_CODE = "$TAG.result.RESULT_CODE"
 
     /**
      * Returns the Result Code of an Activity Result if saved in a [Bundle].

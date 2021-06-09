@@ -1,6 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.base
 
 import androidx.activity.result.ActivityResultRegistry
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
@@ -46,6 +47,7 @@ abstract class BaseActivityResultObserver<T : BaseActivity<out BaseViewModel>>(
      * @param owner [LifecycleOwner] of the Activity that makes the call.
      * @param activity An Activity instance of type [BaseActivity] derived from [owner].
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     abstract fun initResultLaunchers(
         registry: ActivityResultRegistry,
         owner: LifecycleOwner,

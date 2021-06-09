@@ -2,6 +2,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.databinding.ActivityMainBinding
@@ -42,7 +43,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     // Activity Result observer to execute activity call contracts
     // and handle the results in a separate class
-    private val activityResultObserver: MainActivityResultObserver by lazy {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    val activityResultObserver: MainActivityResultObserver by lazy {
         MainActivityResultObserver(activityResultRegistry, viewModel, mainSharedViewModel)
     }
 

@@ -1,6 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.base
 
 import androidx.activity.result.ActivityResultRegistry
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
@@ -46,6 +47,7 @@ abstract class BaseFragmentResultObserver<T : BaseFragment<out BaseViewModel>>(
      * @param owner [LifecycleOwner] of the Fragment that makes the call.
      * @param fragment A Fragment instance of type [BaseFragment] derived from [owner].
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     abstract fun initResultLaunchers(
         registry: ActivityResultRegistry,
         owner: LifecycleOwner,
