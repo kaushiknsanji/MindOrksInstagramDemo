@@ -1,6 +1,6 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.main
 
-import android.util.ArrayMap
+import androidx.collection.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
