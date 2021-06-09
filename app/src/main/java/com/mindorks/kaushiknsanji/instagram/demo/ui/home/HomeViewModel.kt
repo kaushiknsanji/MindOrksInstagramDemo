@@ -1,5 +1,6 @@
 package com.mindorks.kaushiknsanji.instagram.demo.ui.home
 
+import androidx.annotation.RestrictTo
 import androidx.lifecycle.MutableLiveData
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.Post
@@ -7,6 +8,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.PostRepository
 import com.mindorks.kaushiknsanji.instagram.demo.data.repository.UserRepository
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
+import com.mindorks.kaushiknsanji.instagram.demo.ui.home.util.HomePostListUpdater
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.log.Logger
@@ -194,39 +196,17 @@ class HomeViewModel(
                     { updatedUser: User ->
                         // When we have the Updated user information
 
-                            // Filter and update only the user's posts loaded till now
-                            allPostList
-                                .takeIf { it.isNotEmpty() }
-                                ?.withIndex()
-                                ?.filter { (_, post: Post) -> post.creator.id == id }
-                                ?.forEach { (index, post: Post) ->
-                                    allPostList[index] = post.copy(
-                                        creator = post.creator.copy(
-                                            name = name,
-                                            profilePicUrl = profilePicUrl
-                                        )
-                                    )
-                                }
+                        // Filter and update only the user's posts loaded till now
+                        HomePostListUpdater.rewriteUserPostsWithUpdatedUserInfo(
+                            allPostList,
+                            updatedUser
+                        )
 
-                            // Filter and update only the user's likes on self and others' posts
-                            allPostList
-                                .takeIf { it.isNotEmpty() }
-                                ?.withIndex()
-                                ?.filter { (_, post: Post) -> post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == id } != null }
-                                ?.forEach { (index, post: Post) ->
-                                    allPostList[index] = post.copy(
-                                        likedBy = post.likedBy?.apply {
-                                            withIndex()
-                                                .filter { (_, likedByUser: Post.User) -> likedByUser.id == id }
-                                                .forEach { (index, likedByUser: Post.User) ->
-                                                    this[index] = likedByUser.copy(
-                                                        name = name,
-                                                        profilePicUrl = profilePicUrl
-                                                    )
-                                                }
-                                        }
-                                    )
-                                }
+                        // Filter and update only the user's likes on self and others' posts
+                        HomePostListUpdater.rewriteUserLikesOnPostsWithUpdatedUserInfo(
+                            allPostList,
+                            updatedUser
+                        )
 
                         // Trigger List of All Posts to be reloaded
                         reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
@@ -254,13 +234,12 @@ class HomeViewModel(
      *
      * Removes the Post with the [postId] from the [allPostList] and updates [reloadAllPosts] to reload the list.
      */
-    fun onPostDeleted(postId: String) =
-        allPostList.takeIf { it.isNotEmpty() }?.apply {
-            removeAll { post: Post -> post.id == postId }
-        }?.run {
-            // Trigger List of All Posts to be reloaded
-            reloadAllPosts.postValue(Resource.Success(allPostListCopy(this)))
+    fun onPostDeleted(postId: String) {
+        if (HomePostListUpdater.removeDeletedPost(allPostList, postId)) {
+            // Trigger List of All Posts to be reloaded when the Post was found and deleted successfully
+            reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
         }
+    }
 
     /**
      * Called after the launch and completion of [com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeActivity]
@@ -274,49 +253,51 @@ class HomeViewModel(
      * `true` if User has liked; `false` otherwise.
      */
     fun onPostLikeUpdated(postId: String, likeStatus: Boolean) {
-        allPostList.takeIf { it.isNotEmpty() }?.takeIf { posts: MutableList<Post> ->
-            posts.firstOrNull { post: Post ->
-                // Filter for the Post with [postId] that has a different user liked status with the current one,
-                // which needs an update
-                post.id == postId && (post.likedBy?.any { likedByUser: Post.User -> likedByUser.id == user.id } != likeStatus)
-            }?.likedBy?.run {
-                // When we have a Post and its liked list needs an update
-
-                if (likeStatus) {
-                    // If the Post has been liked by the logged-in User from other activities,
-                    // then add an entry into the liked list for the logged-in User
-                    add(
-                        Post.User(
-                            id = user.id,
-                            name = user.name,
-                            profilePicUrl = user.profilePicUrl
-                        )
-                    )
-                } else {
-                    // If the Post has been unliked by the logged-in User from other activities,
-                    // then remove the entry from the liked list
-                    removeAll { likedBy: Post.User -> likedBy.id == user.id }
-                }
-                // Returning true when the Liked list has been updated
-                true
-            } ?: false // Returning false when the Liked list needed no update
-        }?.run {
+        if (HomePostListUpdater.refreshUserLikeStatusOnPost(
+                allPostList,
+                user,
+                postId,
+                likeStatus
+            )
+        ) {
             // Trigger List of All Posts to be reloaded when the Liked list has been updated
-            reloadAllPosts.postValue(Resource.Success(allPostListCopy(this)))
+            reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
         }
     }
 
     /**
-     * Called when the logged-in User likes/unlikes a Post. Loads the given [updatedPost] at its position
-     * in [allPostList] to reflect the change.
+     * Called when the logged-in User likes/unlikes a Post, directly on the Post item.
+     * Loads the given [updatedPost] at its position in [allPostList] to reflect the change.
      */
     fun onLikeUnlikeSync(updatedPost: Post) {
-        // Find the position of the Post in the list
-        allPostList.indexOfFirst { post: Post -> post.id == updatedPost.id }.takeIf { it > -1 }?.let { index: Int ->
-            // Save the copy of the [updatedPost] at the [index]
-            allPostList[index] = updatedPost.shallowCopy()
-        }
+        HomePostListUpdater.syncPostOnLikeUnlikeAction(allPostList, updatedPost)
     }
+
+    /**
+     * Exposes Mutable [List] of All [Post]s retrieved till last request, for testing.
+     *
+     * @return Returns [allPostList].
+     */
+    @RestrictTo(value = [RestrictTo.Scope.TESTS])
+    fun getAllPostList(): MutableList<Post> = allPostList
+
+    /**
+     * Exposes [PublishProcessor] that handles multiple requests
+     * to supply new List of Posts, for testing.
+     *
+     * @return Returns [paginator].
+     */
+    @RestrictTo(value = [RestrictTo.Scope.TESTS])
+    fun getPaginator(): PublishProcessor<Pair<String?, String?>> = paginator
+
+    /**
+     * Exposes the [Flowable] [List] of [Post]s resulting from each request
+     * of the [paginator], for testing.
+     *
+     * @return Returns [resultPostsFlowable].
+     */
+    @RestrictTo(value = [RestrictTo.Scope.TESTS])
+    fun getResultPostsFlowable(): Flowable<List<Post>> = resultPostsFlowable
 
     companion object {
         // Constant used for logs
