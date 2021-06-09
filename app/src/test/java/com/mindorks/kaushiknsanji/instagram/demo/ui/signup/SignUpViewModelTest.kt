@@ -1,4 +1,4 @@
-package com.mindorks.kaushiknsanji.instagram.demo.ui.login
+package com.mindorks.kaushiknsanji.instagram.demo.ui.signup
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
@@ -18,16 +18,18 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito
+import org.mockito.Mockito.doReturn
+import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 /**
- * Local Unit Test on [LoginViewModel].
+ * Local Unit Test on [SignUpViewModel].
  *
  * @author Kaushik N Sanji
  */
 @RunWith(MockitoJUnitRunner::class)
-class LoginViewModelTest {
+class SignUpViewModelTest {
 
     /**
      * Getter for [org.junit.rules.TestRule] that returns [InstantTaskExecutorRule].
@@ -49,17 +51,21 @@ class LoginViewModelTest {
     @Mock
     private lateinit var messageStringIdObserver: Observer<Resource<Int>>
 
-    // LiveData Observer for Login progress
+    // LiveData Observer for SignUp progress
     @Mock
-    private lateinit var loginProgressObserver: Observer<Boolean>
+    private lateinit var signUpProgressObserver: Observer<Boolean>
 
     // LiveData Observer for MainActivity launch events
     @Mock
     private lateinit var launchMainObserver: Observer<Event<Map<String, String>>>
 
-    // LiveData Observer for SignUpActivity launch events
+    // LiveData Observer for LoginActivity launch events
     @Mock
-    private lateinit var launchSignUpObserver: Observer<Event<Map<String, String>>>
+    private lateinit var launchLoginObserver: Observer<Event<Map<String, String>>>
+
+    // LiveData Observer for Name validation results
+    @Mock
+    private lateinit var nameValidationObserver: Observer<Resource<Int>>
 
     // LiveData Observer for Email validation results
     @Mock
@@ -73,7 +79,7 @@ class LoginViewModelTest {
     private lateinit var testScheduler: TestScheduler
 
     // The ViewModel under test
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var signUpViewModel: SignUpViewModel
 
     @Before
     fun setUp() {
@@ -83,8 +89,8 @@ class LoginViewModelTest {
         testScheduler = TestScheduler()
         // Create SchedulerProvider for Testing
         val testSchedulerProvider = TestSchedulerProvider(testScheduler)
-        // Create the LoginViewModel
-        loginViewModel = LoginViewModel(
+        // Create the SignUpViewModel
+        signUpViewModel = SignUpViewModel(
             testSchedulerProvider,
             compositeDisposable,
             networkHelper,
@@ -92,138 +98,168 @@ class LoginViewModelTest {
         )
 
         // Register the LiveData Observers forever
-        loginViewModel.messageStringId.observeForever(messageStringIdObserver)
-        loginViewModel.loginProgress.observeForever(loginProgressObserver)
-        loginViewModel.launchMain.observeForever(launchMainObserver)
-        loginViewModel.launchSignUp.observeForever(launchSignUpObserver)
-        loginViewModel.emailValidation.observeForever(emailValidationObserver)
-        loginViewModel.passwordValidation.observeForever(passwordValidationObserver)
+        signUpViewModel.messageStringId.observeForever(messageStringIdObserver)
+        signUpViewModel.signUpProgress.observeForever(signUpProgressObserver)
+        signUpViewModel.launchMain.observeForever(launchMainObserver)
+        signUpViewModel.launchLogin.observeForever(launchLoginObserver)
+        signUpViewModel.nameValidation.observeForever(nameValidationObserver)
+        signUpViewModel.emailValidation.observeForever(emailValidationObserver)
+        signUpViewModel.passwordValidation.observeForever(passwordValidationObserver)
     }
 
     @After
     fun tearDown() {
         // Remove Registered LiveData Observers
-        loginViewModel.messageStringId.removeObserver(messageStringIdObserver)
-        loginViewModel.loginProgress.removeObserver(loginProgressObserver)
-        loginViewModel.launchMain.removeObserver(launchMainObserver)
-        loginViewModel.launchSignUp.removeObserver(launchSignUpObserver)
-        loginViewModel.emailValidation.removeObserver(emailValidationObserver)
-        loginViewModel.passwordValidation.removeObserver(passwordValidationObserver)
+        signUpViewModel.messageStringId.removeObserver(messageStringIdObserver)
+        signUpViewModel.signUpProgress.removeObserver(signUpProgressObserver)
+        signUpViewModel.launchMain.removeObserver(launchMainObserver)
+        signUpViewModel.launchLogin.removeObserver(launchLoginObserver)
+        signUpViewModel.nameValidation.removeObserver(nameValidationObserver)
+        signUpViewModel.emailValidation.removeObserver(emailValidationObserver)
+        signUpViewModel.passwordValidation.removeObserver(passwordValidationObserver)
     }
 
     @Test
-    fun givenServerResponse200_whenLogin_shouldLaunchMainActivity() {
+    fun givenServerResponse200_whenSignUp_shouldLaunchMainActivity() {
         // Create Dummy User
         val user = DataModelObjectProvider.signedInUser
         // Password for the User (derived from email hash for testing)
         val password = user.email.hashCode().toString()
 
         // Set the values for the Field LiveData
-        loginViewModel.emailField.value = user.email
-        loginViewModel.passwordField.value = password
+        signUpViewModel.nameField.value = user.name
+        signUpViewModel.emailField.value = user.email
+        signUpViewModel.passwordField.value = password
 
         // Mock the Network Connectivity to stay Connected
         doReturn(true).`when`(networkHelper).isNetworkConnected()
 
-        // Mock the UserRepository Login Action to provide the SingleSource of existing User
+        // Mock the UserRepository SignUp Action to provide the SingleSource of newly registered User
         doReturn(Single.just(user))
             .`when`(userRepository)
-            .doUserLogin(user.email, password)
+            .doUserSignUp(user.email, password, user.name)
 
-        // Start the Login
-        loginViewModel.onLogin()
+        // Start the SignUp
+        signUpViewModel.onSignUp()
         // Trigger the Schedulers to complete pending actions
         testScheduler.triggerActions()
+
+        // Expected Resource for Name validation results LiveData
+        val expectedNameValidationResource = Resource.Success<Int>()
+        // Assert that the Name validation results LiveData is set to the expected Resource
+        assert(signUpViewModel.nameValidation.value == expectedNameValidationResource)
+        // Verify that the Name validation results LiveData Observer has received the expected Resource
+        verify(nameValidationObserver).onChanged(expectedNameValidationResource)
 
         // Expected Resource for Email validation results LiveData
         val expectedEmailValidationResource = Resource.Success<Int>()
         // Assert that the Email validation results LiveData is set to the expected Resource
-        assert(loginViewModel.emailValidation.value == expectedEmailValidationResource)
+        assert(signUpViewModel.emailValidation.value == expectedEmailValidationResource)
         // Verify that the Email validation results LiveData Observer has received the expected Resource
         verify(emailValidationObserver).onChanged(expectedEmailValidationResource)
 
         // Expected Resource for Password validation results LiveData
         val expectedPasswordValidationResource = Resource.Success<Int>()
         // Assert that the Password validation results LiveData is set to the expected Resource
-        assert(loginViewModel.passwordValidation.value == expectedPasswordValidationResource)
+        assert(signUpViewModel.passwordValidation.value == expectedPasswordValidationResource)
         // Verify that the Password validation results LiveData Observer has received the expected Resource
         verify(passwordValidationObserver).onChanged(expectedPasswordValidationResource)
 
         // Verify that there was a call to save the user information in the preferences
         verify(userRepository).saveCurrentUser(user)
-        // Assert that the Login Progress indication LiveData has stopped
-        assert(loginViewModel.loginProgress.value == false)
-        // Verify that the Login Progress LiveData Observer received both Start and Stop values
-        verify(loginProgressObserver).onChanged(true)
-        verify(loginProgressObserver).onChanged(false)
+        // Assert that the SignUp Progress indication LiveData has stopped
+        assert(signUpViewModel.signUpProgress.value == false)
+        // Verify that the SignUp Progress LiveData Observer received both Start and Stop values
+        verify(signUpProgressObserver).onChanged(true)
+        verify(signUpProgressObserver).onChanged(false)
 
         // Expected Event for MainActivity
         val expectedMainEvent = Event<Map<String, String>>(emptyMap())
         // Assert that the MainActivity Launch Event LiveData is triggered
-        assert(loginViewModel.launchMain.value == expectedMainEvent)
+        assert(signUpViewModel.launchMain.value == expectedMainEvent)
         // Verify that the MainActivity Launch Event LiveData Observer received the expected Event
         verify(launchMainObserver).onChanged(expectedMainEvent)
     }
 
     @Test
-    fun givenInvalidEmail_whenLogin_shouldDispatchEmailInvalidError() {
+    fun givenInvalidEmail_whenSignUp_shouldDispatchEmailInvalidError() {
+        // Valid Name
+        val name = "test"
         // Invalid Email
         val invalidEmail = "abcdefg"
         // Valid password derived from email hash for testing
         val password = invalidEmail.hashCode().toString()
 
         // Set the values for the Field LiveData
-        loginViewModel.emailField.value = invalidEmail
-        loginViewModel.passwordField.value = password
+        signUpViewModel.nameField.value = name
+        signUpViewModel.emailField.value = invalidEmail
+        signUpViewModel.passwordField.value = password
 
-        // Start the Login
-        loginViewModel.onLogin()
+        // Start the SignUp
+        signUpViewModel.onSignUp()
         // Trigger the Schedulers to complete pending actions
         testScheduler.triggerActions()
+
+        // Expected Resource for Name validation results LiveData
+        val expectedNameValidationResource = Resource.Success<Int>()
+        // Assert that the Name validation results LiveData is set to the expected Resource
+        assert(signUpViewModel.nameValidation.value == expectedNameValidationResource)
+        // Verify that the Name validation results LiveData Observer has received the expected Resource
+        verify(nameValidationObserver).onChanged(expectedNameValidationResource)
 
         // Expected Error Resource for Invalid Email
         val expectedEmailErrorResource =
             Resource.Error(R.string.error_login_sign_up_email_field_invalid)
         // Assert that the Email validation results LiveData is set to the expected Invalid Error Resource
-        assert(loginViewModel.emailValidation.value == expectedEmailErrorResource)
+        assert(signUpViewModel.emailValidation.value == expectedEmailErrorResource)
         // Verify that the Email validation results LiveData Observer has received the expected Invalid Error Resource
         verify(emailValidationObserver).onChanged(expectedEmailErrorResource)
 
         // Expected Resource for Password validation results LiveData
         val expectedPasswordValidationResource = Resource.Success<Int>()
         // Assert that the Password validation results LiveData is set to the expected Resource
-        assert(loginViewModel.passwordValidation.value == expectedPasswordValidationResource)
+        assert(signUpViewModel.passwordValidation.value == expectedPasswordValidationResource)
         // Verify that the Password validation results LiveData Observer has received the expected Resource
         verify(passwordValidationObserver).onChanged(expectedPasswordValidationResource)
 
         // Verify that there was no interactions with the UserRepository
-        verifyNoInteractions(userRepository)
-        // Verify that the Login Progress LiveData Observer never received any value
-        verifyNoInteractions(loginProgressObserver)
+        Mockito.verifyNoInteractions(userRepository)
+        // Verify that the SignUp Progress LiveData Observer never received any value
+        Mockito.verifyNoInteractions(signUpProgressObserver)
         // Verify that the MainActivity Launch Event LiveData Observer never received any Event
-        verifyNoInteractions(launchMainObserver)
+        Mockito.verifyNoInteractions(launchMainObserver)
     }
 
     @Test
-    fun givenInvalidPassword_whenLogin_shouldDispatchPasswordInvalidError() {
+    fun givenInvalidPassword_whenSignUp_shouldDispatchPasswordInvalidError() {
+        // Valid Name
+        val name = "test"
         // Valid Email
         val email = "test@mindorks.com"
         // Invalid Password (less than 6 min-character-length)
         val invalidPassword = "abc"
 
         // Set the values for the Field LiveData
-        loginViewModel.emailField.value = email
-        loginViewModel.passwordField.value = invalidPassword
+        signUpViewModel.nameField.value = name
+        signUpViewModel.emailField.value = email
+        signUpViewModel.passwordField.value = invalidPassword
 
-        // Start the Login
-        loginViewModel.onLogin()
+        // Start the SignUp
+        signUpViewModel.onSignUp()
         // Trigger the Schedulers to complete pending actions
         testScheduler.triggerActions()
+
+        // Expected Resource for Name validation results LiveData
+        val expectedNameValidationResource = Resource.Success<Int>()
+        // Assert that the Name validation results LiveData is set to the expected Resource
+        assert(signUpViewModel.nameValidation.value == expectedNameValidationResource)
+        // Verify that the Name validation results LiveData Observer has received the expected Resource
+        verify(nameValidationObserver).onChanged(expectedNameValidationResource)
 
         // Expected Resource for Email validation results LiveData
         val expectedEmailValidationResource = Resource.Success<Int>()
         // Assert that the Email validation results LiveData is set to the expected Resource
-        assert(loginViewModel.emailValidation.value == expectedEmailValidationResource)
+        assert(signUpViewModel.emailValidation.value == expectedEmailValidationResource)
         // Verify that the Email validation results LiveData Observer has received the expected Resource
         verify(emailValidationObserver).onChanged(expectedEmailValidationResource)
 
@@ -231,34 +267,42 @@ class LoginViewModelTest {
         val expectedPasswordErrorResource =
             Resource.Error(R.string.error_login_sign_up_password_field_small_length)
         // Assert that the Password validation results LiveData is set to the expected Invalid Error Resource
-        assert(loginViewModel.passwordValidation.value == expectedPasswordErrorResource)
+        assert(signUpViewModel.passwordValidation.value == expectedPasswordErrorResource)
         // Verify that the Password validation results LiveData Observer has received the expected Invalid Error Resource
         verify(passwordValidationObserver).onChanged(expectedPasswordErrorResource)
 
         // Verify that there was no interactions with the UserRepository
-        verifyNoInteractions(userRepository)
-        // Verify that the Login Progress LiveData Observer never received any value
-        verifyNoInteractions(loginProgressObserver)
+        Mockito.verifyNoInteractions(userRepository)
+        // Verify that the SignUp Progress LiveData Observer never received any value
+        Mockito.verifyNoInteractions(signUpProgressObserver)
         // Verify that the MainActivity Launch Event LiveData Observer never received any Event
-        verifyNoInteractions(launchMainObserver)
+        Mockito.verifyNoInteractions(launchMainObserver)
     }
 
     @Test
-    fun givenAllEmptyFields_whenLogin_shouldDispatchEmptyFieldsError() {
+    fun givenAllEmptyFields_whenSignUp_shouldDispatchEmptyFieldsError() {
         // Set empty values for the Field LiveData
-        loginViewModel.emailField.value = ""
-        loginViewModel.passwordField.value = ""
+        signUpViewModel.nameField.value = ""
+        signUpViewModel.emailField.value = ""
+        signUpViewModel.passwordField.value = ""
 
-        // Start the Login
-        loginViewModel.onLogin()
+        // Start the SignUp
+        signUpViewModel.onSignUp()
         // Trigger the Schedulers to complete pending actions
         testScheduler.triggerActions()
+
+        // Expected Error Resource for Empty Name
+        val expectedNameErrorResource = Resource.Error(R.string.error_sign_up_name_field_empty)
+        // Assert that the Name validation results LiveData is set to the expected Error Resource
+        assert(signUpViewModel.nameValidation.value == expectedNameErrorResource)
+        // Verify that the Name validation results LiveData Observer has received the expected Error Resource
+        verify(nameValidationObserver).onChanged(expectedNameErrorResource)
 
         // Expected Error Resource for Empty Email
         val expectedEmailErrorResource =
             Resource.Error(R.string.error_login_sign_up_email_field_empty)
         // Assert that the Email validation results LiveData is set to the expected Error Resource
-        assert(loginViewModel.emailValidation.value == expectedEmailErrorResource)
+        assert(signUpViewModel.emailValidation.value == expectedEmailErrorResource)
         // Verify that the Email validation results LiveData Observer has received the expected Error Resource
         verify(emailValidationObserver).onChanged(expectedEmailErrorResource)
 
@@ -266,54 +310,55 @@ class LoginViewModelTest {
         val expectedPasswordErrorResource =
             Resource.Error(R.string.error_login_sign_up_password_field_empty)
         // Assert that the Password validation results LiveData is set to the expected Error Resource
-        assert(loginViewModel.passwordValidation.value == expectedPasswordErrorResource)
+        assert(signUpViewModel.passwordValidation.value == expectedPasswordErrorResource)
         // Verify that the Password validation results LiveData Observer has received the expected Error Resource
         verify(passwordValidationObserver).onChanged(expectedPasswordErrorResource)
 
         // Verify that there was no interactions with the UserRepository
-        verifyNoInteractions(userRepository)
-        // Verify that the Login Progress LiveData Observer never received any value
-        verifyNoInteractions(loginProgressObserver)
+        Mockito.verifyNoInteractions(userRepository)
+        // Verify that the SignUp Progress LiveData Observer never received any value
+        Mockito.verifyNoInteractions(signUpProgressObserver)
         // Verify that the MainActivity Launch Event LiveData Observer never received any Event
-        verifyNoInteractions(launchMainObserver)
+        Mockito.verifyNoInteractions(launchMainObserver)
     }
 
     @Test
-    fun givenNoInternet_whenLogin_shouldShowNetworkError() {
+    fun givenNoInternet_whenSignUp_shouldShowNetworkError() {
         // Create Dummy User
         val user = DataModelObjectProvider.signedInUser
         // Password for the User (derived from email hash for testing)
         val password = user.email.hashCode().toString()
 
         // Set the values for the Field LiveData
-        loginViewModel.emailField.value = user.email
-        loginViewModel.passwordField.value = password
+        signUpViewModel.nameField.value = user.name
+        signUpViewModel.emailField.value = user.email
+        signUpViewModel.passwordField.value = password
 
         // Mock the Network Connectivity to stay Disconnected
         doReturn(false).`when`(networkHelper).isNetworkConnected()
 
-        // Start the Login
-        loginViewModel.onLogin()
+        // Start the SignUp
+        signUpViewModel.onSignUp()
 
         // Expected Network Error Resource
         val expectedNetworkErrorMessage = Resource.Error(R.string.error_network_connection_issue)
         // Assert that expected Network Error is set on the Resource messages LiveData
-        assert(loginViewModel.messageStringId.value == expectedNetworkErrorMessage)
+        assert(signUpViewModel.messageStringId.value == expectedNetworkErrorMessage)
         // Verify that the Resource messages LiveData Observer received the expected Network Error Resource
         verify(messageStringIdObserver).onChanged(expectedNetworkErrorMessage)
     }
 
     @Test
-    fun whenSignUpWithEmail_shouldLaunchSignUpActivity() {
-        // Initiate the "Sign Up with Email" event
-        loginViewModel.onSignUpWithEmail()
+    fun whenLoginWithEmail_shouldLaunchLoginActivity() {
+        // Initiate the "Login with Email" event
+        signUpViewModel.onLoginWithEmail()
 
-        // Expected Event for SignUpActivity
-        val expectedSignUpEvent = Event<Map<String, String>>(emptyMap())
-        // Assert that the SignUpActivity Launch Event LiveData is triggered
-        assert(loginViewModel.launchSignUp.value == expectedSignUpEvent)
-        // Verify that the SignUpActivity Launch Event LiveData Observer received the expected Event
-        verify(launchSignUpObserver).onChanged(expectedSignUpEvent)
+        // Expected Event for LoginActivity
+        val expectedLoginEvent = Event<Map<String, String>>(emptyMap())
+        // Assert that the LoginActivity Launch Event LiveData is triggered
+        assert(signUpViewModel.launchLogin.value == expectedLoginEvent)
+        // Verify that the LoginActivity Launch Event LiveData Observer received the expected Event
+        verify(launchLoginObserver).onChanged(expectedLoginEvent)
     }
 
 }
