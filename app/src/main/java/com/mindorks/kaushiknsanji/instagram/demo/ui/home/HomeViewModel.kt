@@ -57,6 +57,7 @@ class HomeViewModel(
 
     // Stores the Post Id of the latest Post for pagination
     private var firstPostId: String? = null
+
     // Stores the Post Id of the oldest Post for pagination
     private var lastPostId: String? = null
 
@@ -114,13 +115,13 @@ class HomeViewModel(
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.
      */
     override fun onCreate() {
-        // Restore all Posts into the Adapter if we have already downloaded some posts
-        if (allPostList.size > 0) {
-            // Trigger List of All Posts to be reloaded
+        if (allPostList.isNotEmpty()) {
+            // Trigger List of All Posts to be reloaded if we have already downloaded some posts
             reloadAllPosts.postValue(Resource.Success(allPostListCopy(allPostList)))
+        } else {
+            // Load a new page list of Posts when no Posts are loaded yet
+            loadMorePosts()
         }
-        // Load the following list of Posts
-        loadMorePosts()
     }
 
     /**
