@@ -12,9 +12,12 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.log.Logger
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.PublishProcessor
+import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * [BaseViewModel] subclass for [HomeFragment]
@@ -47,13 +50,10 @@ class HomeViewModel(
     // Stores the List of All Posts retrieved till last request
     private val allPostList: MutableList<Post> = mutableListOf()
 
-    // Function reference that creates a copy of [allPostList] for publishing to [reloadAllPosts]
+    // Function type that creates a copy of [allPostList] for publishing to [reloadAllPosts]
     private val allPostListCopy: (MutableList<Post>) -> List<Post> = { posts: MutableList<Post> ->
         posts.map { post: Post -> post.shallowCopy() }
     }
-
-    // Instance of PublishProcessor that supplies new List of Posts for multiple requests
-    private val paginator: PublishProcessor<Pair<String?, String?>> = PublishProcessor.create()
 
     // Stores the Post Id of the latest Post for pagination
     private var firstPostId: String? = null
@@ -61,31 +61,40 @@ class HomeViewModel(
     // Stores the Post Id of the oldest Post for pagination
     private var lastPostId: String? = null
 
-    init {
-        // Construct the PublishProcessor and save its disposable
-        compositeDisposable.add(
-            paginator
-                .onBackpressureDrop() // Backpressure strategy that discards items on overflow
-                .doOnNext {
-                    // Called when onNext() is invoked. Will start the [loadingProgress] indication
-                    loadingProgress.postValue(true)
-                }
-                .distinct()
-                .concatMapSingle { pageIdPair: Pair<String?, String?> ->
-                    // Working on all requests in a synchronised manner
+    // Thread-safe set of Pages requested by the paginator
+    private val requestedPageSet: MutableSet<Pair<String?, String?>> =
+        Collections.newSetFromMap(ConcurrentHashMap(2))
 
-                    // Make the API Call to get the list of All Posts for the subsequent page
-                    postRepository.getAllPostsList(pageIdPair.first, pageIdPair.second, user)
-                        .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
-                        // (Handle error for each request immediately so that the paginator can be re-used in case of failures)
-                        .doOnError { throwable: Throwable? ->
-                            // Handle and display the appropriate error
-                            handleNetworkError(throwable)
-                        }
-                }
+    // Instance of PublishProcessor that supplies new List of Posts for multiple requests
+    private val paginator: PublishProcessor<Pair<String?, String?>> = PublishProcessor.create()
+
+    // Flowable List of Posts resulting from each request of the paginator
+    private val resultPostsFlowable: Flowable<List<Post>> = paginator
+        .onBackpressureDrop() // Backpressure strategy that discards items on overflow
+        .doOnNext {
+            // Called when onNext() is invoked. Will start the [loadingProgress] indication
+            loadingProgress.postValue(true)
+        }
+        .concatMapSingle { pageIdPair: Pair<String?, String?> ->
+            // Working on all requests in a synchronised manner
+
+            // Make the API Call to get the list of All Posts for the subsequent page
+            postRepository.getAllPostsList(pageIdPair.first, pageIdPair.second, user)
                 .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
+                // (Handle error for each request immediately so that the paginator can be re-used in case of failures)
+                .doOnError { throwable: Throwable? ->
+                    // Handle and display the appropriate error
+                    handleNetworkError(throwable)
+                }
+        }
+
+    init {
+        // Subscribe to the Flowable List of Posts and save its disposable
+        compositeDisposable.add(
+            resultPostsFlowable
+                .subscribeOn(schedulerProvider.io())
                 .subscribe(
-                    // OnSuccess
+                    // OnNext
                     { paginatedPostList: List<Post> ->
                         // Save new page List of Posts retrieved in the List of All Posts
                         allPostList.addAll(paginatedPostList)
@@ -137,7 +146,15 @@ class HomeViewModel(
     private fun loadMorePosts() {
         if (checkInternetConnectionWithMessage()) {
             // When we have the network connectivity, trigger the [paginator] to load more [Post]s
-            paginator.onNext(firstPostId to lastPostId)
+
+            // Next page to be requested
+            val requestedPage = firstPostId to lastPostId
+
+            // Try requesting the page to be loaded
+            if (requestedPageSet.add(requestedPage)) {
+                // If this is a new page, then trigger the [paginator] to load more [Post]s
+                paginator.onNext(requestedPage)
+            }
         }
     }
 
