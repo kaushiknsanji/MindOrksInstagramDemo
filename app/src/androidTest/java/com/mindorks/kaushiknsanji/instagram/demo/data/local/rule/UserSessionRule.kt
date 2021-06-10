@@ -1,7 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.data.local.rule
 
 import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
-import com.mindorks.kaushiknsanji.instagram.demo.di.TestComponentRule
+import com.mindorks.kaushiknsanji.instagram.demo.di.rule.TestComponentRule
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider
 import org.junit.rules.ExternalResource
 

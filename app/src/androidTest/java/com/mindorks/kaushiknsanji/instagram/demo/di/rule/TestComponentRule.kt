@@ -1,4 +1,4 @@
-package com.mindorks.kaushiknsanji.instagram.demo.di
+package com.mindorks.kaushiknsanji.instagram.demo.di.rule
 
 import android.content.Context
 import com.mindorks.kaushiknsanji.instagram.demo.InstagramApplication

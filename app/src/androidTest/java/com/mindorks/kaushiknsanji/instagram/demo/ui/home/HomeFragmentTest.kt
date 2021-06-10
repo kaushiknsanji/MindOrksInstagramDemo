@@ -12,7 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.platform.app.InstrumentationRegistry
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.rule.UserSessionRule
-import com.mindorks.kaushiknsanji.instagram.demo.di.TestComponentRule
+import com.mindorks.kaushiknsanji.instagram.demo.di.rule.TestComponentRule
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.action.RecyclerViewItemActions
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.matcher.ImageMatchers

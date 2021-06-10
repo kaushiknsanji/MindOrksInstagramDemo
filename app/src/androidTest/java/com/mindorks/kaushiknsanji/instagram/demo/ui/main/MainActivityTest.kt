@@ -21,7 +21,7 @@ import com.google.common.truth.Truth
 import com.mindorks.kaushiknsanji.instagram.demo.R
 import com.mindorks.kaushiknsanji.instagram.demo.data.local.rule.UserSessionRule
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.FakeNetworkService
-import com.mindorks.kaushiknsanji.instagram.demo.di.TestComponentRule
+import com.mindorks.kaushiknsanji.instagram.demo.di.rule.TestComponentRule
 import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseActivityResultContracts
 import com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity
 import com.mindorks.kaushiknsanji.instagram.demo.ui.like.PostLikeActivity
