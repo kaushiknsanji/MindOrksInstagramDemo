@@ -1,4 +1,4 @@
-package com.mindorks.kaushiknsanji.instagram.demo.utils
+package com.mindorks.kaushiknsanji.instagram.demo.utils.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

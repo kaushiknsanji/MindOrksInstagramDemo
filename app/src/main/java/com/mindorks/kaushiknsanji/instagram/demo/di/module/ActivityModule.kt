@@ -23,9 +23,9 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.main.MainViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.signup.SignUpViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.splash.SplashViewModel
-import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.DialogManager
+import com.mindorks.kaushiknsanji.instagram.demo.utils.factory.ViewModelProviderFactory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import com.mindorks.paracamera.Camera

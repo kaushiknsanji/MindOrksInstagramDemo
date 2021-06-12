@@ -7,7 +7,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseDialogFragment
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.option.ConfirmOptionDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.picture.PhotoOptionsDialogSharedViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.ui.common.dialogs.progress.ProgressTextDialogSharedViewModel
-import com.mindorks.kaushiknsanji.instagram.demo.utils.ViewModelProviderFactory
+import com.mindorks.kaushiknsanji.instagram.demo.utils.factory.ViewModelProviderFactory
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import dagger.Module
