@@ -5,8 +5,8 @@ buildscript {
     ext.versions = [:]
 
     // Plugin versions
-    versions.kotlin_plugin = '1.4.32'
-    versions.gradle_plugin = '4.1.3'
+    versions.kotlin_plugin = '1.5.10'
+    versions.gradle_plugin = '4.2.1'
 
     // Sdk and Tools
     versions.min_sdk = 21
