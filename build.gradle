@@ -14,16 +14,16 @@ buildscript {
     versions.compile_sdk = 30
 
     // AppCompat
-    versions.appcompat = '1.2.0'
+    versions.appcompat = '1.3.0'
 
     // Core
-    versions.core = '1.3.2'
+    versions.core = '1.5.0'
 
     // Activity
-    versions.activity = '1.2.2'
+    versions.activity = '1.2.3'
 
     // Fragment
-    versions.fragment = '1.3.3'
+    versions.fragment = '1.3.4'
 
     // Material
     versions.material = '1.3.0'
@@ -32,7 +32,7 @@ buildscript {
     versions.constraintlayout = '2.0.4'
 
     // RecyclerView
-    versions.recyclerview = '1.2.0'
+    versions.recyclerview = '1.2.1'
 
     // CardView
     versions.cardview = '1.0.0'
@@ -76,12 +76,12 @@ buildscript {
     // Testing
     versions.junit = '4.13.1'
     versions.espresso = '3.3.0'
-    versions.mockito = '3.9.0'
+    versions.mockito = '3.11.0'
     versions.core_testing = '1.1.1'
     versions.test_runner = '1.3.0'
     versions.test_ext_junit = '1.1.2'
     versions.hamcrest = '2.2'
-    versions.fragment_testing = '1.3.3'
+    versions.fragment_testing = '1.3.4'
     versions.truth = '1.1.2'
     versions.test_ext_truth = '1.3.0'
 
