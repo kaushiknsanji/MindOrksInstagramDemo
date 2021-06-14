@@ -47,7 +47,7 @@ class HomeViewModel(
     val scrollToTop: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     // Stores the logged-in [User] information
-    private val user: User = userRepository.getCurrentUser()!!
+    private val user: User = userRepository.getCurrentUser()
 
     // Stores the List of All Posts retrieved till last request
     private val allPostList: MutableList<Post> = mutableListOf()
@@ -188,7 +188,7 @@ class HomeViewModel(
             // Create a Single from the logged-in User information retrieved from the repository
             Single.fromCallable {
                 // Get updated user information from preferences
-                userRepository.getCurrentUser()!!
+                userRepository.getCurrentUser()
             }
                 .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
                 .subscribe(

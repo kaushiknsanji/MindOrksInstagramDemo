@@ -45,7 +45,7 @@ class PhotoViewModel(
     val postPublished: MutableLiveData<Event<Post>> = MutableLiveData()
 
     // Stores the logged-in [User] information
-    private val user: User = userRepository.getCurrentUser()!!
+    private val user: User = userRepository.getCurrentUser()
 
     /**
      * Callback method to be implemented, which will be called when this ViewModel's Activity/Fragment is created.

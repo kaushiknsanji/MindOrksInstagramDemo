@@ -43,7 +43,7 @@ class SplashViewModel(
                 .map {
                     // Map the timer value to the logged-in User information
                     // retrieved from the repository
-                    userRepository.getCurrentUser()
+                    userRepository.getCurrentUserOrNull()
                 }
                 .subscribeOn(schedulerProvider.io()) // Operate on IO Thread
                 .subscribe(

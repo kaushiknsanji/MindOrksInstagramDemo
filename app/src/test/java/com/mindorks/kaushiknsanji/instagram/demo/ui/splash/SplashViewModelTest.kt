@@ -88,7 +88,7 @@ class SplashViewModelTest {
     @Test
     fun givenNoUser_shouldLaunchLoginActivity() {
         // Mock UserRepository to provide NO user when requested for current user information
-        doReturn(null).`when`(userRepository).getCurrentUser()
+        doReturn(null).`when`(userRepository).getCurrentUserOrNull()
 
         // Start the onCreate process
         splashViewModel.onCreate()
@@ -113,7 +113,7 @@ class SplashViewModelTest {
     @Test
     fun givenRegisteredUser_shouldLaunchMainActivity() {
         // Mock UserRepository to provide a logged-in User when requested for current user information
-        doReturn(DataModelObjectProvider.signedInUser).`when`(userRepository).getCurrentUser()
+        doReturn(DataModelObjectProvider.signedInUser).`when`(userRepository).getCurrentUserOrNull()
 
         // Start the onCreate process
         splashViewModel.onCreate()

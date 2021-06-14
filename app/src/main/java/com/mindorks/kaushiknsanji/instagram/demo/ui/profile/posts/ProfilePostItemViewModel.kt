@@ -32,7 +32,7 @@ class ProfilePostItemViewModel @Inject constructor(
 ) : BaseItemViewModel<Post>(schedulerProvider, compositeDisposable, networkHelper) {
 
     // Stores the logged-in [User] information
-    private val user: User = userRepository.getCurrentUser()!!
+    private val user: User = userRepository.getCurrentUser()
 
     // Get the Screen dimensions for calculating the required Image dimensions
     private val screenWidth = ScreenUtils.getScreenWidth()

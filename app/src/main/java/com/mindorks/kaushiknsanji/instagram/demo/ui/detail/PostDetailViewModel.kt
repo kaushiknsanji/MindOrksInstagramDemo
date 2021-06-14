@@ -50,7 +50,7 @@ class PostDetailViewModel(
     val deleteProgress: MutableLiveData<Resource<Int>> = MutableLiveData()
 
     // Stores the logged-in [User] information
-    private val user: User = userRepository.getCurrentUser()!!
+    private val user: User = userRepository.getCurrentUser()
 
     // Prepare the headers for the Image download requests
     private val headers: Map<String, String> = mapOf(

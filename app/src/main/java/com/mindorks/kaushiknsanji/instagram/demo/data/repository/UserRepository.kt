@@ -72,9 +72,9 @@ class UserRepository @Inject constructor(
     }
 
     /**
-     * Retrieves logged-in user information from [userPreferences] if present.
+     * Retrieves logged-in [User] information from [userPreferences] if present; else `null`.
      */
-    fun getCurrentUser(): User? {
+    fun getCurrentUserOrNull(): User? {
         // Reading from userPreferences
         val userId = userPreferences.getUserId()
         val userName = userPreferences.getUserName()
@@ -98,6 +98,16 @@ class UserRepository @Inject constructor(
         else
             null
     }
+
+    /**
+     * Retrieves logged-in [User] information from [userPreferences] if present; else
+     * throws [IllegalStateException].
+     */
+    fun getCurrentUser(): User =
+        getCurrentUserOrNull()
+            ?: throw IllegalStateException(
+                "Preferences does not contain any saved User information."
+            )
 
     /**
      * Performs User Login request with the Remote API and returns a [Single] of [User] from the response.

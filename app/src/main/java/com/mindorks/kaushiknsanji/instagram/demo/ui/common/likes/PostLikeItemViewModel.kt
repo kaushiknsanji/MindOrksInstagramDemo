@@ -30,7 +30,7 @@ class PostLikeItemViewModel @Inject constructor(
 ) : BaseItemViewModel<Post.User>(schedulerProvider, compositeDisposable, networkHelper) {
 
     // Stores the logged-in [User] information
-    private val user: User = userRepository.getCurrentUser()!!
+    private val user: User = userRepository.getCurrentUser()
 
     // Prepare the headers for the Image download requests
     private val headers: Map<String, String> = mapOf(

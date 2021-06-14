@@ -25,9 +25,10 @@ class TokenRepository @Inject constructor(
 ) {
 
     /**
-     * Retrieves logged-in user information from [userPreferences] if present.
+     * Retrieves logged-in [User] information from [userPreferences] if present; else
+     * throws [IllegalStateException].
      */
-    private fun getCurrentUser(): User? {
+    private fun getCurrentUser(): User {
         // Reading from userPreferences
         val userId = userPreferences.getUserId()
         val userName = userPreferences.getUserName()
@@ -49,7 +50,9 @@ class TokenRepository @Inject constructor(
                 tagline = userPreferences.getTagline()
             ) // ( profilePicUrl and tagline can be null, need not necessarily be present at the time of reading )
         else
-            null
+            throw IllegalStateException(
+                "Preferences does not contain any saved User information."
+            )
     }
 
     /**
@@ -68,12 +71,12 @@ class TokenRepository @Inject constructor(
      * token could not be renewed for some reason.
      */
     fun doTokenRenewal(): String? =
-        getCurrentUser()!!.let { user: User ->
+        with(getCurrentUser()) {
             // When we have the logged-in user information, generate a new token using "refreshToken"
             tokenService.doTokenRefreshCall(
-                TokenRefreshRequest(user.refreshToken),
-                user.id,
-                user.accessToken
+                TokenRefreshRequest(this.refreshToken),
+                this.id,
+                this.accessToken
             ).execute().body()?.let { response: TokenRefreshResponse ->
                 when (response.status) {
                     // On Success

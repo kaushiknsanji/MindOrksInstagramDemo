@@ -35,7 +35,7 @@ class PostLikeViewModel(
     val loadingProgress: MutableLiveData<Boolean> = MutableLiveData()
 
     // Stores the logged-in [User] information
-    private val user: User = userRepository.getCurrentUser()!!
+    private val user: User = userRepository.getCurrentUser()
 
     // LiveData for the Post Details of the Post requested
     private val postData: MutableLiveData<Post> = MutableLiveData()
