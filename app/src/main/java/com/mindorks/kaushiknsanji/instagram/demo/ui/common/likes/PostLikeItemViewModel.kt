@@ -45,7 +45,7 @@ class PostLikeItemViewModel @Inject constructor(
     // Transforms [userName] to create a dummy user handle based on the user name
     val userHandle: LiveData<String> = userName.map { name: String ->
         // Convert all to lowercase and remove whitespaces if any
-        name.toLowerCase(Locale.getDefault()).replace("\\s".toRegex(), "")
+        name.lowercase(Locale.getDefault()).replace("\\s".toRegex(), "")
     }
 
     // Transforms [itemData] to get the [Image] model of the Profile Picture, of the User who liked the Post
