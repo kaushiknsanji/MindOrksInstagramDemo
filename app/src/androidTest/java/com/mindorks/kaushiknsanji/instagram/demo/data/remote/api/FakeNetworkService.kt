@@ -27,7 +27,7 @@ class FakeNetworkService : NetworkService {
         const val RESPONSE_SUCCESS = "Success"
 
         // Fake response message for Logout API call
-        const val RESPONSE_LOGOUT = "Logged out successfully"
+        const val RESPONSE_LOGOUT = "Logout success"
 
         // Fake URL of the Image uploaded via Image Upload API
         const val IMAGE_UPLOAD_RESULT_URL = "DummyUploadedImageUrl"
@@ -36,7 +36,7 @@ class FakeNetworkService : NetworkService {
         const val RESPONSE_POST_DELETED = "Post deleted successfully"
 
         // Fake response message for Update User Info API call
-        const val RESPONSE_INFO_UPDATED = "Profile information has been updated"
+        const val RESPONSE_INFO_UPDATED = "User info updated successfully"
     }
 
     init {
