@@ -30,7 +30,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import com.mindorks.paracamera.Camera
 import dagger.Module
 import dagger.Provides
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import java.io.File
 
 /**

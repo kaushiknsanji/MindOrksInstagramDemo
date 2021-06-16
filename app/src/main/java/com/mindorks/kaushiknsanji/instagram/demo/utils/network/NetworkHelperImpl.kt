@@ -9,8 +9,8 @@ import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.mindorks.kaushiknsanji.instagram.demo.utils.log.Logger
+import retrofit2.HttpException
 import java.io.IOException
 import java.net.ConnectException
 
@@ -176,7 +176,7 @@ class NetworkHelperImpl(private val context: Context) : NetworkHelper {
                 // For throwable of HttpException, prepare and return the NetworkError Instance from throwable errorBody
                 else -> GsonBuilder().excludeFieldsWithoutExposeAnnotation()
                     .create()
-                    .fromJson(throwable.response().errorBody()?.string(), NetworkError::class.java)
+                    .fromJson(throwable.response()?.errorBody()?.string(), NetworkError::class.java)
                     .copy(status = throwable.code())
             }
         } catch (e: IOException) {

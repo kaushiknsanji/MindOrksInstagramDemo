@@ -1,7 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.utils.rx
 
-import io.reactivex.Scheduler
-import io.reactivex.schedulers.TestScheduler
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.TestScheduler
 
 /**
  * Class that implements [SchedulerProvider] to provide the Reactive [TestScheduler] instance needed for Testing the App.

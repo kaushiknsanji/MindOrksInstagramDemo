@@ -8,7 +8,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider.toMyPostItem
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.TestConstants
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import okhttp3.MultipartBody
 import java.net.HttpURLConnection
 

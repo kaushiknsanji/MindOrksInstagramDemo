@@ -20,7 +20,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.di.module.ApplicationModule
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import dagger.Component
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File

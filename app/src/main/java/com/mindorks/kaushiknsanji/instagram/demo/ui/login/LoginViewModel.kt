@@ -8,7 +8,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.base.BaseViewModel
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * [BaseViewModel] subclass for [LoginActivity]

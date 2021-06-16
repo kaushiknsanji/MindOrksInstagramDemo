@@ -16,7 +16,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.TimeUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.ScreenUtils
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import javax.inject.Inject
 
 /**

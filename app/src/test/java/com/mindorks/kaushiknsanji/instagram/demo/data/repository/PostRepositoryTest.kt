@@ -14,7 +14,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Status
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider.toMyPostItem
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.TestConstants
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

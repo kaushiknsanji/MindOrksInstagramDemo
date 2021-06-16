@@ -1,12 +1,12 @@
 package com.mindorks.kaushiknsanji.instagram.demo.data.remote
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.mindorks.kaushiknsanji.instagram.demo.BuildConfig
 import okhttp3.Authenticator
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -101,7 +101,7 @@ object Networking {
             // GSON Converter Factory to parse JSON and construct Objects
             .addConverterFactory(GsonConverterFactory.create())
             // Rx Call Adapter to wrap requests and response into Rx Streams
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build() // Build and generate the Retrofit instance
             // Create the API for the Service with this Retrofit Configuration
             .create(service)

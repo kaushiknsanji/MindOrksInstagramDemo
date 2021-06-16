@@ -142,11 +142,11 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
     implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
-    implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$versions.retrofit_rxjava_adapter"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$versions.retrofit_rxjava_adapter"
 
     // Reactive
-    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava"
-    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+    implementation "io.reactivex.rxjava3:rxjava:$versions.rxjava"
+    implementation "io.reactivex.rxjava3:rxandroid:$versions.rxandroid"
 
     // Logger
     implementation "com.jakewharton.timber:timber:$versions.timber"

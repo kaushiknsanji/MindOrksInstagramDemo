@@ -3,7 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.data.remote.api
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.Networking
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.*
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.*
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import okhttp3.MultipartBody
 import retrofit2.http.*
 

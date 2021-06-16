@@ -10,7 +10,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * [BaseViewModel] abstract subclass for providing abstraction to common tasks of

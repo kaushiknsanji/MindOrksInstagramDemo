@@ -14,10 +14,10 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.log.Logger
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
-import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.processors.PublishProcessor
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.processors.PublishProcessor
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 

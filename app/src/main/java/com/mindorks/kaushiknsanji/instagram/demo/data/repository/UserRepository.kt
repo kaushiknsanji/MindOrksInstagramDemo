@@ -13,7 +13,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.GeneralRes
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.LoginResponse
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.SignUpResponse
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import org.jetbrains.annotations.TestOnly
 import java.net.HttpURLConnection
 import javax.inject.Inject

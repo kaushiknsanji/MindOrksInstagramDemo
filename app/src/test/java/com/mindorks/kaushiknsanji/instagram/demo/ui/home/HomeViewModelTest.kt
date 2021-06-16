@@ -19,13 +19,13 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvi
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider.makeCopy
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider.mapToPostIdCreationDatePairs
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.DataModelObjectProvider.mapToPostIds
-import io.reactivex.Flowable
-import io.reactivex.Scheduler
-import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.processors.PublishProcessor
-import io.reactivex.schedulers.TestScheduler
-import io.reactivex.subscribers.TestSubscriber
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.processors.PublishProcessor
+import io.reactivex.rxjava3.schedulers.TestScheduler
+import io.reactivex.rxjava3.subscribers.TestSubscriber
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -209,9 +209,7 @@ class HomeViewModelTest {
         verifyNoInteractions(scrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -233,9 +231,7 @@ class HomeViewModelTest {
         verify(messageStringIdObserver).onChanged(expectedErrorResource)
 
         // Verify that there were no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -255,9 +251,7 @@ class HomeViewModelTest {
         verifyNoInteractions(networkHelper)
 
         // Verify that there were no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -391,9 +385,7 @@ class HomeViewModelTest {
         verifyNoInteractions(scrollToTopObserver)
 
         // Verify that there were no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -481,9 +473,7 @@ class HomeViewModelTest {
         verifyNoInteractions(scrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -526,9 +516,7 @@ class HomeViewModelTest {
         verifyNoInteractions(scrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -558,9 +546,7 @@ class HomeViewModelTest {
         verifyNoInteractions(scrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -620,9 +606,7 @@ class HomeViewModelTest {
         verifyNoInteractions(scrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -688,9 +672,7 @@ class HomeViewModelTest {
         verifyNoInteractions(scrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test
@@ -744,9 +726,7 @@ class HomeViewModelTest {
         verifyNoInteractions(scrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
-        testPaginatorSubscriber
-            .assertSubscribed()
-            .assertNoValues()
+        testPaginatorSubscriber.assertEmpty()
     }
 
     @Test

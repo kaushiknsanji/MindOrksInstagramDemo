@@ -4,7 +4,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.model.User
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.api.NetworkService
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.ImageUploadResponse
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Constants.TYPE_IMAGE
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

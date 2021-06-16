@@ -10,7 +10,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.PostCreatio
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.UnlikePostRequest
 import com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.*
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Resource
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton

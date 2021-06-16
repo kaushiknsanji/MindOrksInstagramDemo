@@ -3,7 +3,7 @@ package com.mindorks.kaushiknsanji.instagram.demo.ui.base
 import androidx.lifecycle.MutableLiveData
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * [BaseViewModel] abstract subclass for providing abstraction to common tasks of RecyclerView's ItemViews.

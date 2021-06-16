@@ -1,6 +1,7 @@
 package com.mindorks.kaushiknsanji.instagram.demo.utils.rx
 
-import io.reactivex.Scheduler
+import io.reactivex.rxjava3.core.Scheduler
+
 
 /**
  * Interface for providing the Reactive [Scheduler]s.

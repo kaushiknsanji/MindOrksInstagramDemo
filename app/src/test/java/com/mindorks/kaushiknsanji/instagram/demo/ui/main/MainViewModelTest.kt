@@ -5,8 +5,8 @@ import androidx.lifecycle.Observer
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.Event
 import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.TestSchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.TestScheduler
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.TestScheduler
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

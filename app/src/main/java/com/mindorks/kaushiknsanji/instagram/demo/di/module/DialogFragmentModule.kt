@@ -12,7 +12,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.network.NetworkHelper
 import com.mindorks.kaushiknsanji.instagram.demo.utils.rx.SchedulerProvider
 import dagger.Module
 import dagger.Provides
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * Dagger Module for creating and exposing dependencies, tied to the DialogFragment Lifecycle.
