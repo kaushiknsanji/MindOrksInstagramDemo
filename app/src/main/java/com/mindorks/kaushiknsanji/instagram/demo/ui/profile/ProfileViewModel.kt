@@ -277,14 +277,17 @@ class ProfileViewModel(
     }
 
     /**
-     * Called when the User Deletes the Post from [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity]
+     * Called when the User deletes the Post from [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity]
      * or [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment].
      *
-     * Removes the Post with the [postId] from the [userPosts] and reloads the list.
+     * Reloads the list of [Post]s by delegating to [loadUserPosts].
+     *
+     * Note: Owing to the preset limitation of "My Posts" API Call which returns only the
+     * recent 9 Posts, we cannot just remove the deleted Post from [userPosts] as this will not
+     * load the recent 9 Posts if suppose the User had posted more than 9 Posts. Considering such
+     * a case, it is always best to reload the list of Posts so that recent 9 Posts of User
+     * is always shown.
      */
-    fun onPostDeleted(postId: String) =
-        userPosts.postValue(Resource.Success(userPosts.value?.peekData()?.toMutableList()?.apply {
-            removeAll { post: Post -> post.id == postId }
-        }))
+    fun onPostDeleted() = loadUserPosts()
 
 }

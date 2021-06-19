@@ -229,7 +229,7 @@ class HomeViewModel(
     }
 
     /**
-     * Called when the User Deletes the Post from the current Fragment or
+     * Called when the User deletes the Post from the current Fragment or
      * [com.mindorks.kaushiknsanji.instagram.demo.ui.detail.PostDetailActivity].
      *
      * Removes the Post with the [postId] from the [allPostList] and updates [reloadAllPosts] to reload the list.

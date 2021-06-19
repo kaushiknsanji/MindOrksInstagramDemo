@@ -218,9 +218,9 @@ class ProfileFragment : BaseFragment<ProfileViewModel>(), ProfilePostsAdapter.Li
         }
 
         // Register an observer for Post Deleted events
-        mainSharedViewModel.postDeletedEventToProfile.observeEvent(this) { postId: String ->
+        mainSharedViewModel.postDeletedEventToProfile.observeEvent(this) {
             // Delegate to the ViewModel to remove the Post from the list
-            viewModel.onPostDeleted(postId)
+            viewModel.onPostDeleted()
         }
 
     }
