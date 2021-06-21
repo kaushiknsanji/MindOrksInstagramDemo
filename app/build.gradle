@@ -11,6 +11,11 @@ def apiPropertiesFile = rootProject.file("instagram_api.properties")
 def apiProperties = new Properties()
 apiProperties.load(new FileInputStream(apiPropertiesFile))
 
+// Load the details for signing the APK
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 kapt {
     arguments {
         // Enable incremental annotation processing for Room
@@ -26,15 +31,25 @@ android {
     def API_KEY = "API_KEY"
     def API_KEY_VAL = '"' + apiProperties['API_KEY_VAL'] + '"'
 
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
     compileSdkVersion versions.compile_sdk
 
     defaultConfig {
         applicationId "com.mindorks.kaushiknsanji.instagram.demo"
         minSdkVersion versions.min_sdk
         targetSdkVersion versions.target_sdk
-        versionCode 1
-        versionName "1.0"
+        versionCode rootProject.ext.gitCommitCount
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        archivesBaseName = "$applicationId-v$versionName"
     }
 
     sourceSets {
@@ -54,14 +69,38 @@ android {
 
     buildTypes {
         debug {
+            // Instagram API Base URL and Key
             buildConfigField STRING, BASE_URL, BASE_URL_VAL
             buildConfigField STRING, API_KEY, API_KEY_VAL
+
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
         }
-        release {
-            minifyEnabled true // to apply the proguard
+
+        staging {
+            initWith debug
+
+            // Shrink code and resources
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            applicationIdSuffix ".staging"
+            versionNameSuffix "-staging"
+        }
+
+        release {
+            // Instagram API Base URL and Key
             buildConfigField STRING, BASE_URL, BASE_URL_VAL
             buildConfigField STRING, API_KEY, API_KEY_VAL
+
+            // Shrink code and resources
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            // Automate App signing
+            signingConfig signingConfigs.release
         }
     }
 

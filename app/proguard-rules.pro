@@ -19,3 +19,29 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep Generics information AS-IS
+-keepattributes Signature
+
+# Keep Application wide Model classes AS-IS
+-keep class com.mindorks.kaushiknsanji.instagram.demo.data.model.** { *; }
+
+# Keep Remote Model classes AS-IS
+-keep class com.mindorks.kaushiknsanji.instagram.demo.data.remote.model.** { *; }
+
+# Keep Remote Request Model classes AS-IS
+-keep class com.mindorks.kaushiknsanji.instagram.demo.data.remote.request.** { *; }
+
+# Keep Remote Response Model classes AS-IS
+-keep class com.mindorks.kaushiknsanji.instagram.demo.data.remote.response.** { *; }
+
+# Keep Local Database Entity classes AS-IS
+-keep class com.mindorks.kaushiknsanji.instagram.demo.data.local.db.entity.** { *; }
+
+# Keep AppGlideModule Implementations AS-IS
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
+
+# The Activity Result Contract for ParaCamera Activity Intent is setup using a reflection call
+# to the library method, since there is no other way. Hence this class member must be preserved.
+-keepclassmembers class com.mindorks.paracamera.Camera { void setUpIntent(android.content.Intent); }

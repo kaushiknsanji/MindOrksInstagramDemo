@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mindorks.kaushiknsanji.instagram.demo">
+    package="com.mindorks.kaushiknsanji.instagram.demo"
+    android:installLocation="auto">
 
     <!-- Internet permission to communicate with Remote API -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,34 +17,60 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Activity for viewing Post Photo in Immersive mode -->
         <activity
             android:name=".ui.detail.photo.ImmersivePhotoActivity"
             android:theme="@style/AppThemeFullscreen" />
+
+        <!-- Activity for viewing Likes on a Post -->
         <activity android:name=".ui.like.PostLikeActivity" />
+
+        <!-- Activity for viewing Post details -->
         <activity
             android:name=".ui.detail.PostDetailActivity"
             android:parentActivityName=".ui.main.MainActivity" />
+
+        <!-- Activity for editing User profile details -->
         <activity
             android:name=".ui.profile.edit.EditProfileActivity"
             android:theme="@style/AppTheme.Background.White" />
+
+        <!-- Activity for User registration -->
         <activity
             android:name=".ui.signup.SignUpActivity"
             android:theme="@style/AppTheme.Background.White" />
+
+        <!-- Activity for User Login -->
         <activity
             android:name=".ui.login.LoginActivity"
             android:theme="@style/AppTheme.Background.White" />
+
+        <!-- Activity for Splash screen -->
         <activity
             android:name=".ui.splash.SplashActivity"
             android:theme="@style/AppTheme.Background.White">
+            <!-- This Activity is the Main entry point to the application -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Activity for Main screen -->
         <activity
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTop" />
+
+        <!-- Alias Activity to Splash Activity which acts as a Launcher -->
+        <activity-alias
+            android:name=".LauncherActivity"
+            android:targetActivity=".ui.splash.SplashActivity">
+            <!-- This Alias is the Main entry point, and should appear in the app launcher -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
         <!-- Pre-loading fonts to decrease load time -->
         <meta-data
