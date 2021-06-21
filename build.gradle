@@ -23,7 +23,7 @@ buildscript {
     versions.activity = '1.2.3'
 
     // Fragment
-    versions.fragment = '1.3.4'
+    versions.fragment = '1.3.5'
 
     // Material
     versions.material = '1.3.0'
