@@ -71,7 +71,7 @@ object BottomNavigationViewActions {
             // if found, else throw a RuntimeException (using PerformException)
             with((view as BottomNavigationView).menu) {
                 findItem(menuItemId)?.let {
-                    this.performIdentifierAction(menuItemId, 0)
+                    view.selectedItemId = menuItemId
                 } ?: throw PerformException.Builder()
                     .withActionDescription(description)
                     .withViewDescription(HumanReadables.describe(view))
