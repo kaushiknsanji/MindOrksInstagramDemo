@@ -70,8 +70,9 @@ class MainActivity : BaseActivity<MainViewModel>() {
         binding.bottomNavMain.run {
             // Clearing icon tinting to fix icon distortion
             itemIconTintList = null
-            // Registering the listener
-            setOnNavigationItemSelectedListener { menuItem ->
+
+            // Registering the MenuItem selected listener
+            setOnItemSelectedListener { menuItem ->
                 // Defining action based on the MenuItem clicked
                 when (menuItem.itemId) {
 

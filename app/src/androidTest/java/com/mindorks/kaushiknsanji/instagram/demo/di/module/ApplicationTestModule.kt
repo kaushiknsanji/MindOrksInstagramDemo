@@ -71,7 +71,7 @@ class ApplicationTestModule(private val application: InstagramApplication) {
         authenticator: AccessTokenAuthenticator
     ): OkHttpClient = Networking.createOkHttpClient(
         application.cacheDir,
-        10 * 1024 * 1024, // 10MB Cache Size
+        10L * 1024 * 1024, // 10MB Cache Size
         loggingInterceptor,
         authenticator
     )
@@ -83,7 +83,7 @@ class ApplicationTestModule(private val application: InstagramApplication) {
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient = Networking.createOkHttpClient(
         application.cacheDir,
-        10 * 1024 * 1024, // 10MB Cache Size
+        10L * 1024 * 1024, // 10MB Cache Size
         loggingInterceptor
     )
 
