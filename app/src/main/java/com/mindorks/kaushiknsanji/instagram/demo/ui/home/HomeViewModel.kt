@@ -43,8 +43,11 @@ class HomeViewModel(
     // LiveData for the List of All Posts to be reloaded
     val reloadAllPosts: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
 
-    // Scroll Event LiveData when the RecyclerView needs to be scrolled to the Top
+    // Scroll Event LiveData when the RecyclerView needs to be scrolled to Top item
     val scrollToTop: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
+    // Scroll Event LiveData when the RecyclerView needs to be smooth scrolled to Top item
+    val smoothScrollToTop: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
     // Stores the logged-in [User] information
     private val user: User = userRepository.getCurrentUser()
@@ -271,6 +274,14 @@ class HomeViewModel(
      */
     fun onLikeUnlikeSync(updatedPost: Post) {
         HomePostListUpdater.syncPostOnLikeUnlikeAction(allPostList, updatedPost)
+    }
+
+    /**
+     * Called when the User re-selects the Home Menu from Bottom Navigation.
+     * Triggers an event to scroll smoothly to the Top of the current list.
+     */
+    fun onHomeMenuReselected() {
+        smoothScrollToTop.postValue(Event(true))
     }
 
     /**

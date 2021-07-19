@@ -29,6 +29,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.ui.profile.edit.EditProfileActi
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.action.BottomNavigationViewActions
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.action.RecyclerViewItemActions
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.activity.TestActivityResultRegistry
+import com.mindorks.kaushiknsanji.instagram.demo.utils.test.matcher.RecyclerViewMatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -704,6 +705,32 @@ class MainActivityTest {
 
         // Assert that the EditProfileActivity was called and launched for result
         assertTrue(testActivityResultRegistry.isActivityLaunched)
+    }
+
+    @Test
+    fun givenHomeBottomNavMenu_onReselectHomeBottomNavMenu_shouldSmoothScrollToTheTopPost() {
+        // Load HomeFragment and verify
+        testCheckBottomNavMenuHomeFragmentViewsDisplay()
+
+        // Scroll to Post item at Position 10
+        Espresso.onView(ViewMatchers.withId(R.id.rv_home_posts))
+            .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(10))
+
+        // Click on the Home button of the Bottom Navigation Menu again
+        // to trigger the smooth scroll to Top Post
+        Espresso.onView(ViewMatchers.withId(R.id.bottom_nav_main))
+            .perform(BottomNavigationViewActions.navigateTo(R.id.action_main_bottom_nav_home))
+
+        // Wait a while for the scroll to complete
+        SystemClock.sleep(2000)
+
+        // Check if the first currently visible Post is the Post item at Position 0 as expected
+        Espresso.onView(ViewMatchers.withId(R.id.rv_home_posts))
+            .check(
+                ViewAssertions.matches(
+                    RecyclerViewMatchers.withFirstVisibleItemAtPosition(0)
+                )
+            )
     }
 
 }

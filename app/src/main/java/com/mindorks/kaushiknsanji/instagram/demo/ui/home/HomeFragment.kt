@@ -17,6 +17,7 @@ import com.mindorks.kaushiknsanji.instagram.demo.utils.common.observeResource
 import com.mindorks.kaushiknsanji.instagram.demo.utils.common.viewBinding
 import com.mindorks.kaushiknsanji.instagram.demo.utils.display.showWhen
 import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.VerticalListItemSpacingDecoration
+import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.smoothVScrollToPositionWithViewTop
 import javax.inject.Inject
 
 /**
@@ -136,6 +137,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
             }
         }
 
+        // Register an observer on the Smooth Scroll Event to scroll smoothly to the Top of the List
+        viewModel.smoothScrollToTop.observeEvent(this) {
+            // Scroll smoothly to the top of the RecyclerView
+            binding.rvHomePosts.smoothVScrollToPositionWithViewTop(0)
+        }
+
         // Register an observer for Profile information update events
         mainSharedViewModel.userProfileInfoUpdateToHome.observeEvent(this) { reload: Boolean ->
             if (reload) {
@@ -154,6 +161,12 @@ class HomeFragment : BaseFragment<HomeViewModel>(), PostsAdapter.Listener {
         mainSharedViewModel.postLikeUpdateToHome.observeEvent(this) { (postId: String, likeStatus: Boolean) ->
             // Delegate to the ViewModel to refresh the Post Item with new Like Status
             viewModel.onPostLikeUpdated(postId, likeStatus)
+        }
+
+        // Register an observer for Home Menu re-selection events
+        mainSharedViewModel.reselectHome.observeEvent(this) {
+            // Delegate to the ViewModel to handle
+            viewModel.onHomeMenuReselected()
         }
     }
 

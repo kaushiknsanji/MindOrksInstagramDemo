@@ -47,6 +47,10 @@ class MainSharedViewModelTest {
     @Mock
     private lateinit var redirectHomeObserver: Observer<Event<Boolean>>
 
+    // LiveData Observer for HomeFragment reselection events
+    @Mock
+    private lateinit var reselectHomeObserver: Observer<Event<Boolean>>
+
     // LiveData Observer for EditProfileActivity launch events
     @Mock
     private lateinit var launchEditProfileObserver: Observer<Event<Map<String, String>>>
@@ -110,6 +114,7 @@ class MainSharedViewModelTest {
 
         // Register the LiveData Observers forever
         mainSharedViewModel.redirectHome.observeForever(redirectHomeObserver)
+        mainSharedViewModel.reselectHome.observeForever(reselectHomeObserver)
         mainSharedViewModel.launchEditProfile.observeForever(launchEditProfileObserver)
         mainSharedViewModel.launchPostDetail.observeForever(launchPostDetailObserver)
         mainSharedViewModel.launchPostLike.observeForever(launchPostLikeObserver)
@@ -134,6 +139,7 @@ class MainSharedViewModelTest {
     fun tearDown() {
         // Remove Registered LiveData Observers
         mainSharedViewModel.redirectHome.removeObserver(redirectHomeObserver)
+        mainSharedViewModel.reselectHome.removeObserver(reselectHomeObserver)
         mainSharedViewModel.launchEditProfile.removeObserver(launchEditProfileObserver)
         mainSharedViewModel.launchPostDetail.removeObserver(launchPostDetailObserver)
         mainSharedViewModel.launchPostLike.removeObserver(launchPostLikeObserver)
@@ -163,21 +169,34 @@ class MainSharedViewModelTest {
 
         // Expected event to be received on Post Creation
         val expectedPostCreationEvent = Event(postCreated)
-        // Assert that the Post Publish LiveData of HomeFragment is set to the expected event
+        // Assert that the Post Publish LiveData for HomeFragment is set to the expected event
         assert(mainSharedViewModel.postPublishUpdateToHome.value == expectedPostCreationEvent)
         // Verify that the Post Publish LiveData Observer of HomeFragment has received the expected event
         verify(postPublishUpdateToHomeObserver).onChanged(expectedPostCreationEvent)
-        // Assert that the Post Publish LiveData of ProfileFragment is set to the expected event
+        // Assert that the Post Publish LiveData for ProfileFragment is set to the expected event
         assert(mainSharedViewModel.postPublishUpdateToProfile.value == expectedPostCreationEvent)
         // Verify that the Post Publish LiveData Observer of ProfileFragment has received the expected event
         verify(postPublishUpdateToProfileObserver).onChanged(expectedPostCreationEvent)
 
-        // Expected event received for redirection
+        // Expected event to be received for redirection
         val expectedRedirectionEvent = Event(true)
-        // Assert that the Redirection LiveData of HomeFragment is set to the expected event
+        // Assert that the Redirection LiveData for HomeFragment is set to the expected event
         assert(mainSharedViewModel.redirectHome.value == expectedRedirectionEvent)
         // Verify that the Redirection LiveData Observer of HomeFragment has received the expected event
         verify(redirectHomeObserver).onChanged(expectedRedirectionEvent)
+    }
+
+    @Test
+    fun `on reselection of Home Menu should trigger an event for HomeFragment to handle`() {
+        // Initiate the action
+        mainSharedViewModel.onHomeReselected()
+
+        // Expected event to be received for reselection
+        val expectedReselectionEvent = Event(true)
+        // Assert that the Reselection LiveData for HomeFragment is set to the expected event
+        assert(mainSharedViewModel.reselectHome.value == expectedReselectionEvent)
+        // Verify that the Reselection LiveData Observer of HomeFragment has received the expected event
+        verify(reselectHomeObserver).onChanged(expectedReselectionEvent)
     }
 
     @Test
@@ -202,11 +221,11 @@ class MainSharedViewModelTest {
         // Expected event to be received on user profile update from EditProfileActivity
         val expectedEvent = Event(true)
 
-        // Assert that the User profile update LiveData of HomeFragment is set to the expected event
+        // Assert that the User profile update LiveData for HomeFragment is set to the expected event
         assert(mainSharedViewModel.userProfileInfoUpdateToHome.value == expectedEvent)
         // Verify that the User profile update LiveData Observer of HomeFragment has received the expected event
         verify(userProfileInfoUpdateToHomeObserver).onChanged(expectedEvent)
-        // Assert that the User profile update LiveData of ProfileFragment is set to the expected event
+        // Assert that the User profile update LiveData for ProfileFragment is set to the expected event
         assert(mainSharedViewModel.userProfileInfoUpdateToProfile.value == expectedEvent)
         // Verify that the User profile update LiveData Observer of ProfileFragment has received the expected event
         verify(userProfileInfoUpdateToProfileObserver).onChanged(expectedEvent)
@@ -258,11 +277,11 @@ class MainSharedViewModelTest {
         // Expected event to be received on delete of a Post either from HomeFragment or PostDetailActivity
         val expectedEvent = Event(postDeleted.id)
 
-        // Assert that the Post deletion event LiveData of HomeFragment is set to the expected event
+        // Assert that the Post deletion event LiveData for HomeFragment is set to the expected event
         assert(mainSharedViewModel.postDeletedEventToHome.value == expectedEvent)
         // Verify that the Post deletion event LiveData Observer of HomeFragment has received the expected event
         verify(postDeletedEventToHomeObserver).onChanged(expectedEvent)
-        // Assert that the Post deletion event LiveData of ProfileFragment is set to the expected event
+        // Assert that the Post deletion event LiveData for ProfileFragment is set to the expected event
         assert(mainSharedViewModel.postDeletedEventToProfile.value == expectedEvent)
         // Verify that the Post deletion event LiveData Observer of ProfileFragment has received the expected event
         verify(postDeletedEventToProfileObserver).onChanged(expectedEvent)
@@ -278,7 +297,7 @@ class MainSharedViewModelTest {
         // Expected event to be received on result of PostLikeActivity and PostDetailActivity
         val expectedEvent = Event(postLiked.id to true)
 
-        // Assert that the Post Like update LiveData of HomeFragment is set to the expected event
+        // Assert that the Post Like update LiveData for HomeFragment is set to the expected event
         assert(mainSharedViewModel.postLikeUpdateToHome.value == expectedEvent)
         // Verify that the Post Like update LiveData Observer of HomeFragment has received the expected event
         verify(postLikeUpdateToHomeObserver).onChanged(expectedEvent)

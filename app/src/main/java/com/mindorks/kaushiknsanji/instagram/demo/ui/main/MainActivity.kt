@@ -104,6 +104,20 @@ class MainActivity : BaseActivity<MainViewModel>() {
                     else -> false
                 }
             }
+
+            // Registering the MenuItem re-selected listener
+            setOnItemReselectedListener { menuItem ->
+                // Defining action based on the MenuItem clicked
+                when (menuItem.itemId) {
+
+                    // For the Home Menu button
+                    R.id.action_main_bottom_nav_home -> {
+                        // Delegate to the Shared ViewModel to handle
+                        mainSharedViewModel.onHomeReselected()
+                    }
+
+                }
+            }
         }
 
         // Restore the last active fragment instance if any, from the FragmentManager to prevent possible overlap

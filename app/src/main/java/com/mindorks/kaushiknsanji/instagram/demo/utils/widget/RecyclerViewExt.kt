@@ -1,9 +1,6 @@
 package com.mindorks.kaushiknsanji.instagram.demo.utils.widget
 
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.*
 
 /**
  * Kotlin file for extension functions on `RecyclerView`.
@@ -105,3 +102,94 @@ fun RecyclerView.isOrientationVertical(): Boolean =
  */
 fun RecyclerView.isOrientationHorizontal(): Boolean =
     getOrientation() == RecyclerView.HORIZONTAL
+
+/**
+ * Extension function on [RecyclerView] for smoothly scrolling to the given [targetPosition] in a
+ * vertically oriented [RecyclerView] such that the corresponding item gets properly displayed
+ * and aligned with the top edge of the parent [RecyclerView].
+ */
+fun RecyclerView.smoothVScrollToPositionWithViewTop(targetPosition: Int) {
+    // Check if the orientation is vertical before proceeding
+    if (isOrientationVertical()) {
+        // Configure custom LinearSmoothScroller in order to align
+        // the top of the child with the parent RecyclerView top always
+        val linearSmoothScroller: LinearSmoothScroller = object : LinearSmoothScroller(context) {
+            /**
+             * When scrolling towards a child view, this method defines whether we should align the top
+             * or the bottom edge of the child with the parent RecyclerView.
+             *
+             * @return SNAP_TO_START, SNAP_TO_END or SNAP_TO_ANY; depending on the current target vector
+             */
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
+        }
+
+        // Set the target position to scroll to
+        linearSmoothScroller.targetPosition = targetPosition
+        // Begin Smooth scroll with the scroller built
+        layoutManager?.startSmoothScroll(linearSmoothScroller)
+    }
+}
+
+/**
+ * Extension function on [RecyclerView] built with [LinearLayoutManager]/[GridLayoutManager]
+ * to retrieve the Item position of the first completely visible or partially visible
+ * Item on the screen.
+ *
+ * While determining the position, position of first completely visible Item is prioritized over
+ * the partially visible one.
+ *
+ * @return [Int] value of the position of the first visible Item on the screen.
+ * Can be [RecyclerView.NO_POSITION] if it could not be determined or if the [RecyclerView]
+ * is NOT setup with [LinearLayoutManager]/[GridLayoutManager].
+ */
+private fun RecyclerView.getFirstVisibleItemPositionFromLinearLayoutManager(): Int =
+    getLinearLayoutManagerOrNull()?.let { layoutManager ->
+        layoutManager
+            .findFirstCompletelyVisibleItemPosition()
+            .takeIf { it > RecyclerView.NO_POSITION }
+            ?: layoutManager.findFirstVisibleItemPosition()
+    } ?: RecyclerView.NO_POSITION
+
+/**
+ * Extension function on [RecyclerView] built with [StaggeredGridLayoutManager]
+ * to retrieve the Item position of the first completely visible or partially visible
+ * Item on the screen.
+ *
+ * While determining the position, position of first completely visible Item is prioritized over
+ * the partially visible one, and since this is built with [StaggeredGridLayoutManager], only
+ * the position of the first view of the Grid span is considered.
+ *
+ * @return [Int] value of the position of the first visible Item on the screen.
+ * Can be [RecyclerView.NO_POSITION] if it could not be determined or if the [RecyclerView]
+ * is NOT setup with [StaggeredGridLayoutManager].
+ */
+private fun RecyclerView.getFirstVisibleItemPositionFromStaggeredGridLayoutManager(): Int =
+    getStaggeredGridLayoutManagerOrNull()?.let { layoutManager ->
+        layoutManager
+            .findFirstCompletelyVisibleItemPositions(null)[0]
+            .takeIf { it > RecyclerView.NO_POSITION }
+            ?: layoutManager.findFirstVisibleItemPositions(null)[0]
+    } ?: RecyclerView.NO_POSITION
+
+/**
+ * Extension function on [RecyclerView] to retrieve the Item position of the
+ * first completely visible or partially visible Item on the screen.
+ *
+ * While determining the position, position of first completely visible Item is prioritized over
+ * the partially visible one.
+ *
+ * This method first tries to retrieve the Item Position from the
+ * [LinearLayoutManager]/[GridLayoutManager] of the [RecyclerView]. If this is
+ * found to be [RecyclerView.NO_POSITION], then it will try to retrieve
+ * from [StaggeredGridLayoutManager] of the [RecyclerView].
+ *
+ * @return [Int] value of the position of the first visible Item on the screen.
+ * Can be [RecyclerView.NO_POSITION] if it could not be determined or if the [RecyclerView]
+ * is NOT setup with [LinearLayoutManager]/[GridLayoutManager]/[StaggeredGridLayoutManager], i.e.,
+ * if setup with a [RecyclerView.LayoutManager] that does not provide this information.
+ */
+fun RecyclerView.getFirstVisibleItemPosition(): Int =
+    getFirstVisibleItemPositionFromLinearLayoutManager().takeIf { it > RecyclerView.NO_POSITION }
+        ?: getFirstVisibleItemPositionFromStaggeredGridLayoutManager()

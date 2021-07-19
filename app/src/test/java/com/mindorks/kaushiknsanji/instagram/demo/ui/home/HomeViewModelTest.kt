@@ -77,9 +77,14 @@ class HomeViewModelTest {
     @Mock
     private lateinit var reloadAllPostsObserver: Observer<Resource<List<Post>>>
 
-    // Scroll Event LiveData Observer for when the RecyclerView needs to be scrolled to the Top
+    // Scroll Event LiveData Observer for when the RecyclerView needs to be scrolled to Top item
     @Mock
     private lateinit var scrollToTopObserver: Observer<Event<Boolean>>
+
+    // Scroll Event LiveData Observer for when the RecyclerView needs to be
+    // smooth scrolled to Top item
+    @Mock
+    private lateinit var smoothScrollToTopObserver: Observer<Event<Boolean>>
 
     // RxJava Test Schedulers
     private lateinit var testScheduler: TestScheduler
@@ -120,6 +125,7 @@ class HomeViewModelTest {
         homeViewModel.loadingProgress.observeForever(loadingProgressObserver)
         homeViewModel.reloadAllPosts.observeForever(reloadAllPostsObserver)
         homeViewModel.scrollToTop.observeForever(scrollToTopObserver)
+        homeViewModel.smoothScrollToTop.observeForever(smoothScrollToTopObserver)
     }
 
     @After
@@ -129,6 +135,7 @@ class HomeViewModelTest {
         homeViewModel.loadingProgress.removeObserver(loadingProgressObserver)
         homeViewModel.reloadAllPosts.removeObserver(reloadAllPostsObserver)
         homeViewModel.scrollToTop.removeObserver(scrollToTopObserver)
+        homeViewModel.smoothScrollToTop.removeObserver(smoothScrollToTopObserver)
     }
 
     //@Test (TODO: Testcase not working as expected)
@@ -207,6 +214,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
         testPaginatorSubscriber.assertEmpty()
@@ -314,6 +323,29 @@ class HomeViewModelTest {
         assert(homeViewModel.messageStringId.value == expectedPostCreationMessage)
         // Verify that the Resource messages LiveData Observer has received the expected Resource
         verify(messageStringIdObserver).onChanged(expectedPostCreationMessage)
+
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
+    }
+
+    @Test
+    fun whenUserReselectedHomeMenu_shouldSmoothScrollToTheTopPost() {
+        // Initiate the action
+        homeViewModel.onHomeMenuReselected()
+
+        // Expected Smooth Scroll to Top Event
+        val expectedSmoothScrollToTopEvent = Event(true)
+        // Assert that the Smooth Scroll to Top Event LiveData is set to the expected Event
+        assert(homeViewModel.smoothScrollToTop.value == expectedSmoothScrollToTopEvent)
+        // Verify that the Smooth Scroll to Top Event LiveData Observer has received the expected Event
+        verify(smoothScrollToTopObserver).onChanged(expectedSmoothScrollToTopEvent)
+
+        // Verify that the List of Posts reloading LiveData Observer never received any value
+        verifyNoInteractions(reloadAllPostsObserver)
+        // Verify that the Loading Progress LiveData Observer never received any value
+        verifyNoInteractions(loadingProgressObserver)
+        // Verify that the Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(scrollToTopObserver)
     }
 
     @Test
@@ -383,6 +415,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
 
         // Verify that there were no interactions with the Paginator
         testPaginatorSubscriber.assertEmpty()
@@ -471,6 +505,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
         testPaginatorSubscriber.assertEmpty()
@@ -514,6 +550,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
         testPaginatorSubscriber.assertEmpty()
@@ -544,6 +582,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
         testPaginatorSubscriber.assertEmpty()
@@ -604,6 +644,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
         testPaginatorSubscriber.assertEmpty()
@@ -670,6 +712,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
         testPaginatorSubscriber.assertEmpty()
@@ -724,6 +768,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
 
         // Verify that there we no interactions with the Paginator
         testPaginatorSubscriber.assertEmpty()
@@ -775,6 +821,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
     }
 
     @Test
@@ -829,6 +877,8 @@ class HomeViewModelTest {
         verifyNoInteractions(loadingProgressObserver)
         // Verify that the Scroll to Top LiveData Observer never received any value
         verifyNoInteractions(scrollToTopObserver)
+        // Verify that the Smooth Scroll to Top LiveData Observer never received any value
+        verifyNoInteractions(smoothScrollToTopObserver)
     }
 
     @Test

@@ -6,6 +6,7 @@ import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.matcher.BoundedMatcher
 import com.mindorks.kaushiknsanji.instagram.demo.utils.test.InstrumentedTestUtils
+import com.mindorks.kaushiknsanji.instagram.demo.utils.widget.getFirstVisibleItemPosition
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 
@@ -17,7 +18,7 @@ import org.hamcrest.Matcher
 object RecyclerViewMatchers {
 
     /**
-     * Returns a matcher that matches an Item [View] currently displayed on screen
+     * Returns a [Matcher] that matches an Item [View] currently displayed on screen
      * at the item [position][itemPosition] in the [RecyclerView] based on a particular content of a
      * [View] in that Item which is expected to be present.
      *
@@ -79,5 +80,42 @@ object RecyclerViewMatchers {
 
     }
 
+    /**
+     * Returns a [Matcher] that matches the position of the first currently visible Item [View] of
+     * the [RecyclerView] with the expected [position][expectedItemPosition].
+     *
+     * @param expectedItemPosition [Int] value of the expected position of the first visible item.
+     *
+     * @return A [Matcher] that matches First visible Item [View] of [RecyclerView] based on
+     * the given [expectedItemPosition].
+     */
+    fun withFirstVisibleItemAtPosition(
+        expectedItemPosition: Int
+    ): Matcher<View> = object : BoundedMatcher<View, RecyclerView>(RecyclerView::class.java) {
+
+        /**
+         * Generates a description of the object.  The description may be part of a
+         * a description of a larger object of which this is just a component, so it
+         * should be worded appropriately.
+         *
+         * @param description The description to be built or appended to.
+         */
+        override fun describeTo(description: Description) {
+            // Description shown for the expected case when the match fails
+            description.appendText("with item view at position '$expectedItemPosition'")
+        }
+
+        /**
+         * Matches safely the position of the first currently visible Item View of the [recyclerView]
+         * with the expected [position][expectedItemPosition].
+         *
+         * @return A [Boolean] result of the comparison between [expectedItemPosition] and
+         * the detected position of the first currently visible Item View of the [recyclerView].
+         */
+        override fun matchesSafely(recyclerView: RecyclerView): Boolean {
+            return expectedItemPosition == recyclerView.getFirstVisibleItemPosition()
+        }
+
+    }
 
 }

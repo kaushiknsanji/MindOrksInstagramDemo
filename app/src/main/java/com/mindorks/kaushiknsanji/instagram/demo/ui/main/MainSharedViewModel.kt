@@ -29,6 +29,9 @@ class MainSharedViewModel(
     // LiveData for redirecting to HomeFragment
     val redirectHome: MutableLiveData<Event<Boolean>> = MutableLiveData()
 
+    // LiveData triggered when the Home Menu is reselected
+    val reselectHome: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
     // LiveData for launching EditProfileActivity
     val launchEditProfile: MutableLiveData<Event<Map<String, String>>> = MutableLiveData()
 
@@ -98,6 +101,16 @@ class MainSharedViewModel(
         postPublished.postValue(newPost)
         // Redirect to [HomeFragment]
         redirectHome.postValue(Event(true))
+    }
+
+    /**
+     * Called when the User re-selects the Home Menu from Bottom Navigation.
+     *
+     * Triggers a re-selection event for the
+     * [com.mindorks.kaushiknsanji.instagram.demo.ui.home.HomeFragment] to handle.
+     */
+    fun onHomeReselected() {
+        reselectHome.postValue(Event(true))
     }
 
     /**
