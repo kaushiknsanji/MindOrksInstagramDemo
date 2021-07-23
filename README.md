@@ -42,14 +42,31 @@ Android device running with Android OS 5.0 (API Level 21) or above. Designed for
 * Define a property named **API_KEY_VAL** and assign it the value of the _API Key_ obtained from the registration process.
 * Define another property named **BASE_URL_VAL** and assign it the value of the _Base URL_ obtained from the registration process.
 
-_**Note:** This server is solely **built and managed by MindOrks**. So, please refrain from uploading any sensitive or coprighted photo, while testing the application. Also, do not forget your own login credentials, after signing up through this mobile application, since there is no way to recover if forgotten._
+_**Note:** This server is solely **built and managed by MindOrks**. So, please refrain from uploading any sensitive or copyrighted photo, while testing the application. Also, after signing up through this mobile application, do not forget your own login credentials since there is no way to recover if forgotten._
 
 ---
 
 ## Sample Screenshots
 
+|SignUp Screen|Login Screen|Home Screen / All Posts Tab|
+|---|---|---|
+|![sign_up_screen](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/sign_up_screen.png)|![login_screen](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/login_screen.png)|![all_posts_tab](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/all_posts_tab.png)|
+
+|Upload Photo Post Tab|User Posts Tab|Edit Profile Screen|
+|---|---|---|
+|![upload_photo_post_tab](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/upload_photo_post_tab.png)|![user_posts_tab](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/user_posts_tab.png)|![edit_profile_screen](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/edit_profile_screen.png)|
+
+|Likes Screen|Post Details Screen|
+|---|---|
+|**Without Likes**<br/>![likes_screen_without_likes](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/likes_screen_without_likes.png)<br/><br/>**With Likes**<br/>![likes_screen_with_likes](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/likes_screen_with_likes.png)|**Without Likes**<br/>![post_details_screen_without_likes](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/post_details_screen_without_likes.png)<br/><br/>**With Likes**<br/>![post_details_screen_with_likes](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/post_details_screen_with_likes.png)|
+
+|Fullscreen Photo Immersive Screen (Portrait)|Fullscreen Photo Immersive Screen (Landscape)|
+|---|---|
+|![fullscreen_photo_immersion_port](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/fullscreen_photo_immersion_port.png)|![fullscreen_photo_immersion_land](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/fullscreen_photo_immersion_land.png)|
 
 ## Video Preview
+
+[![Video of Complete App Flow](https://i.ytimg.com/vi/tbzwxqQFvxY/maxresdefault.jpg)](https://youtu.be/tbzwxqQFvxY)
 
 ---
 
@@ -172,6 +189,8 @@ App follows the recommended **[MVVM architecture with Repository pattern](https:
 		* `Window` to register a listener on its `DecorView` to track and capture System UI visibility change events.
 		* `ComponentActivity` to ensure app content is always shown below the device display cutouts if any in order to prevent content jump and overlap when System UI visibility changes.
 		* `ComponentActivity` to toggle window immersion which internally alters the System UI visibility accordingly.
+* [RecyclerViewExt][]
+	* Kotlin extension functions on `RecyclerView` to promote idiomatic code while working with its properties.
 
 ##### Test Utilities
 * [BottomNavigationViewActions][]
@@ -412,13 +431,17 @@ sharedTest
 
 - [ ] Orientation based scaling of Images
 - [ ] New Navigation component for App navigation
-- [ ] Migrating from Dagger to Hilt
+- [ ] Migration from Dagger to Hilt
 - [ ] Offline functionality
 - [ ] More Test cases
 
 ---
 
 ## Certificate of Completion
+
+<a href="https://mindorks.com/certificate/69081f8f1b">
+    <img alt="Completion Certificate" src="https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/certificate/completion_certificate.png" width="50%">
+</a>
 
 ---
 
@@ -465,6 +488,7 @@ limitations under the License.
 [DialogManager]: app/src/main/java/com/mindorks/kaushiknsanji/instagram/demo/utils/display/DialogManager.kt
 [AlertDialogExt]: app/src/main/java/com/mindorks/kaushiknsanji/instagram/demo/utils/display/AlertDialogExt.kt
 [ImmersiveModeCompatExt]: app/src/main/java/com/mindorks/kaushiknsanji/instagram/demo/utils/display/ImmersiveModeCompatExt.kt
+[RecyclerViewExt]: app/src/main/java/com/mindorks/kaushiknsanji/instagram/demo/utils/widget/RecyclerViewExt.kt
 [BottomNavigationViewActions]: app/src/androidTest/java/com/mindorks/kaushiknsanji/instagram/demo/utils/test/action/BottomNavigationViewActions.kt
 [RecyclerViewItemActions]: app/src/androidTest/java/com/mindorks/kaushiknsanji/instagram/demo/utils/test/action/RecyclerViewItemActions.kt
 [TestActivityResultRegistry]: app/src/androidTest/java/com/mindorks/kaushiknsanji/instagram/demo/utils/test/activity/TestActivityResultRegistry.kt
