@@ -1,13 +1,13 @@
 # MindOrks Instagram Demo
 
-<image align="right" src="https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="25%"/>
+<image align="right" src="https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="25%"/>
 
-![GitHub](https://img.shields.io/github/license/kaushiknsanji/MindorksInstagramDemo)  ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/kaushiknsanji/MindorksInstagramDemo)  ![GitHub repo size](https://img.shields.io/github/repo-size/kaushiknsanji/MindorksInstagramDemo)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/kaushiknsanji/MindorksInstagramDemo)  ![GitHub All Releases downloads count](https://img.shields.io/github/downloads/kaushiknsanji/MindorksInstagramDemo/total) ![GitHub search hit counter](https://img.shields.io/github/search/kaushiknsanji/MindorksInstagramDemo/MindOrks%20Instagram%20App) ![Minimum API level](https://img.shields.io/badge/API-21+-yellow)
+![GitHub](https://img.shields.io/github/license/kaushiknsanji/MindOrksInstagramDemo)  ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/kaushiknsanji/MindOrksInstagramDemo)  ![GitHub repo size](https://img.shields.io/github/repo-size/kaushiknsanji/MindOrksInstagramDemo)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/kaushiknsanji/MindOrksInstagramDemo)  ![GitHub All Releases downloads count](https://img.shields.io/github/downloads/kaushiknsanji/MindOrksInstagramDemo/total) ![GitHub search hit counter](https://img.shields.io/github/search/kaushiknsanji/MindOrksInstagramDemo/MindOrks%20Instagram%20App) ![Minimum API level](https://img.shields.io/badge/API-21+-yellow)
 
 This App has been developed as part of the **[MindOrks Android Online Course for Professionals][MindOrks course]**. This is a mini demo version of the real Instagram app built with Android Jetpack and MVVM Architecture.
 
-_**Note:** Exercises that were also part of this course can be found [here](https://github.com/kaushiknsanji/Mindorks_BootCamp_Assignments)._
+_**Note:** Exercises that were also part of this course can be found [here](https://github.com/kaushiknsanji/MindOrks_Android_Professional_BootCamp_Assignments)._
 
 ## Features
 * User registration and management.
@@ -50,19 +50,19 @@ _**Note:** This server is solely **built and managed by MindOrks**. So, please r
 
 |SignUp Screen|Login Screen|Home Screen / All Posts Tab|
 |---|---|---|
-|![sign_up_screen](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/sign_up_screen.png)|![login_screen](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/login_screen.png)|![all_posts_tab](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/all_posts_tab.png)|
+|![sign_up_screen](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/sign_up_screen.png)|![login_screen](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/login_screen.png)|![all_posts_tab](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/all_posts_tab.png)|
 
 |Upload Photo Post Tab|User Posts Tab|Edit Profile Screen|
 |---|---|---|
-|![upload_photo_post_tab](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/upload_photo_post_tab.png)|![user_posts_tab](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/user_posts_tab.png)|![edit_profile_screen](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/edit_profile_screen.png)|
+|![upload_photo_post_tab](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/upload_photo_post_tab.png)|![user_posts_tab](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/user_posts_tab.png)|![edit_profile_screen](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/edit_profile_screen.png)|
 
 |Likes Screen|Post Details Screen|
 |---|---|
-|**Without Likes**<br/>![likes_screen_without_likes](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/likes_screen_without_likes.png)<br/><br/>**With Likes**<br/>![likes_screen_with_likes](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/likes_screen_with_likes.png)|**Without Likes**<br/>![post_details_screen_without_likes](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/post_details_screen_without_likes.png)<br/><br/>**With Likes**<br/>![post_details_screen_with_likes](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/post_details_screen_with_likes.png)|
+|**Without Likes**<br/>![likes_screen_without_likes](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/likes_screen_without_likes.png)<br/><br/>**With Likes**<br/>![likes_screen_with_likes](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/likes_screen_with_likes.png)|**Without Likes**<br/>![post_details_screen_without_likes](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/post_details_screen_without_likes.png)<br/><br/>**With Likes**<br/>![post_details_screen_with_likes](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/post_details_screen_with_likes.png)|
 
 |Fullscreen Photo Immersive Screen (Portrait)|Fullscreen Photo Immersive Screen (Landscape)|
 |---|---|
-|![fullscreen_photo_immersion_port](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/fullscreen_photo_immersion_port.png)|![fullscreen_photo_immersion_land](https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/screenshots/fullscreen_photo_immersion_land.png)|
+|![fullscreen_photo_immersion_port](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/fullscreen_photo_immersion_port.png)|![fullscreen_photo_immersion_land](https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/screenshots/fullscreen_photo_immersion_land.png)|
 
 ## Video Preview
 
@@ -440,7 +440,7 @@ sharedTest
 ## Certificate of Completion
 
 <a href="https://mindorks.com/certificate/69081f8f1b">
-    <img alt="Completion Certificate" src="https://github.com/kaushiknsanji/MindorksInstagramDemo/blob/master/art/certificate/completion_certificate.png" width="50%">
+    <img alt="Completion Certificate" src="https://github.com/kaushiknsanji/MindOrksInstagramDemo/blob/master/art/certificate/completion_certificate.png" width="50%">
 </a>
 
 ---
